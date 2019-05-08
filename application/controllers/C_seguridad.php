@@ -51,7 +51,7 @@ class C_seguridad extends CI_Controller {
 		if(isset($_POST['usuario']) && !empty($_POST['usuario']) && isset($_POST['password']) && !empty($_POST['password']))
 		{
 			//	Datos Recaptcha Google
-			$secret = '6LcFNH0UAAAAANR1lPEs3ezWT_mUor1PiT60wn_P';
+			/*$secret = '6LcFNH0UAAAAANR1lPEs3ezWT_mUor1PiT60wn_P';
 	    	$response = $_POST["g-recaptcha-response"];
 	    	$remoteip =  $_SERVER['REMOTE_ADDR'];
 
@@ -61,7 +61,7 @@ class C_seguridad extends CI_Controller {
 			$json = json_decode($captcha);
 			
 			if($json->success)
-			{
+			{*/
 				$where['u.vUsuario'] =  $this->input->post('usuario');
                 $where['u.vPassword'] = sha1($this->input->post('password'));
 				$query = $this->ms->consulta_existe_usuario($where);
@@ -81,12 +81,12 @@ class C_seguridad extends CI_Controller {
 					}
 					else echo 'Datos incorrectos';
 				}else echo 'Ha ocurrido un error. Contacte al administrador.';
-
+			/*
 			}
 			else
 			{
 				echo 'Resuelva el captcha para continuar';
-			}
+			}*/
 			
 		}else echo 'Datos insuficientes';
 	}
