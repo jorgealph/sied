@@ -22,6 +22,7 @@
 	<!-- ================== END BASE CSS STYLE ================== -->
 	
 	<script src="<?=base_url();?>admin/assets/plugins/pace/pace.min.js"></script>
+	<link href="<?=base_url()?>admin/assets/plugins/gritter/css/jquery.gritter.css?v=1" rel="stylesheet" />
 	<!-- ================== END BASE JS ================== -->
 </head>
 <body class="pace-top bg-white">
@@ -97,14 +98,17 @@
 	<!-- ================== END BASE JS ================== -->
 	<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"async defer></script>
 
+	<!--Libreria de notificaciones y funciones base -->
+	<script src="<?=base_url();?>admin/assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="<?=base_url();?>admin/assets/plugins/bootstrap-sweetalert/sweetalert.min.js"></script>
+	<script src="<?=base_url();?>admin/assets/js/funciones.js"></script>
+
 	<script>
 		var base_url = '<?=base_url()?>';
 		$(document).ready(function() {
 			App.init();
 		});
-
-
-		var get_r = <?php if(isset($_GET['r']) && !empty($_GET['r'])){echo 1;}else{echo 0;}?>;
+		
 		var div_captcha;
 		var onloadCallback = function() {
 	        div_captcha = grecaptcha.render('div_captcha', {
@@ -112,36 +116,9 @@
 	        });
 	    };
 
-	    function validarFormulario(f,objEsp){
-			//	f: Objeto formulario (form)
-			//	objEsp: Indica si se debe validar algún objeto no soportado por la librería Parsley.js
-			var objEsp = objEsp || true;
-			var expreg = /_$/;
-			var resp = false;
-
-			if(objEsp){
-				for (i=0; i<f.elements.length; i++){
-					objeto = f.elements[i];
-					if(expreg.test(objeto.id)){
-						//CKEditor
-						var patron = /ckeditor/g;
-						if(patron.test(objeto.className)){
-							$("#"+objeto.id).val(CKEDITOR.instances[objeto.id].getData());
-						}
-					}
-				}
-			}
-
-			resp = $("#"+f.id).parsley().validate();
-
-			return resp;
-		}
-		
-
-		function iniciarSesion(form,e){
+	   	function iniciarSesion(form,e){
 			e.preventDefault();
 			if(validarFormulario(form)){
-			
 				$.ajax({
 			        url: base_url + 'acceder',
 			        type: 'POST',
@@ -160,15 +137,14 @@
 			                    	url = document.referrer;
 			                    }*/
 			                    window.location.href = base_url;
-			                    
 			                    break;
 			                case "101":
 			                	//Notificacion('Los datos son incorrectos','error');
-			                	alert('Datos incorrectos');
+			                	notificacion('Datos incorrectos','error');
 			                	break;
 			                default:
 			                    //Notificacion(cod,'error');
-			                    alert('Error: '+ cod);
+			                    notificacion(cod,'error');
 			                    break;
 			            }
 			            grecaptcha.reset(div_captcha);

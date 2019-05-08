@@ -54,7 +54,7 @@
 					<div class="dropdown-menu dropdown-menu-right">
 						<!--<a href="javascript:;" class="dropdown-item">Edit Profile</a>-->
 						<div class="dropdown-divider"></div>
-						<a href="#" onclick="salir();" class="dropdown-item">Cerrar sesión</a>
+						<a href="#" onclick="confirmar('¿Realmente desea cerrar sesión?',cerarSesion);" class="dropdown-item">Cerrar sesión</a>
 					</div>
 				</li>
 			</ul>
@@ -127,6 +127,11 @@
 	<script src="<?=base_url();?>admin/assets/js/theme/default.min.js"></script>
 	<script src="<?=base_url();?>admin/assets/js/apps.min.js"></script>
 	<!-- ================== END BASE JS ================== -->
+
+	<!--Libreria de notificaciones y funciones base -->
+	<script src="<?=base_url();?>admin/assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="<?=base_url();?>admin/assets/plugins/bootstrap-sweetalert/sweetalert.min.js"></script>
+	<script src="<?=base_url();?>admin/assets/js/funciones.js"></script>
 	
 	<script>
 		$(document).ready(function() {
@@ -142,70 +147,18 @@
             <?php } ?>
         }); */ ?>
 
-      
-       
-
-      	function salir(){
-      		if(confirm('¿Desea cerrar sesión?')){
-      			$.ajax({
-	                url: base_url + 'salir',
-	                type: 'POST',
-	                async: true,
-	                success: function(htmlcode){
-	                    window.location.href = base_url;
-	                },
-	                error: function(XMLHttpRequest, errMsg, exception){
-	                    //Notificacion(errMsg,"error");
-	                    alert('No pudimos cerrar su sesión');
-	                }
-            	});
-      		}
-      	}
-
-        function Confirmar_cerrar_sesion()
-        {
-            $('#confirmar_cerrar_sesion').modal();
-        }
-
-
-        function Cerrar_sesion()
-        {
-            Swal({
-              title: 'Cerrar sesión',
-              text: '¿Realmente desea cerrar sesión?',
-              type: 'question',
-              showCancelButton: true,
-              confirmButtonText: 'Confirmar',
-              cancelButtonText: 'Cancelar'
-            }).then((result) => {           
-                if (result.value) {           
-                    window.location.href = '<?=base_url(); ?>/Sitio/cerrar_sesion';
-                } else if (result.dismiss === Swal.DismissReason.cancel) {
-                
-                }
-            });
-        }
-
-        function cargar(pagina,obj,metodo,variables)
-        {
-            var loading = '<div id="page-loader" class="fade in"><span class="spinner"></span></div>';
-
-            if(typeof(metodo) == "undefined" || metodo == ""){ metodo = "POST";}
-            if(typeof(variables) == "undefined" || variables == ""){ variables = "";}
-            $(obj).html(loading);
-            $.ajax({
-                url: pagina,
-                type: metodo,
+        function cerarSesion(){
+        	$.ajax({
+                url: base_url + 'salir',
+                type: 'POST',
                 async: true,
-                data: variables,
                 success: function(htmlcode){
-                    $(obj).html(htmlcode);
+                    window.location.href = base_url;
                 },
                 error: function(XMLHttpRequest, errMsg, exception){
-                    Notificacion(errMsg,"error");
+                    notificacion('No pudimos cerrar su sesión','error');
                 }
-            });
-          
+        	});
         }
     </script>
 </body>
