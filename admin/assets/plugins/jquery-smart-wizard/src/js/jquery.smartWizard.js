@@ -22,8 +22,8 @@
             useURLhash: true, // Enable selection of the step based on url hash
             showStepURLhash: true, // Show url hash based on step
             lang: {  // Language variables for button
-                next: 'Next',
-                previous: 'Previous'
+                next: 'Siguiente',
+                previous: 'Regresar'
             },
             toolbarSettings: {
                 toolbarPosition: 'bottom', // none, top, bottom, both
