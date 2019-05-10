@@ -18,4 +18,30 @@ class M_intervencionpropuesta extends CI_Model{
         return $query->result();
     }
 
+
+    public function ejeQuery(){
+        $this->db->select('iIdEje, vEje');
+        $this->db->from('eje');
+        $this->db->where('iActivo', 1);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function temaQuery($id){
+        $this->db->select('iIdPoliticaPublica, vPoliticaPublica');
+        $this->db->from('politicapublica');
+        $this->db->where('iActivo', 1);
+        $this->db->where('iIdEje',$id);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function objetivoQuery($id){
+        $this->db->select('iIdObjetivo, vObjetivo');
+        $this->db->from('objetivo');
+        $this->db->where('iActivo', 1);
+        $this->db->where('iIdPoliticaPublica',$id);
+        $query = $this->db->get();
+        return $query->result();
+    }
 }

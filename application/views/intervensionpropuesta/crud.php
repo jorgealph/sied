@@ -25,8 +25,8 @@
 	<link href="<?=base_url();?>admin/assets/plugins/parsley/src/parsley.css" rel="stylesheet">
 	<link href="<?=base_url();?>admin/assets/plugins/jquery-smart-wizard/src/css/smart_wizard.css" rel="stylesheet">
 	
-<!-- begin wizard-form -->
-<form action="/" method="POST" name="form-wizard" class="form-control-with-bg">
+    <!-- begin wizard-form -->
+    <form action="/" method="POST" name="form-wizard" class="form-control-with-bg">
 				<!-- begin wizard -->
 				<div id="wizard">
 					<!-- begin wizard-step -->
@@ -207,21 +207,31 @@
                             <label for="" class="col-form-label text-md-left">Eje</label>
                         </div>
                         <div class="col-md-3">
-                            <input type="text" name="" id="" class="form-control">
+                            <select id="eje" class="form-control" data-parsley-min="-1" data-parsley-required="true" data-parsley-group="step-2" onchange="loadTema()">
+                                <option value="">Seleccionar</option>
+                                <?php foreach($eje as $r){
+                                    echo("<option value='".$r->iIdEje."'>".$r->vEje."</option>");
+                                }
+                                ?>
+                            </select>
                         </div>
 
                         <div class="col-md-1">
                             <label for="" class="col-form-label text-md-left">Tema</label>
                         </div>
                         <div class="col-md-3">
-                            <input type="text" name="" id="" class="form-control">
+                            <select id="tema" class="form-control" data-parsley-min="0" data-parsley-required="true" data-parsley-group="step-2" onchange="loadObjetivo()">
+                                <option value="">Seleccionar</option>
+                            </select>
                         </div>
 
                         <div class="col-md-1">
-                            <label for="" class="col-form-label text-md-left">Objetivo</label>
+                            <label for="iIdObjetivo" class="col-form-label text-md-left">Objetivo</label>
                         </div>
                         <div class="col-md-3">
-                            <input type="text" name="" id="" class="form-control">
+                            <select id="iIdObjetivo" name="iIdObjetivo" class="form-control" data-parsley-min="0" data-parsley-required="true" data-parsley-group="step-2">
+                                <option value="">Seleccionar</option>
+                            </select>
                         </div>
                     </div>
                     <div class="row" style="padding-bottom: 10px">
@@ -318,21 +328,21 @@
                         <!-- inline -->
                         <div class="col-md-4">
                             <div class="checkbox checkbox-css checkbox-inline">
-                                <input type="checkbox" id="iDiagnostico"  />
+                                <input type="checkbox" id="iDiagnostico" name="iDiagnostico"  />
                                 <label for="iDiagnostico">Diagnóstico basado en el análisis del problema</label>
                             </div>
                         </div>
                         
                         <div class="col-md-4">
                             <div class="checkbox checkbox-css checkbox-inline">
-                                <input type="checkbox" id="iIdentificacion"  />
+                                <input type="checkbox" id="iIdentificacion" name="iIdentificacion"  />
                                 <label for="iIdentificacion">Identificación y cuantificación de la población objetiva</label>
                             </div>
                         </div>
                         
                         <div class="col-md-4">
                             <div class="checkbox checkbox-css checkbox-inline">
-                                <input type="checkbox" id="iInformeEstudio"  />
+                                <input type="checkbox" id="iInformeEstudio" name="iInformeEstudio"  />
                                 <label for="inlineCssCheckbox1">Informes o estudios de los resultados de la intervención</label>
                             </div>
                         </div>
@@ -342,21 +352,21 @@
                         <!-- inline -->
                         <div class="col-md-4">
                             <div class="checkbox checkbox-css checkbox-inline">
-                                <input type="checkbox" id="iArbolProblemas"  />
+                                <input type="checkbox" id="iArbolProblemas" name="iArbolProblemas" />
                                 <label for="iArbolProblemas">Árbol de problemas</label>
                             </div>
                         </div>
                         
                         <div class="col-md-4">
                             <div class="checkbox checkbox-css checkbox-inline">
-                                <input type="checkbox" id="iCalculoCobertura"  />
+                                <input type="checkbox" id="iCalculoCobertura" name="iCalculoCobertura"  />
                                 <label for="iCalculoCobertura">Cálculo de la cobertura</label>
                             </div>
                         </div>
                         
                         <div class="col-md-4">
                             <div class="checkbox checkbox-css checkbox-inline">
-                                <input type="checkbox" id="iManualProceso"  />
+                                <input type="checkbox" id="iManualProceso" name="iManualProceso"  />
                                 <label for="iManualProceso">Manual de procesos</label>
                             </div>
                         </div>
@@ -367,21 +377,21 @@
                         <!-- inline -->
                         <div class="col-md-4">
                             <div class="checkbox checkbox-css checkbox-inline">
-                                <input type="checkbox" id="iArbolObjetivos"  />
+                                <input type="checkbox" id="iArbolObjetivos" name="iArbolObjetivos" />
                                 <label for="iArbolObjetivos">Árbol de objetivos</label>
                             </div>
                         </div>
                         
                         <div class="col-md-4">
                             <div class="checkbox checkbox-css checkbox-inline">
-                                <input type="checkbox" id="iCriteriosFocalizacion"  />
+                                <input type="checkbox" id="iCriteriosFocalizacion" name="iCriteriosFocalizacion" />
                                 <label for="iCriteriosFocalizacion">Críterios de focalización</label>
                             </div>
                         </div>
                         
                         <div class="col-md-4">
                             <div class="checkbox checkbox-css checkbox-inline">
-                                <input type="checkbox" id="iReglasOperacion"  />
+                                <input type="checkbox" id="iReglasOperacion" name="iReglasOperacion"  />
                                 <label for="iReglasOperacion">Reglas de operación</label>
                             </div>
                         </div>
@@ -392,21 +402,21 @@
                         <!-- inline -->
                         <div class="col-md-4">
                             <div class="checkbox checkbox-css checkbox-inline">
-                                <input type="checkbox" id="iMIR"  />
+                                <input type="checkbox" id="iMIR" name="iMIR"  />
                                 <label for="iMIR">MIR</label>
                             </div>
                         </div>
                         
                         <div class="col-md-4">
                             <div class="checkbox checkbox-css checkbox-inline">
-                                <input type="checkbox" id="iDescripcionIntervencion"  />
+                                <input type="checkbox" id="iDescripcionIntervencion" name="iDescripcionIntervencion" />
                                 <label for="iDescripcionIntervencion">Descripción de la intervención</label>
                             </div>
                         </div>
                         
                         <div class="col-md-4">
                             <div class="checkbox checkbox-css checkbox-inline">
-                                <input type="checkbox" id="iPadronBeneficiarios"  />
+                                <input type="checkbox" id="iPadronBeneficiarios" name="iPadronBeneficiarios"  />
                                 <label for="iPadronBeneficiarios">Padrón de beneficiarios</label>
                             </div>
                         </div>
@@ -418,7 +428,7 @@
                             <label for="iPreviamenteEvaluado" class="col-form-label text-md-left">¿La intervención ha sido evaluada previamente?</label>
                         </div>
                         <div class="col-md-2">
-                            <select name="iPreviamenteEvaluado" id="iPreviamenteEvaluado" class="form-control">
+                            <select name="iPreviamenteEvaluado" id="iPreviamenteEvaluado" class="form-control" data-parsley-min="0" data-parsley-required="true" data-parsley-group="step-3">
                                 <option value="">Seleccionar</option>
                                 <option value="1">Sí</option>
                                 <option value="0">No</option>
@@ -430,7 +440,7 @@
                             <label for="" class="col-form-label text-md-left">Seleccione el tipo de evaluación que se le aplicó</label>
                         </div>
                         <div class="col-md-4">
-                            <select name="" id="" class="form-control">
+                            <select name="" id="" class="form-control" data-parsley-min="0" data-parsley-required="true" data-parsley-group="step-3">
                             <option value="">Seleccionar</option>
                                 <option value="1">Sí</option>
                                 <option value="0">No</option>
@@ -456,7 +466,7 @@
 							<div class="jumbotron m-b-0 text-center">
 								<h2 class="text-inverse">Register Successfully</h2>
 								<p class="m-b-30 f-s-16">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris consequat commodo porttitor. <br />Vivamus eleifend, arcu in tincidunt semper, lorem odio molestie lacus, sed malesuada est lacus ac ligula. Aliquam bibendum felis id purus ullamcorper, quis luctus leo sollicitudin. </p>
-								<p><a href="#" class="btn btn-primary btn-lg">Proceed to User Profile</a></p>
+								<p><input type="submit" value="Guardar" class="btn btn-primary btn-lg"></p>
 							</div>
 						</div>
 						<!-- end step-4 -->
@@ -475,6 +485,17 @@
 		$(document).ready(function() {
 			FormWizardValidation.init();
 		});
+    </script>
+
+    <script>
+        function loadTema(){
+            var value = $("#eje").val();
+            $("#tema").load('C_intervencionpropuesta/temaQuery/'+value);
+        }
+        function loadObjetivo(){
+            var value = $("#tema").val();
+            $("#iIdObjetivo").load('C_intervencionpropuesta/objetivoQuery/'+value);
+        }
     </script>
                 </div>
 			</div>

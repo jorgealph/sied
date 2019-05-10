@@ -31,8 +31,8 @@ class C_intervencionpropuesta extends CI_Controller {
 			$datos = $this->menu();
 			$this->load->model('M_intervencionpropuesta');
 			$datos['intpro'] = $this->M_intervencionpropuesta->findAll();
+			$datos['eje'] = $this->M_intervencionpropuesta->ejeQuery();
 			$this->load->view('intervensionpropuesta/crud',$datos);
-
 		}else $this->index();
 	}
 	
@@ -46,6 +46,34 @@ class C_intervencionpropuesta extends CI_Controller {
 		$datos['modulo_inicial'] = $aux['modulo_inicial'];
 
 		return $datos;
+	}
+
+	public function temaQuery($id = null){
+		
+		$option = '<option value="">Seleccionar</option>';
+		if($id != null){
+			$this->load->model('M_intervencionpropuesta');
+			$tema = $this->M_intervencionpropuesta->temaQuery($id);
+		
+			foreach($tema as $r){
+				$option .= "<option value='$r->iIdPoliticaPublica'>$r->vPoliticaPublica</option>";
+			}
+		}
+		echo $option;
+	}
+
+	public function objetivoQuery($id = null){
+		$option = '<option value="">Seleccionar</option>';
+
+		if($id != null){
+			$this->load->model('M_intervencionpropuesta');
+			$tema = $this->M_intervencionpropuesta->objetivoQuery($id);
+			foreach($tema as $r){
+				$option .= "<option value='$r->iIdObjetivo'>$r->vObjetivo</option>";
+			}
+		}
+		echo $option;
+		
 	}
 	
 }
