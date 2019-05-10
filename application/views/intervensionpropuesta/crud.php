@@ -87,18 +87,13 @@
                     </div>
                     <div class="row" style="padding-bottom: 10px">
                         <div class="col-md-6">
-                            <label for="iIdEje" class="col-form-label text-md-left">Eje</label>
-                            <select name="iIdEje" id="iIdEje" class="form-control" data-parsley-min="1" data-parsley-required="true" data-parsley-group="step-1">
-                            <option value="">Seleccionar</option>
-                                <option value="1">2017</option>
-                            </select>
+                            <label for="vEje" class="col-form-label text-md-left">Eje</label>
+                            <input type="text" disabled id="vEje" class="form-control" data-parsley-required="true" data-parsley-group="step-1" value="<?php echo $organismo[0]->vEje; ?>">
                         </div>
                         <div class="col-md-6">
-                            <label for="iIdOrganismo" class="col-form-label text-md-left">Dependencia</label>
-                            <select name="iIdOrganismo" id="iIdOrganismo" class="form-control" data-parsley-min="1" data-parsley-required="true" data-parsley-group="step-1">
-                                <option value="">Seleccionar</option>
-                                <option value="1">2017</option>
-                            </select>
+                            <label for="vObjetivo" class="col-form-label text-md-left">Dependencia</label>
+                            <input type="text" disabled id="vObjetivo" class="form-control" data-parsley-required="true" data-parsley-group="step-1" value="<?php echo $organismo[0]->vOrganismo; ?>">
+                            <input type="hidden" name="iIdOrganismo" value="<?php echo $organismo[0]->iIdOrganismo ?>">
                         </div>
                     </div>
                     <div class="row" style="padding-bottom: 10px">
@@ -154,12 +149,15 @@
                         <div class="col-md-5">
                             <div class="row">
                                 <div class="col-md-3">
-                                    <label for="iTipoPP" class="col-form-label text-md-left">Tipo de PP</label>
+                                    <label for="iIdTipoPP" class="col-form-label text-md-left">Tipo de PP</label>
                                 </div>
                                 <div class="col-md-9">
-                                    <select name="iTipoPP" id="iTipoPP" class="form-control" data-parsley-min="0" data-parsley-required="true" data-parsley-group="step-1">
+                                    <select name="iIdTipoPP" id="iIdTipoPP" class="form-control" data-parsley-min="0" data-parsley-required="true" data-parsley-group="step-1">
                                         <option value="">Seleccionar</option>
-                                        <option value="1">Próximamente</option>
+                                        <?php foreach($tipoPP as $r){
+                                            echo "<option value='$r->iIdTipoPP'>$r->vTipoPP</option>";
+                                        }
+                                        ?>
                                     </select>
                                 </div>
                             </div>
@@ -440,10 +438,12 @@
                             <label for="" class="col-form-label text-md-left">Seleccione el tipo de evaluación que se le aplicó</label>
                         </div>
                         <div class="col-md-4">
-                            <select name="" id="" class="form-control" data-parsley-min="0" data-parsley-required="true" data-parsley-group="step-3">
-                            <option value="">Seleccionar</option>
-                                <option value="1">Sí</option>
-                                <option value="0">No</option>
+                            <select name="iIdTipoEvaluacion" id="" class="form-control" data-parsley-min="0" data-parsley-required="true" data-parsley-group="step-3">
+                                <option value="">Seleccionar</option>
+                                <?php foreach($tipoEvaluacion as $r){
+                                    echo("<option value='$r->iIdTipoEvaluacion'>$r->vTipoEvaluacion</option>");
+                                }
+                                ?>
                             </select>
                         </div>
                     </div>

@@ -27,6 +27,23 @@ class M_intervencionpropuesta extends CI_Model{
         return $query->result();
     }
 
+    public function tipoPPQuery(){
+        $this->db->select('iIdTipoPP, vTipoPP');
+        $this->db->from('tipopp');
+        $this->db->where('iActivo', 1);
+        $query = $this->db->get();
+        return $query->result();
+    }
+    
+
+    public function tipoEvaluacionQuery(){
+        $this->db->select('iIdTipoEvaluacion, vTipoEvaluacion');
+        $this->db->from('tipoevaluacion');
+        $this->db->where('iActivo', 1);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
     public function temaQuery($id){
         $this->db->select('iIdPoliticaPublica, vPoliticaPublica');
         $this->db->from('politicapublica');
@@ -41,6 +58,15 @@ class M_intervencionpropuesta extends CI_Model{
         $this->db->from('objetivo');
         $this->db->where('iActivo', 1);
         $this->db->where('iIdPoliticaPublica',$id);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function GetOrganismo(){
+        $this->db->select('u.iIdOrganismo, o.vOrganismo, e.vEje');
+        $this->db->from('usuario as u');
+        $this->db->join('Organismo o', 'u.iIdOrganismo = o.iIdOrganismo', 'INNER');
+        $this->db->join('Eje e', 'e.iIdEje = o.iIdEje', 'INNER');
         $query = $this->db->get();
         return $query->result();
     }

@@ -32,6 +32,9 @@ class C_intervencionpropuesta extends CI_Controller {
 			$this->load->model('M_intervencionpropuesta');
 			$datos['intpro'] = $this->M_intervencionpropuesta->findAll();
 			$datos['eje'] = $this->M_intervencionpropuesta->ejeQuery();
+			$datos['tipoPP'] = $this->M_intervencionpropuesta->tipoPPQuery();
+			$datos['tipoEvaluacion'] = $this->M_intervencionpropuesta->tipoEvaluacionQuery();
+			$datos['organismo'] = $this->M_intervencionpropuesta->GetOrganismo();
 			$this->load->view('intervensionpropuesta/crud',$datos);
 		}else $this->index();
 	}
@@ -73,7 +76,13 @@ class C_intervencionpropuesta extends CI_Controller {
 			}
 		}
 		echo $option;
-		
 	}
+
+	public function test(){
+		$this->load->model('M_intervencionpropuesta');
+		$tema = $this->M_intervencionpropuesta->GetOrganismo();
+		print_r($tema);
+	}
+
 	
 }
