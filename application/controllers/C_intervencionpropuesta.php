@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class C_intervencionpropuesta extends CI_Controller {
+class C_IntervencionPropuesta extends CI_Controller {
 	public function __construct()
     {
         parent::__construct();
@@ -12,14 +12,15 @@ class C_intervencionpropuesta extends CI_Controller {
         $this->load->model('M_seguridad','ms');
     }
 
-    function mostrar_vista()
+    function mostrar_vista($msg = null)
 	{
 		if(isset($_SESSION[PREFIJO.'_idrol']) && !empty($_SESSION[PREFIJO.'_idrol']))
 		{
 			$datos = $this->menu();
-			$this->load->model('M_intervencionpropuesta');
-			$datos['intpro'] = $this->M_intervencionpropuesta->findAll();
-			$this->load->view('intervensionpropuesta/lista',$datos);
+			$this->load->model('M_IntervencionPropuesta');
+			$datos['intpro'] = $this->M_IntervencionPropuesta->findAll();
+			$datos['msg'] = $msg;
+			$this->load->view('IntervencionPropuesta/lista',$datos);
 
 		}else $this->index();
 	}
@@ -29,13 +30,13 @@ class C_intervencionpropuesta extends CI_Controller {
 		if(isset($_SESSION[PREFIJO.'_idrol']) && !empty($_SESSION[PREFIJO.'_idrol']))
 		{
 			$datos = $this->menu();
-			$this->load->model('M_intervencionpropuesta');
-			$datos['intpro'] = $this->M_intervencionpropuesta->findAll();
-			$datos['eje'] = $this->M_intervencionpropuesta->ejeQuery();
-			$datos['tipoPP'] = $this->M_intervencionpropuesta->tipoPPQuery();
-			$datos['tipoEvaluacion'] = $this->M_intervencionpropuesta->tipoEvaluacionQuery();
-			$datos['organismo'] = $this->M_intervencionpropuesta->GetOrganismo()[0];
-			$this->load->view('intervensionpropuesta/crud',$datos);
+			$this->load->model('M_IntervencionPropuesta');
+			$datos['intpro'] = $this->M_IntervencionPropuesta->findAll();
+			$datos['eje'] = $this->M_IntervencionPropuesta->ejeQuery();
+			$datos['tipoPP'] = $this->M_IntervencionPropuesta->tipoPPQuery();
+			$datos['tipoEvaluacion'] = $this->M_IntervencionPropuesta->tipoEvaluacionQuery();
+			$datos['organismo'] = $this->M_IntervencionPropuesta->GetOrganismo()[0];
+			$this->load->view('IntervencionPropuesta/crud',$datos);
 		}else $this->index();
 	}
 	
@@ -55,8 +56,8 @@ class C_intervencionpropuesta extends CI_Controller {
 		
 		$option = '<option value="">Seleccionar</option>';
 		if($id != null){
-			$this->load->model('M_intervencionpropuesta');
-			$tema = $this->M_intervencionpropuesta->temaQuery($id);
+			$this->load->model('M_IntervencionPropuesta');
+			$tema = $this->M_IntervencionPropuesta->temaQuery($id);
 		
 			foreach($tema as $r){
 				$option .= "<option value='$r->iIdPoliticaPublica'>$r->vPoliticaPublica</option>";
@@ -69,8 +70,8 @@ class C_intervencionpropuesta extends CI_Controller {
 		$option = '<option value="">Seleccionar</option>';
 
 		if($id != null){
-			$this->load->model('M_intervencionpropuesta');
-			$tema = $this->M_intervencionpropuesta->objetivoQuery($id);
+			$this->load->model('M_IntervencionPropuesta');
+			$tema = $this->M_IntervencionPropuesta->objetivoQuery($id);
 			foreach($tema as $r){
 				$option .= "<option value='$r->iIdObjetivo'>$r->vObjetivo</option>";
 			}
@@ -79,8 +80,8 @@ class C_intervencionpropuesta extends CI_Controller {
 	}
 
 	public function test(){
-		$this->load->model('M_intervencionpropuesta');
-		$tema = $this->M_intervencionpropuesta->GetOrganismo();
+		$this->load->model('M_IntervencionPropuesta');
+		$tema = $this->M_IntervencionPropuesta->GetOrganismo();
 		print_r($tema);
 	}
 
@@ -130,13 +131,13 @@ class C_intervencionpropuesta extends CI_Controller {
 		$data['dFechaCaptura'] = date('Y-m-d H:i:s');
 		$data['iActivo'] = 1;
 		
-		$this->load->model('M_intervencionpropuesta');
-		$insert = $this->M_intervencionpropuesta->save($data);
-
-
-
+		$this->load->model('M_IntervencionPropuesta');
+		$insert = $this->M_IntervencionPropuesta->save($data);
 		//Falta mensaje de confirmación
-		echo $insert;
+		
+		if(is_numeric($insert)){
+			$this->mostrar_vista('Registro exitoso');
+		}
 		
 	}
 

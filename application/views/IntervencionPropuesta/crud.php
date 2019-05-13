@@ -26,7 +26,7 @@
 	<link href="<?=base_url();?>admin/assets/plugins/jquery-smart-wizard/src/css/smart_wizard.css" rel="stylesheet">
 	
     <!-- begin wizard-form -->
-    <form action="C_intervencionpropuesta/dataEntry" method="POST" name="form-wizard" class="form-control-with-bg">
+    <form action="C_IntervencionPropuesta/dataEntry" method="POST" name="form-wizard" class="form-control-with-bg">
 				<!-- begin wizard -->
 				<div id="wizard">
 					<!-- begin wizard-step -->
