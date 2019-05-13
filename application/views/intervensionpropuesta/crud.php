@@ -26,7 +26,7 @@
 	<link href="<?=base_url();?>admin/assets/plugins/jquery-smart-wizard/src/css/smart_wizard.css" rel="stylesheet">
 	
     <!-- begin wizard-form -->
-    <form action="/" method="POST" name="form-wizard" class="form-control-with-bg">
+    <form action="C_intervencionpropuesta/dataEntry" method="POST" name="form-wizard" class="form-control-with-bg">
 				<!-- begin wizard -->
 				<div id="wizard">
 					<!-- begin wizard-step -->
@@ -79,21 +79,18 @@
 					<div class="row" style="padding-bottom: 10px">
                         <div class="col-md-6">
                             <label for="" class="col-form-label text-md-left">Año del PAE</label>
-                            <select name="" id="" class="form-control" data-parsley-min="1" data-parsley-required="true" data-parsley-group="step-1">
-                                <option value="">Seleccionar</option>
-                                <option value="1">2017</option>
-                            </select>
+                            <input type="text" name="dFechaCaptura" id="dFechaCaptura" class="date-time form-control" value="<?php echo date("Y-m-d",  time()) ?>" disabled>
                         </div>
                     </div>
                     <div class="row" style="padding-bottom: 10px">
                         <div class="col-md-6">
                             <label for="vEje" class="col-form-label text-md-left">Eje</label>
-                            <input type="text" disabled id="vEje" class="form-control" data-parsley-required="true" data-parsley-group="step-1" value="<?php echo $organismo[0]->vEje; ?>">
+                            <input type="text" disabled id="vEje" class="form-control" data-parsley-required="true" data-parsley-group="step-1" value="<?php echo $organismo->vEje; ?>">
                         </div>
                         <div class="col-md-6">
                             <label for="vObjetivo" class="col-form-label text-md-left">Dependencia</label>
-                            <input type="text" disabled id="vObjetivo" class="form-control" data-parsley-required="true" data-parsley-group="step-1" value="<?php echo $organismo[0]->vOrganismo; ?>">
-                            <input type="hidden" name="iIdOrganismo" value="<?php echo $organismo[0]->iIdOrganismo ?>">
+                            <input type="text" disabled id="vObjetivo" class="form-control" data-parsley-required="true" data-parsley-group="step-1" value="<?php echo $organismo->vOrganismo; ?>">
+                            <input type="hidden" name="iIdOrganismo" value="<?php echo $organismo->iIdOrganismo ?>">
                         </div>
                     </div>
                     <div class="row" style="padding-bottom: 10px">
@@ -263,10 +260,10 @@
                             <input type="text" name="nPresupuestoEjercido" id="nPresupuestoEjercido" class="form-control" data-parsley-type="number" data-parsley-required="true" placeholder="0.00" data-parsley-group="step-2">
                         </div>
                         <div class="col-md-2">
-                            <label for="nPresupuestoEjercidoAprobado" class="col-form-label text-md-left">Presupuesto ejercido en 2019</label>
+                            <label for="nPresupuestoAprobado" class="col-form-label text-md-left">Presupuesto ejercido en 2019</label>
                         </div>
                         <div class="col-md-2">
-                            <input type="numeric" name="nPresupuestoEjercidoAprobado" id="nPresupuestoEjercidoAprobado" class="form-control" data-parsley-type="number" data-parsley-required="true" placeholder="0.00" data-parsley-group="step-2">
+                            <input type="numeric" name="nPresupuestoAprobado" id="nPresupuestoAprobado" class="form-control" data-parsley-type="number" data-parsley-required="true" placeholder="0.00" data-parsley-group="step-2">
                         </div>
                     </div>
                     <div class="row" style="padding-bottom: 10px">
@@ -341,7 +338,7 @@
                         <div class="col-md-4">
                             <div class="checkbox checkbox-css checkbox-inline">
                                 <input type="checkbox" id="iInformeEstudio" name="iInformeEstudio"  />
-                                <label for="inlineCssCheckbox1">Informes o estudios de los resultados de la intervención</label>
+                                <label for="iInformeEstudio">Informes o estudios de los resultados de la intervención</label>
                             </div>
                         </div>
                     </div>
@@ -453,7 +450,7 @@
                             <label for="vComentario" class="col-form-label text-md-center">Comentarios adicionales</label>
                         </div>
                         <div class="col-md-8">
-                            <textarea name="vComentarios" id="vComentarios" rows="5" class="form-control"></textarea>
+                            <textarea name="vComentario" id="vComentario" rows="5" class="form-control"></textarea>
                         </div>
                     </div>
                     <!-- Termina parte 3 -->
