@@ -61,3 +61,7 @@ $route['vota'] = 'Sitio/propuestas';
 
 $route['acceder'] = 'C_seguridad/iniciar_sesion';
 $route['salir'] = 'C_seguridad/cerrar_sesion';
+
+$route['guardar'] = 'C_usuario/guardar';
+
+$route['ver'] = 'C_usuario/ver';
