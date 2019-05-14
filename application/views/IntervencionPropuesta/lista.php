@@ -3,14 +3,12 @@
 	<link rel="stylesheet" href="<?=base_url()?>admin/assets/plugins/DataTables/extensions/Responsive/css/responsive.bootstrap.min.css">
 
 			<!-- begin breadcrumb -->
-			<ol class="breadcrumb pull-right">
-				<li class="breadcrumb-item"><a href="javascript:;">Home</a></li>
-				<li class="breadcrumb-item"><a href="javascript:;">Page Options</a></li>
-				<li class="breadcrumb-item active">Blank Page</li>
-			</ol>
+			<a onclick="cargar('<?=base_url();?>/C_intervencionpropuesta/mostrar_crud','#contenido');" class="btn btn-default pull-right">
+                <li class="fas fa-lg fa-fw m-r-10 fa-plus-circle"></li><span>Agregar propuesta</span>
+            </a>
 			<!-- end breadcrumb -->
 			<!-- begin page-header -->
-			<h1 class="page-header">Blank Page <small>header small text goes here...</small></h1>
+			<h1 class="page-header">Propuestas de intervenciones <!--<small>header small text goes here...</small>--></h1>
 			<!-- end page-header -->
 			
 			<!-- begin panel -->
@@ -20,12 +18,10 @@
 						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
 						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-redo"></i></a>
 						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
-						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
 					</div>
-					<h4 class="panel-title">Panel Title here</h4>
+					<h4 class="panel-title">Lista de propuestas de intervenciones</h4>
 				</div>
 				<div class="panel-body">
-					<a href="#" class="btn" onclick="cargar('<?=base_url();?>/C_intervencionpropuesta/mostrar_crud','#contenido');"> Agregar propuesta </a>
 					<table id="data-table-default" class="table table-striped table-bordered">
                         <thead>
 							<tr>
@@ -37,6 +33,7 @@
 								<th>Tipo de intervención</th>
 								<th>Acción</th>
 								<th></th>
+								<!--<th></th>-->
 							</tr>
 						</thead>
 						<tbody>
@@ -54,6 +51,9 @@
 								}else{
 									echo 'Programa de bienes o servicio';
 								} ?></td>
+								<!--<td>
+									<button  class="btn btn-success"><i class="fas fa-lg fa-fw m-r-10 fa-check-circle"></i><span>Aprobar</span></button>
+								</td>-->
 								<td>
 									<button onclick="cargar('<?=base_url();?>C_IntervencionPropuesta/edit/<?php echo $r->iIdIntervencionPropuesta; ?>', '#contenido');" class="btn btn-success"><i class="fas fa-lg fa-fw m-r-10 fa-edit"></i><span>Editar</span></button>
 								</td>

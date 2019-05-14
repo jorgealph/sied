@@ -16,7 +16,7 @@
 						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-redo"></i></a>
 						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
 					</div>
-					<h4 class="panel-title">Captura de propuestas de intervenciones</h4>
+					<h4 class="panel-title">Edición de propuestas de intervenciones</h4>
 				</div>
 				<div class="panel-body">
                 
