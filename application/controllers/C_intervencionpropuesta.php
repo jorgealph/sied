@@ -31,7 +31,6 @@ class C_IntervencionPropuesta extends CI_Controller {
 		{
 			$datos = $this->menu();
 			$this->load->model('M_IntervencionPropuesta');
-			$datos['intpro'] = $this->M_IntervencionPropuesta->findAll();
 			$datos['eje'] = $this->M_IntervencionPropuesta->ejeQuery();
 			$datos['tipoPP'] = $this->M_IntervencionPropuesta->tipoPPQuery();
 			$datos['tipoEvaluacion'] = $this->M_IntervencionPropuesta->tipoEvaluacionQuery();
@@ -52,7 +51,7 @@ class C_IntervencionPropuesta extends CI_Controller {
 		return $datos;
 	}
 
-	public function temaQuery($id = null){
+	public function temaQuery($id = null, $find = ''){
 		
 		$option = '<option value="">Seleccionar</option>';
 		if($id != null){
@@ -60,13 +59,20 @@ class C_IntervencionPropuesta extends CI_Controller {
 			$tema = $this->M_IntervencionPropuesta->temaQuery($id);
 		
 			foreach($tema as $r){
+				/*$option .= "<option value='$r->iIdPoliticaPublica'";
+				$option .= ($r->iIdPoliticaPublica == $find) ? 'selected' : '';
+				$option .= ">$r->vPoliticaPublica</option>";*/
 				$option .= "<option value='$r->iIdPoliticaPublica'>$r->vPoliticaPublica</option>";
+				if($find == $r->iIdPoliticaPublica){
+					$option .= "<script>$('#tema').val($find).change(); loadTema();</script>";
+				}
 			}
+			
 		}
 		echo $option;
 	}
 
-	public function objetivoQuery($id = null){
+	public function objetivoQuery($id = null, $objetivo = ''){
 		$option = '<option value="">Seleccionar</option>';
 
 		if($id != null){
@@ -74,20 +80,40 @@ class C_IntervencionPropuesta extends CI_Controller {
 			$tema = $this->M_IntervencionPropuesta->objetivoQuery($id);
 			foreach($tema as $r){
 				$option .= "<option value='$r->iIdObjetivo'>$r->vObjetivo</option>";
+				if($objetivo == $r->iIdObjetivo){
+					$option .= "<script>$('#iIdObjetivo').val($objetivo).change();</script>";
+				}
 			}
+			
 		}
 		echo $option;
 	}
 
-	public function test(){
+	public function test($id){
 		$this->load->model('M_IntervencionPropuesta');
-		$tema = $this->M_IntervencionPropuesta->GetOrganismo();
+		$tema = $this->M_IntervencionPropuesta->temaQuery($id);
 		print_r($tema);
 	}
 
-	public function dataEntry(){
+
+	public function edit($id){
+		if(isset($_SESSION[PREFIJO.'_idrol']) && !empty($_SESSION[PREFIJO.'_idrol']))
+		{
+			$datos = $this->menu();
+			$this->load->model('M_IntervencionPropuesta');
+			$datos['record'] = $this->M_IntervencionPropuesta->findRecord($id);
+			$datos['eje'] = $this->M_IntervencionPropuesta->ejeQuery();
+			$datos['tipoPP'] = $this->M_IntervencionPropuesta->tipoPPQuery();
+			$datos['tipoEvaluacion'] = $this->M_IntervencionPropuesta->tipoEvaluacionQuery();
+			$datos['organismo'] = $this->M_IntervencionPropuesta->GetOrganismoEdit($datos['record']->iIdOrganismo)[0];
+			$datos['select'] = $this->M_IntervencionPropuesta->GetEje($datos['record']->iIdObjetivo);
+			$this->load->view('IntervencionPropuesta/edit', $datos);
+		}else $this->index();
 		
-		$data['iIdIntervencionPropuesta'] = $this->input->post("iIdIntervencionPropuesta");
+	}
+
+	public function dataEntry(){	
+		
 		$data['vIntervencion'] = $this->input->post("vIntervencion");
 		$data['iAnioCreacion'] = $this->input->post("iAnioCreacion");
 		$data['iAnioEvaluacion'] = $this->input->post("iAnioEvaluacion");
@@ -132,18 +158,23 @@ class C_IntervencionPropuesta extends CI_Controller {
 		$data['iActivo'] = 1;
 		
 		$this->load->model('M_IntervencionPropuesta');
-		$insert = $this->M_IntervencionPropuesta->save($data);
-		//Falta mensaje de confirmación
-		
-		if(is_numeric($insert)){
-			$this->mostrar_vista('Registro exitoso');
+
+		if(isset($_REQUEST['iIdIntervencionPropuesta'])){
+			$data['iIdIntervencionPropuesta'] = $_REQUEST['iIdIntervencionPropuesta'];
+			$insert = $this->M_IntervencionPropuesta->update($data);
+		}else{
+			$insert = $this->M_IntervencionPropuesta->save($data);
 		}
 		
+		
+		//Falta mensaje de confirmación
+		echo $insert;
+
 	}
 
-	function validate(){
-		$v = 1;
-		echo (1 == $v) ? 1 : 0;
+	public function delete($id){
+		$this->load->model('M_IntervencionPropuesta');
+		echo $delete = $this->M_IntervencionPropuesta->delete($id);
 	}
 
 }

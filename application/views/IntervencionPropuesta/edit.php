@@ -22,7 +22,7 @@
                 
 	<link href="<?=base_url();?>admin/assets/plugins/parsley/src/parsley.css" rel="stylesheet">
 	<link href="<?=base_url();?>admin/assets/plugins/jquery-smart-wizard/src/css/smart_wizard.css" rel="stylesheet">
-	
+	<!--action="C_IntervencionPropuesta/dataEntry" method="POST"-->
     <!-- begin wizard-form -->
     <form id="form" name="form-wizard" class="form-control-with-bg">
 				<!-- begin wizard -->
@@ -34,7 +34,7 @@
 								<span class="number">1</span> 
 								<span class="info text-ellipsis">
 									Pestaña 1
-									<small class="text-ellipsis">Name, Address, IC No and DOB</small>
+									<!--<small class="text-ellipsis">Name, Address, IC No and DOB</small>-->
 								</span>
 							</a>
 						</li>
@@ -43,7 +43,7 @@
 								<span class="number">2</span> 
 								<span class="info text-ellipsis">
 									Pestaña 2
-									<small class="text-ellipsis">Email and phone no. is required</small>
+									<!--<small class="text-ellipsis">Email and phone no. is required</small>-->
 								</span>
 							</a>
 						</li>
@@ -52,7 +52,7 @@
 								<span class="number">3</span>
 								<span class="info text-ellipsis">
 									Pestaña 3
-									<small class="text-ellipsis">Enter your username and password</small>
+									<!--<small class="text-ellipsis">Enter your username and password</small>-->
 								</span>
 							</a>
 						</li>
@@ -61,7 +61,7 @@
 								<span class="number">4</span> 
 								<span class="info text-ellipsis">
 									Finalizar
-									<small class="text-ellipsis">Terminar registro</small>
+									<!--<small class="text-ellipsis">Terminar registro</small>-->
 								</span>
 							</a>
 						</li>
@@ -77,7 +77,8 @@
 					<div class="row" style="padding-bottom: 10px">
                         <div class="col-md-6">
                             <label for="" class="col-form-label text-md-left">Año del PAE</label>
-                            <input type="text" name="dFechaCaptura" id="dFechaCaptura" class="date-time form-control" value="<?php echo date("Y-m-d",  time()) ?>" disabled>
+                            <input type="text" name="dFechaCaptura" id="dFechaCaptura" class="date-time form-control" value="<?php echo date('d-m-Y', strtotime($record->dFechaCaptura)) ?>" disabled>
+                            <input type="hidden" name="iIdIntervencionPropuesta" value="<?php echo $record->iIdIntervencionPropuesta; ?>">
                         </div>
                     </div>
                     <div class="row" style="padding-bottom: 10px">
@@ -96,7 +97,7 @@
                             <label for="vIntervencion" class="col-form-label text-md-left">Nombre de la intervención pública</label>
                         </div>
                         <div class="col-md-10">
-                            <input type="text" name="vIntervencion" maxlength="250" id="vIntervencion" class="form-control" required data-parsley-group="step-1" data-parsley-required="true" data-parsley-maxlength="250">
+                            <input type="text" name="vIntervencion" maxlength="250" id="vIntervencion" value="<?php echo $record->vIntervencion ?>" class="form-control" required data-parsley-group="step-1" data-parsley-required="true" data-parsley-maxlength="250">
                         </div>
                     </div>
                     <div class="row" style="padding-bottom: 10px">
@@ -104,13 +105,13 @@
                             <label for="iAnioCreacion" class="col-form-label text-md-left"> Año de creación </label>
                         </div>
                         <div class="col-md-4">
-                            <input type="number" name="iAnioCreacion" id="iAnioCreacion" class="form-control" min="2000" max="2025" maxlength="4" data-parsley-group="step-1" data-parsley-required="true" data-parsley-type="number" data-parsley-min="2000" data-parsley-max="2025">
+                            <input type="number" name="iAnioCreacion" value="<?php echo $record->iAnioCreacion ?>" id="iAnioCreacion" class="form-control" min="2000" max="2025" maxlength="4" data-parsley-group="step-1" data-parsley-required="true" data-parsley-type="number" data-parsley-min="2000" data-parsley-max="2025">
                         </div>
                         <div class="col-md-2" >
                             <label for="iAnioEvaluacion" class="col-form-label text-md-left"> Año de evaluación </label>
                         </div>
                         <div class="col-md-4" style="padding-left:32px">
-                            <input type="number" name="iAnioEvaluacion" id="iAnioEvaluacion" class="form-control" min="2000" max="2025" maxlength="4" minlength="4" data-parsley-group="step-1" data-parsley-required="true" data-parsley-type="number" data-parsley-min="2000" data-parsley-max="2025" >
+                            <input type="number" name="iAnioEvaluacion" value="<?php echo $record->iAnioEvaluacion ?>" id="iAnioEvaluacion" class="form-control" min="2000" max="2025" maxlength="4" minlength="4" data-parsley-group="step-1" data-parsley-required="true" data-parsley-type="number" data-parsley-min="2000" data-parsley-max="2025" >
                         </div>
                     </div>
                     <div class="row" style="padding-bottom: 10px">
@@ -122,9 +123,9 @@
                                 <div class="col-md-8">
                                     <select name="iTipo" id="iTipo" class="form-control" data-parsley-min="1" data-parsley-required="true" data-parsley-group="step-1">
                                         <option value="">Seleccionar</option>
-                                        <option value="1">Programa presupuestario</option>
-                                        <option value="2">Fondo</option>
-                                        <option value="3">Programa de bienes o servicio</option>
+                                        <option value="1" <?php echo ($record->iTipo == 1) ? 'selected' : ''; ?>>Programa presupuestario</option>
+                                        <option value="2" <?php echo ($record->iTipo == 2) ? 'selected' : ''; ?>>Fondo</option>
+                                        <option value="3" <?php echo ($record->iTipo == 3) ? 'selected' : ''; ?>>Programa de bienes o servicio</option>
                                     </select>
                                 </div>
                             </div>
@@ -135,8 +136,8 @@
                                 <div class="col-md-4">
                                     <select name="iEntregaBienServicio" id="iEntregaBienServicio" class="form-control" data-parsley-min="0" data-parsley-required="true" data-parsley-group="step-1">
                                         <option value="">Seleccionar</option>
-                                        <option value="1">Sí</option>
-                                        <option value="0">No</option>
+                                        <option value="1" <?php echo ($record->iEntregaBienServicio == 1) ? 'selected' : ''; ?>>Sí</option>
+                                        <option value="0" <?php echo ($record->iEntregaBienServicio == 0) ? 'selected' : ''; ?>>No</option>
                                     </select>
                                 </div>
                             </div>
@@ -150,7 +151,9 @@
                                     <select name="iIdTipoPP" id="iIdTipoPP" class="form-control" data-parsley-min="0" data-parsley-required="true" data-parsley-group="step-1">
                                         <option value="">Seleccionar</option>
                                         <?php foreach($tipoPP as $r){
-                                            echo "<option value='$r->iIdTipoPP'>$r->vTipoPP</option>";
+                                            echo "<option value='$r->iIdTipoPP'";
+                                            echo ($record->iIdTipoPP == $r->iIdTipoPP) ? 'selected' : '';
+                                            echo ">$r->vTipoPP</option>";
                                         }
                                         ?>
                                     </select>
@@ -163,7 +166,7 @@
                             <label for="vAreaResponsable" class="col-form-label text-md-left">Área responsable</label>
                         </div>
                         <div class="col-md-10">
-                            <input type="text" name="vAreaResponsable" id="vAreaResponsable" class="form-control" required data-parsley-group="step-1" data-parsley-required="true" data-parsley-maxlength="200"maxlength="200">
+                            <input type="text" name="vAreaResponsable" value="<?php echo $record->vAreaResponsable ?>" id="vAreaResponsable" class="form-control" required data-parsley-group="step-1" data-parsley-required="true" data-parsley-maxlength="200"maxlength="200">
                         </div>
                     </div>
                     <div class="row" style="padding-bottom: 10px">
@@ -171,7 +174,7 @@
                             <label for="vObjetivo" class="col-form-label text-md-left">Próposito / objetivo de la intervención pública</label>
                         </div>
                         <div class="col-md-10">
-                            <input type="text" name="vObjetivo" id="vObjetivo" class="form-control" required data-parsley-group="step-1" data-parsley-required="true" data-parsley-maxlength="200"maxlength="200">
+                            <input type="text" name="vObjetivo" value="<?php echo $record->vObjetivo ?>" id="vObjetivo" class="form-control" required data-parsley-group="step-1" data-parsley-required="true" data-parsley-maxlength="200"maxlength="200">
                         </div>
                     </div>
                     <div class="row" style="padding-bottom: 10px">
@@ -179,7 +182,7 @@
                             <label for="vPoblacionObjetivo" class="col-form-label text-md-left">Población objetiva</label>
                         </div>
                         <div class="col-md-10">
-                            <input type="text" name="vPoblacionObjetivo" id="vPoblacionObjetivo" class="form-control" required data-parsley-group="step-1" data-parsley-required="true" data-parsley-maxlength="200"maxlength="200">
+                            <input type="text" name="vPoblacionObjetivo" id="vPoblacionObjetivo" value="<?php echo $record->vPoblacionObjetivo ?>" class="form-control" required data-parsley-group="step-1" data-parsley-required="true" data-parsley-maxlength="200"maxlength="200">
                         </div>
                     </div>
                     <!-- Termina parte 1 -->
@@ -249,19 +252,19 @@
                             <label for="nPresupuestoEjercidoAnterior" class="col-form-label text-md-left">Presupuesto ejercido en 2017</label>
                         </div>
                         <div class="col-md-2">
-                            <input type="text" name="nPresupuestoEjercidoAnterior" id="nPresupuestoEjercidoAnterior" class="form-control" data-parsley-type="number" placeholder="0.00" data-parsley-required="true" data-parsley-group="step-2">
+                            <input type="text" name="nPresupuestoEjercidoAnterior" value="<?php echo $record->nPresupuestoEjercidoAnterior ?>" id="nPresupuestoEjercidoAnterior" class="form-control" data-parsley-type="number" placeholder="0.00" data-parsley-required="true" data-parsley-group="step-2">
                         </div>
                         <div class="col-md-2">
                             <label for="nPresupuestoEjercido" class="col-form-label text-md-left">Presupuesto ejercido en 2018</label>
                         </div>
                         <div class="col-md-2">
-                            <input type="text" name="nPresupuestoEjercido" id="nPresupuestoEjercido" class="form-control" data-parsley-type="number" data-parsley-required="true" placeholder="0.00" data-parsley-group="step-2">
+                            <input type="text" name="nPresupuestoEjercido" value="<?php echo $record->nPresupuestoEjercido ?>" id="nPresupuestoEjercido" class="form-control" data-parsley-type="number" data-parsley-required="true" placeholder="0.00" data-parsley-group="step-2">
                         </div>
                         <div class="col-md-2">
                             <label for="nPresupuestoAprobado" class="col-form-label text-md-left">Presupuesto ejercido en 2019</label>
                         </div>
                         <div class="col-md-2">
-                            <input type="numeric" name="nPresupuestoAprobado" id="nPresupuestoAprobado" class="form-control" data-parsley-type="number" data-parsley-required="true" placeholder="0.00" data-parsley-group="step-2">
+                            <input type="numeric" name="nPresupuestoAprobado" id="nPresupuestoAprobado" class="form-control" data-parsley-type="number" value="<?php echo $record->nPresupuestoAprobado ?>" data-parsley-required="true" placeholder="0.00" data-parsley-group="step-2">
                         </div>
                     </div>
                     <div class="row" style="padding-bottom: 10px">
@@ -271,8 +274,8 @@
                         <div class="col-md-3">
                             <select name="iEjerceRecursoRamo33" id="iEjerceRecursoRamo33" class="form-control" data-parsley-min="0" data-parsley-required="true" data-parsley-group="step-2">
                                 <option value="">Seleccionar</option>
-                                <option value="1">Sí</option>
-                                <option value="0">No</option>
+                                <option value="1" <?php echo ($record->iEjerceRecursoRamo33 == 1) ? 'selected' : ''; ?>>Sí</option>
+                                <option value="0" <?php echo ($record->iEjerceRecursoRamo33 == 0) ? 'selected' : ''; ?>>No</option>
                              </select>
                         </div>
                         <div class="col-md-3">
@@ -281,8 +284,8 @@
                         <div class="col-md-3">
                             <select name="iEjerceRecursoRamo23" id="iEjerceRecursoRamo23" class="form-control" data-parsley-min="0" data-parsley-required="true" data-parsley-group="step-2">
                                 <option value="">Seleccionar</option>
-                                <option value="1">Sí</option>
-                                <option value="0">No</option>
+                                <option value="1" <?php echo ($record->iEjerceRecursoRamo23 == 1) ? 'selected' : ''; ?>>Sí</option>
+                                <option value="0" <?php echo ($record->iEjerceRecursoRamo23 == 0) ? 'selected' : ''; ?>>No</option>
                             </select>
                         </div>
                     </div>
@@ -293,15 +296,15 @@
                         <div class="col-md-3">
                             <select name="iEjerceRecursoConvenioSubsidio" id="iEjerceRecursoRamo23" class="form-control" data-parsley-min="0" data-parsley-required="true" data-parsley-group="step-2">
                                 <option value="">Seleccionar</option>
-                                <option value="1">Sí</option>
-                                <option value="0">No</option>
+                                <option value="1" <?php echo ($record->iEjerceRecursoConvenioSubsidio == 1) ? 'selected' : ''; ?>>Sí</option>
+                                <option value="0" <?php echo ($record->iEjerceRecursoConvenioSubsidio == 0) ? 'selected' : ''; ?>>No</option>
                             </select>
                         </div>
                         <div class="col-md-2">
                             <label for="vEspecificar" class="col-form-label text-md-left">Especificar</label>
                         </div>
                         <div class="col-md-3">
-                            <textarea name="vEspecificar" id="vEspecificar" class="form-control" rows="2" data-parsley-group="step-2" data-parsley-maxlength="200" maxlength="200"></textarea>
+                            <textarea name="vEspecificar"  id="vEspecificar" class="form-control" rows="2" data-parsley-group="step-2" data-parsley-maxlength="200" maxlength="200"><?php echo $record->vEspecificar ?></textarea>
                         </div>
                     </div>
                     <!-- Fin de Alineación con el PED -->
@@ -321,21 +324,21 @@
                         <!-- inline -->
                         <div class="col-md-4">
                             <div class="checkbox checkbox-css checkbox-inline">
-                                <input type="checkbox" id="iDiagnostico" name="iDiagnostico"  />
+                                <input type="checkbox" id="iDiagnostico" name="iDiagnostico" <?php echo($record->iDiagnostico == 1) ? 'checked' : ''; ?> />
                                 <label for="iDiagnostico">Diagnóstico basado en el análisis del problema</label>
                             </div>
                         </div>
                         
                         <div class="col-md-4">
                             <div class="checkbox checkbox-css checkbox-inline">
-                                <input type="checkbox" id="iIdentificacion" name="iIdentificacion"  />
+                                <input type="checkbox" id="iIdentificacion" name="iIdentificacion" <?php echo($record->iIdentificacion == 1) ? 'checked' : ''; ?> />
                                 <label for="iIdentificacion">Identificación y cuantificación de la población objetiva</label>
                             </div>
                         </div>
                         
                         <div class="col-md-4">
                             <div class="checkbox checkbox-css checkbox-inline">
-                                <input type="checkbox" id="iInformeEstudio" name="iInformeEstudio"  />
+                                <input type="checkbox" id="iInformeEstudio" name="iInformeEstudio" <?php echo($record->iInformeEstudio == 1) ? 'checked' : ''; ?>  />
                                 <label for="iInformeEstudio">Informes o estudios de los resultados de la intervención</label>
                             </div>
                         </div>
@@ -345,21 +348,21 @@
                         <!-- inline -->
                         <div class="col-md-4">
                             <div class="checkbox checkbox-css checkbox-inline">
-                                <input type="checkbox" id="iArbolProblemas" name="iArbolProblemas" />
+                                <input type="checkbox" id="iArbolProblemas" name="iArbolProblemas" <?php echo($record->iArbolProblemas == 1) ? 'checked' : ''; ?> />
                                 <label for="iArbolProblemas">Árbol de problemas</label>
                             </div>
                         </div>
                         
                         <div class="col-md-4">
                             <div class="checkbox checkbox-css checkbox-inline">
-                                <input type="checkbox" id="iCalculoCobertura" name="iCalculoCobertura"  />
+                                <input type="checkbox" id="iCalculoCobertura" name="iCalculoCobertura" <?php echo($record->iCalculoCobertura == 1) ? 'checked' : ''; ?> />
                                 <label for="iCalculoCobertura">Cálculo de la cobertura</label>
                             </div>
                         </div>
                         
                         <div class="col-md-4">
                             <div class="checkbox checkbox-css checkbox-inline">
-                                <input type="checkbox" id="iManualProceso" name="iManualProceso"  />
+                                <input type="checkbox" id="iManualProceso" name="iManualProceso" <?php echo($record->iManualProceso == 1) ? 'checked' : ''; ?> />
                                 <label for="iManualProceso">Manual de procesos</label>
                             </div>
                         </div>
@@ -370,21 +373,21 @@
                         <!-- inline -->
                         <div class="col-md-4">
                             <div class="checkbox checkbox-css checkbox-inline">
-                                <input type="checkbox" id="iArbolObjetivos" name="iArbolObjetivos" />
+                                <input type="checkbox" id="iArbolObjetivos" name="iArbolObjetivos" <?php echo($record->iArbolObjetivos == 1) ? 'checked' : ''; ?> />
                                 <label for="iArbolObjetivos">Árbol de objetivos</label>
                             </div>
                         </div>
                         
                         <div class="col-md-4">
                             <div class="checkbox checkbox-css checkbox-inline">
-                                <input type="checkbox" id="iCriteriosFocalizacion" name="iCriteriosFocalizacion" />
+                                <input type="checkbox" id="iCriteriosFocalizacion" name="iCriteriosFocalizacion" <?php echo($record->iCriteriosFocalizacion == 1) ? 'checked' : ''; ?> />
                                 <label for="iCriteriosFocalizacion">Críterios de focalización</label>
                             </div>
                         </div>
                         
                         <div class="col-md-4">
                             <div class="checkbox checkbox-css checkbox-inline">
-                                <input type="checkbox" id="iReglasOperacion" name="iReglasOperacion"  />
+                                <input type="checkbox" id="iReglasOperacion" name="iReglasOperacion" <?php echo($record->iReglasOperacion == 1) ? 'checked' : ''; ?> />
                                 <label for="iReglasOperacion">Reglas de operación</label>
                             </div>
                         </div>
@@ -395,21 +398,21 @@
                         <!-- inline -->
                         <div class="col-md-4">
                             <div class="checkbox checkbox-css checkbox-inline">
-                                <input type="checkbox" id="iMIR" name="iMIR"  />
+                                <input type="checkbox" id="iMIR" name="iMIR" <?php echo($record->iMIR == 1) ? 'checked' : ''; ?> />
                                 <label for="iMIR">MIR</label>
                             </div>
                         </div>
                         
                         <div class="col-md-4">
                             <div class="checkbox checkbox-css checkbox-inline">
-                                <input type="checkbox" id="iDescripcionIntervencion" name="iDescripcionIntervencion" />
+                                <input type="checkbox" id="iDescripcionIntervencion" name="iDescripcionIntervencion" <?php echo($record->iDescripcionIntervencion == 1) ? 'checked' : ''; ?> />
                                 <label for="iDescripcionIntervencion">Descripción de la intervención</label>
                             </div>
                         </div>
                         
                         <div class="col-md-4">
                             <div class="checkbox checkbox-css checkbox-inline">
-                                <input type="checkbox" id="iPadronBeneficiarios" name="iPadronBeneficiarios"  />
+                                <input type="checkbox" id="iPadronBeneficiarios" name="iPadronBeneficiarios" <?php echo($record->iPadronBeneficiarios == 1) ? 'checked' : ''; ?> />
                                 <label for="iPadronBeneficiarios">Padrón de beneficiarios</label>
                             </div>
                         </div>
@@ -423,8 +426,8 @@
                         <div class="col-md-2">
                             <select name="iPreviamenteEvaluado" id="iPreviamenteEvaluado" class="form-control" data-parsley-min="0" data-parsley-required="true" data-parsley-group="step-3">
                                 <option value="">Seleccionar</option>
-                                <option value="1">Sí</option>
-                                <option value="0">No</option>
+                                <option value="1" <?php echo ($record->iPreviamenteEvaluado == 1) ? 'selected' : ''; ?>>Sí</option>
+                                <option value="0" <?php echo ($record->iPreviamenteEvaluado == 0) ? 'selected' : ''; ?>>No</option>
                             </select>
                         </div>
                     </div>
@@ -436,7 +439,9 @@
                             <select name="iIdTipoEvaluacion" id="" class="form-control" data-parsley-min="0" data-parsley-required="true" data-parsley-group="step-3">
                                 <option value="">Seleccionar</option>
                                 <?php foreach($tipoEvaluacion as $r){
-                                    echo("<option value='$r->iIdTipoEvaluacion'>$r->vTipoEvaluacion</option>");
+                                    echo "<option value='$r->iIdTipoEvaluacion'";
+                                    echo ($record->iIdTipoEvaluacion == $r->iIdTipoEvaluacion) ? 'selected' : '';
+                                    echo ">$r->vTipoEvaluacion</option>";
                                 }
                                 ?>
                             </select>
@@ -448,7 +453,7 @@
                             <label for="vComentario" class="col-form-label text-md-center">Comentarios adicionales</label>
                         </div>
                         <div class="col-md-8">
-                            <textarea name="vComentario" id="vComentario" rows="5" class="form-control"></textarea>
+                            <textarea name="vComentario" id="vComentario" rows="5" class="form-control"><?php echo $record->vComentario ?></textarea>
                         </div>
                     </div>
                     <!-- Termina parte 3 -->
@@ -485,11 +490,11 @@
     <script>
         function loadTema(){
             var value = $("#eje").val();
-            $("#tema").load('C_intervencionpropuesta/temaQuery/'+value);
+            $("#tema").load('C_intervencionpropuesta/temaQuery/'+value+'/<?php echo $select->iIdPoliticaPublica; ?>');
         }
         function loadObjetivo(){
             var value = $("#tema").val();
-            $("#iIdObjetivo").load('C_intervencionpropuesta/objetivoQuery/'+value);
+            $("#iIdObjetivo").load('C_intervencionpropuesta/objetivoQuery/'+value+'/<?php echo $record->iIdObjetivo; ?>');
         }
     </script>
                 </div>
@@ -497,6 +502,12 @@
 			<!-- end panel -->
 		</div>
         <!-- end #content -->
+
+        <script>
+        $("#eje").val(<?php echo $select->iIdEje; ?>).change();
+        //loadTema();
+        </script>
+
         <script>
             
             function dataEntry(){
@@ -511,15 +522,15 @@
                         swal({
                             icon: 'success',
                             title: 'Exito',
-	                        text: 'El registro se ha guardado exitosamente',
+	                        text: 'El registro se ha actualizado exitosamente',
                             button: false,
                             timer: 1500
                         })
                     }else{
                         swal({
                             icon: 'error',
-                            title: 'Algo salio mal',
-	                        text: 'Ha ocurrido un error al guardar los datos',
+                            title: 'Error',
+	                        text: 'El registro no pudo actualizarse',
                             button: false,
                             timer: 1500
                         })

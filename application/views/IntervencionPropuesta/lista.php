@@ -22,7 +22,7 @@
 					<h4 class="panel-title">Panel Title here</h4>
 				</div>
 				<div class="panel-body">
-					<a href="#" class="btn" onclick="cargar('http://localhost/sied/C_intervencionpropuesta/mostrar_crud','#contenido');"> Agregar propuesta </a>
+					<a href="#" class="btn" onclick="cargar('<?=base_url();?>/C_intervencionpropuesta/mostrar_crud','#contenido');"> Agregar propuesta </a>
 					<table class="table">
                         <thead class="thead-dark">
                             <td>
@@ -63,8 +63,10 @@
 									echo 'Programa de bienes o servicio';
 								} ?></td>
 								<td>
-									<a href="#" class="btn">Editar</a>
-									<a href="#" class="btn">Eliminar</a>
+									<button onclick="cargar('<?=base_url();?>C_IntervencionPropuesta/edit/<?php echo $r->iIdIntervencionPropuesta; ?>', '#contenido');" class="btn btn-success"><i class="fas fa-lg fa-fw m-r-10 fa-edit"></i><span>Editar</span></button>
+								</td>
+								<td>
+									<button onclick="deleteRow(<?php echo $r->iIdIntervencionPropuesta; ?>);" class="btn btn-danger"><i class="fas fa-lg fa-fw m-r-10 fa-exclamation-triangle"></i><span>Eliminar</span></button>
 								</td>
 							</tr>
 							<?php } ?>
@@ -76,3 +78,43 @@
 			<!-- end panel -->
 		</div>
         <!-- end #content -->
+		<script>
+			function deleteRow(id){
+				swal({
+  					title: "¿Estás seguro?",
+  					text: "Una vez eliminado, este registro no se puede recuperar",
+  					icon: "warning",
+  					buttons: true,
+					buttons: ['Cancelar', 'Aceptar'],
+  					dangerMode: true,
+				})
+				.then((willDelete) => {
+  					if (willDelete) {
+						$.get("<?=base_url()?>C_intervencionpropuesta/delete/"+id, 
+						function(data) {
+							if(data == 1){
+								$("#contenido").load('<?=base_url()?>C_intervencionpropuesta/mostrar_vista');
+								swal("El registro ha sido eliminado correctamente", {
+									title: 'Exito',
+      								icon: "success",
+									button: false,
+  									timer: 1500
+    							});
+								
+							}else{
+								swal("El registro no pudo eliminarse", {
+									title: 'Error',
+      								icon: "error",
+									button: false,
+  									timer: 1500
+    							});
+							}
+						});
+  					}
+				});
+			}
+			
+
+			
+		</script>
+		
