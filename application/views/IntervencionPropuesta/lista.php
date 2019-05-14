@@ -1,4 +1,7 @@
 
+	<link rel="stylesheet" href="<?=base_url()?>admin/assets/plugins/DataTables/media/css/dataTables.bootstrap.min.css">
+	<link rel="stylesheet" href="<?=base_url()?>admin/assets/plugins/DataTables/extensions/Responsive/css/responsive.bootstrap.min.css">
+
 			<!-- begin breadcrumb -->
 			<ol class="breadcrumb pull-right">
 				<li class="breadcrumb-item"><a href="javascript:;">Home</a></li>
@@ -23,29 +26,18 @@
 				</div>
 				<div class="panel-body">
 					<a href="#" class="btn" onclick="cargar('<?=base_url();?>/C_intervencionpropuesta/mostrar_crud','#contenido');"> Agregar propuesta </a>
-					<table class="table">
-                        <thead class="thead-dark">
-                            <td>
-                                Intervención pública
-                            </td>
-                            <td>
-                                Año de creación
-                            </td>
-                            <td>
-                                Año de evaluación
-                            </td>
-                            <td>
-                                Eje
-                            </td>
-                            <td>
-                                Dependencia
-                            </td>
-                            <td>
-                                Tipo de intervención
-							</td>
-							<td>
-								Acción
-							</td>
+					<table id="data-table-default" class="table table-striped table-bordered">
+                        <thead>
+							<tr>
+								<th>Intervención pública</th>
+								<th>Año de creación</th>
+								<th>Año de evaluación</th>
+								<th>Eje</th>
+								<th>Dependencia</th>
+								<th>Tipo de intervención</th>
+								<th>Acción</th>
+								<th></th>
+							</tr>
 						</thead>
 						<tbody>
 							<?php foreach($intpro as $r) {?>
@@ -113,8 +105,13 @@
   					}
 				});
 			}
-			
-
-			
 		</script>
-		
+		<script src="<?=base_url()?>admin/assets/plugins/DataTables/media/js/jquery.dataTables.js"></script>
+		<script src="<?=base_url()?>admin/assets/plugins/DataTables/media/js/dataTables.bootstrap.min.js"></script>
+		<script src="<?=base_url()?>admin/assets/plugins/DataTables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+		<script src="<?=base_url()?>admin/assets/js/demo/table-manage-default.demo.min.js"></script>
+		<script>
+		$(document).ready(function() {
+			TableManageDefault.init();
+		});
+		</script>
