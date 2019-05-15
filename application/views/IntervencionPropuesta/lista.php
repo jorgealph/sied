@@ -3,7 +3,7 @@
 	<link rel="stylesheet" href="<?=base_url()?>admin/assets/plugins/DataTables/extensions/Responsive/css/responsive.bootstrap.min.css">
 
 			<!-- begin breadcrumb -->
-			<a onclick="cargar('<?=base_url();?>/C_intervencionpropuesta/mostrar_crud','#contenido');" class="btn btn-default pull-right">
+			<a onclick="cargar('<?=base_url();?>C_intervencionpropuesta/mostrar_crud','#contenido');" class="btn btn-default pull-right">
                 <li class="fas fa-lg fa-fw m-r-10 fa-plus-circle"></li><span>Agregar propuesta</span>
             </a>
 			<!-- end breadcrumb -->
@@ -33,7 +33,7 @@
 								<th>Tipo de intervención</th>
 								<th>Acción</th>
 								<th></th>
-								<!--<th></th>-->
+								<th></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -51,11 +51,11 @@
 								}else{
 									echo 'Programa de bienes o servicio';
 								} ?></td>
-								<!--<td>
-									<button  class="btn btn-success"><i class="fas fa-lg fa-fw m-r-10 fa-check-circle"></i><span>Aprobar</span></button>
-								</td>-->
 								<td>
 									<button onclick="cargar('<?=base_url();?>C_IntervencionPropuesta/edit/<?php echo $r->iIdIntervencionPropuesta; ?>', '#contenido');" class="btn btn-success"><i class="fas fa-lg fa-fw m-r-10 fa-edit"></i><span>Editar</span></button>
+								</td>
+								<td>
+									<button onclick="Aprobar(<?php echo $r->iIdIntervencionPropuesta; ?>)" class="btn btn-primary"><i class="fas fa-lg fa-fw m-r-10 fa-check-circle"></i><span>Aprobar</span></button>
 								</td>
 								<td>
 									<button onclick="deleteRow(<?php echo $r->iIdIntervencionPropuesta; ?>);" class="btn btn-danger"><i class="fas fa-lg fa-fw m-r-10 fa-exclamation-triangle"></i><span>Eliminar</span></button>
@@ -114,4 +114,77 @@
 		$(document).ready(function() {
 			TableManageDefault.init();
 		});
+		</script>
+		<script>
+			function Aprobar(id){
+				swal({
+  					title: "¿Estás seguro?",
+  					text: "La propuesta esta por ser aprobada",
+  					icon: "warning",
+  					buttons: true,
+					buttons: ['Cancelar', 'Aceptar'],
+  					dangerMode: true,
+				})
+				.then((willDelete) => {
+  					if (willDelete) {
+						swal({
+							title: 'Estas por concluir',
+							text: 'Captura la clave de intervención',
+							buttons: {
+								cancel: "Cancelar",
+    							confirm: "Continuar",
+  							},
+  							content: {
+    							element: "input",
+    							attributes: {
+      								placeholder: "Ingresa la clave",
+      								type: "text",
+									required: true
+    							},
+  							}
+						})
+						.then((value) => {
+  							if(value != '' && value != null){
+								$.get("<?=base_url()?>C_intervencionpropuesta/AprobarIntervencion/"+id+'/'+value, 
+								function(data) {
+									if(data > 0){
+										$("#contenido").load('<?=base_url()?>C_intervencionpropuesta/mostrar_vista');
+										swal("La intervención ha sido aprobada", {
+											title: 'Exito',
+      										icon: "success",
+											button: false,
+  											timer: 1500
+    									});
+									}else{
+										swal("Intente nuevamente", {
+											title: 'Error',
+      										icon: "error",
+											button: false,
+  											timer: 1500
+    									});
+									}
+								});
+							}else{
+								if(value == ''){
+									swal(`La operación no pudo concluir`, 'Verifique no dejar campos vacios', 'error',{
+										buttons: false,
+										timer: 1500
+									});
+								}else{
+									if(value == null){
+										swal(`La operación fue cancelada`, 'Las cambios no fueron guardados', 'warning',
+										{
+											buttons: false,
+											timer: 1500
+										});
+									}
+								}
+							}
+						});
+  					}
+				});
+			}
+			function GetClave(){
+				
+			}
 		</script>

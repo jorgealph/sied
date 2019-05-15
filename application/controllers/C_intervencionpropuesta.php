@@ -91,8 +91,9 @@ class C_IntervencionPropuesta extends CI_Controller {
 
 	public function test($id){
 		$this->load->model('M_IntervencionPropuesta');
-		$tema = $this->M_IntervencionPropuesta->temaQuery($id);
-		print_r($tema);
+		$data = $this->M_IntervencionPropuesta->GetRecord($id);
+
+		print_r($data);
 	}
 
 
@@ -177,4 +178,22 @@ class C_IntervencionPropuesta extends CI_Controller {
 		echo $delete = $this->M_IntervencionPropuesta->delete($id);
 	}
 
+	public function AprobarIntervencion($id, $clave){
+		$this->load->model('M_IntervencionPropuesta');
+		$r = $this->M_IntervencionPropuesta->GetRecord($id);
+
+		$data['vIntervencion'] = $r->vIntervencion;
+		$data['vClave'] = $clave;
+		$data['iAnio'] = (int)date('Y');
+		$data['iTipo'] = $r->iTipo;
+		$data['iIdIntervencionPropuesta'] = $r->iIdIntervencionPropuesta;
+		$data['iIdOrganismo'] = $r->iIdOrganismo;
+		$this->load->model('M_Intervencion');
+		$result = $this->M_Intervencion->save($data);
+
+		if($result > 0){
+			$delete = $this->M_IntervencionPropuesta->delete($id);
+		}
+		echo $result;
+	}
 }

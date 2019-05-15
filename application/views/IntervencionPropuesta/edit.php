@@ -466,7 +466,7 @@
 							<div class="jumbotron m-b-0 text-center">
 								<h2 class="text-inverse">Register Successfully</h2>
 								<p class="m-b-30 f-s-16">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris consequat commodo porttitor. <br />Vivamus eleifend, arcu in tincidunt semper, lorem odio molestie lacus, sed malesuada est lacus ac ligula. Aliquam bibendum felis id purus ullamcorper, quis luctus leo sollicitudin. </p>
-								<p><input type="button" onclick="dataEntry()" value="Guardar" class="btn btn-primary btn-lg"></p>
+								<p><input type="button" onclick="dataEntry()" value="Guardar cambios" class="btn btn-primary btn-lg"></p>
 							</div>
 						</div>
 						<!-- end step-4 -->
@@ -512,7 +512,7 @@
             
             function dataEntry(){
                 
-                $.ajax({
+            $.ajax({
                 type: "POST",
                 url: '<?=base_url()?>C_IntervencionPropuesta/dataEntry',
                 data: $("#form").serialize(),
