@@ -44,18 +44,35 @@
             <div class="col-md-4">
             <div class="form-group">
                 <?php
-                echo form_label('Titulo', 'titulo');
+                echo form_label('Contraseña (8 caracteres mínimo)', 'contrasenia');
 
                 $input = array(
-                    'name' => 'titulo',
-                    'value' => $titulo,
+                    'name' => 'contrasenia',
+                    'value' => $contrasenia,
                     'class' => 'form-control form-control-sm'
                 );
 
-                echo form_input($input);
+                echo form_password($input);
                 ?>
             </div></div>
 
+            <div class="col-md-4">
+        <div class="form-group">
+                <?php
+                echo form_label('Confirmar contraseña', 'confirmar');
+
+                $input = array(
+                    'name' => 'confirmar',
+                    'value' => '',
+                    'class' => 'form-control form-control-sm'
+                );
+
+                echo form_password($input);
+                ?>
+            </div></div></div>
+
+
+            <div class="row">
             <div class="col-md-4">
         <div class="form-group">
                 <?php
@@ -69,14 +86,12 @@
 
                 echo form_input($input);
                 ?>
-            </div></div></div>
+            </div></div>
 
-
-            <div class="row">
             <div class="col-md-4">
             <div class="form-group">
                 <?php
-                echo form_label('Paterno', 'paterno');
+                echo form_label('Apellido paterno', 'paterno');
 
                 $input = array(
                     'name' => 'paterno',
@@ -91,11 +106,29 @@
             <div class="col-md-4">
             <div class="form-group">
                 <?php
-                echo form_label('Materno', 'materno');
+                echo form_label('Apellido materno', 'materno');
 
                 $input = array(
                     'name' => 'materno',
                     'value' => $materno,
+                    'class' => 'form-control form-control-sm'
+                );
+
+                echo form_input($input);
+                ?>
+            </div></div></div>
+
+            
+
+            <div class="row">
+            <div class="col-md-4">
+            <div class="form-group">
+                <?php
+                echo form_label('Correo principal', 'correo1');
+
+                $input = array(
+                    'name' => 'correo1',
+                    'value' => $correo1,
                     'class' => 'form-control form-control-sm'
                 );
 
@@ -106,23 +139,7 @@
             <div class="col-md-4">
             <div class="form-group">
                 <?php
-                echo form_label('Correo1', 'correo1');
-
-                $input = array(
-                    'name' => 'correo1',
-                    'value' => $correo1,
-                    'class' => 'form-control form-control-sm'
-                );
-
-                echo form_input($input);
-                ?>
-            </div></div></div>
-
-            <div class="row">
-            <div class="col-md-4">
-            <div class="form-group">
-                <?php
-                echo form_label('Correo2', 'correo2');
+                echo form_label('Correo secundario', 'correo2');
 
                 $input = array(
                     'name' => 'correo2',
@@ -147,6 +164,22 @@
 
                 echo form_input($input);
                 ?>
+            </div></div></div>
+
+            <div class="row">
+            <div class="col-md-4">
+            <div class="form-group">
+                <?php
+                echo form_label('Titulo', 'titulo');
+
+                $input = array(
+                    'name' => 'titulo',
+                    'value' => $titulo,
+                    'class' => 'form-control form-control-sm'
+                );
+
+                echo form_input($input);
+                ?>
             </div></div>
 
             <div class="col-md-4">
@@ -162,9 +195,8 @@
 
                 echo form_input($input);
                 ?>
-            </div></div></div>
+            </div></div>
 
-            <div class="row">
             <div class="col-md-4">
             <div class="form-group">
                 <?php
@@ -178,9 +210,10 @@
 
                 echo form_input($input);
                 ?>
-            </div></div>
+            </div></div></div>
 
-            <div class="col-md-4">
+            <div class="row">
+            <div class="col-md-6">
             <div class="form-group">
             <?php
             echo form_label('Organización', 'organizacion'); echo "<br>";
@@ -194,7 +227,7 @@
             ); ?>
     </div></div>
 
-            <div class="col-md-4">
+            <div class="col-md-6">
             <div class="form-group">
             <?php
             echo form_label('Rol', 'rol'); echo "<br>";
@@ -210,7 +243,7 @@
             </div></div></div>
             <button onclick="dataEntry()" type="button" class='btn btn-primary'>Enviar</button>
                 <?php echo form_close();?>
-    </div>
+    </div> <br>
     </div>
     </div>
     <script>

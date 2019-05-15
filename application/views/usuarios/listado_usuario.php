@@ -43,21 +43,17 @@
                                 <a href="#" onclick="cargar('<?=base_url(); ?>C_usuario/guardar/<?=$p->iIdUsuario?>/1','#here');">Editar</a>
                                 <br>
                                 <i class="fas fa-user fa-fw"></i>
-                                <a href="#" name="ver" id="ver" onclick="cargar('<?=base_url(); ?>C_usuario/ver','#here','POST','id=<?=$p->iIdUsuario?>');">Ver</a>
+                                <a href="#" onclick="cargar('<?=base_url(); ?>C_usuario/ver/<?=$p->iIdUsuario?>/1','#here');">Ver</a>
                                 <br>
                                 <i class="fas fa-trash-alt fa-fw"></i>
-                                <a href="#" 
-                                   data-toggle="modal" 
-                                   data-target="#DeletePerson" 
-                                   data-id="<?php echo $p->iIdUsuario ?>"
-                                   data-name="<?php echo $p->vNombres ?>">Borrar</a>
+                                <a href="#" onclick="deleteRow(<?php echo $p->iIdUsuario ?>)">Borrar</a>
                             </td> 
                         </tr>
                     <?php endforeach; ?>       
                 </tbody>
             </table>
 
-            <div class="modal fade" id="DeletePerson" tabindex="-1" role="dialog" aria-labelledby="DeletePersonLabel" aria-hidden="true">
+           <!--  <div class="modal fade" id="DeletePerson" tabindex="-1" role="dialog" aria-labelledby="DeletePersonLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -78,10 +74,14 @@
                         </div>
                     </div>
                 </div>
+            </div> -->
+            <div class="col-md-12">
+            <div class="row">
+            <a class="btn btn-primary col-md-3" name="guardar" id="guardar" onclick="cargar('<?=base_url(); ?>C_usuario/guardar/0/1','#here');">Nuevo usuario</a>
             </div>
             </div>
-            <a class="btn btn-success col-md-4" name="guardar" id="guardar" onclick="cargar('<?=base_url(); ?>C_usuario/guardar/0/1','#here');">Nuevo usuario</a>
-
+            </div>  
+            <br>
             <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
@@ -93,7 +93,7 @@
                     cargar('<?=base_url(); ?>C_usuario/guardar','#contenido');
                 }
                 
-                $('#DeletePerson').on('show.bs.modal', function (event) {
+/*                 $('#DeletePerson').on('show.bs.modal', function (event) {
                     link = $(event.relatedTarget) // Button that triggered the modal
                     id = link.data('id') // Extract info from data-* attributes
                     var name = link.data('name') // Extract info from data-* attributes
@@ -110,9 +110,44 @@
                     }).done(function (res) {
                         console.log(res)
                         $("#DeletePerson").modal('hide');
-                        $(link).parent().parent().remove()
+                        $(link).parent().parent().remove();
                     });
-                });
+                }); */
+
+                function deleteRow(id){
+				swal({
+  					title: "¿Estás seguro?",
+  					text: "Una vez eliminado, este registro no se puede recuperar",
+  					icon: "warning",
+  					buttons: true,
+					buttons: ['Cancelar', 'Aceptar'],
+  					dangerMode: true,
+				})
+				.then((willDelete) => {
+  					if (willDelete) {
+						$.get("<?=base_url()?>C_usuario/borrar_ajax/"+id, 
+						function(data) {
+							if(data == 1){
+								$("#contenido").load('<?=base_url()?>C_usuario/listado');
+								swal("El registro ha sido eliminado correctamente", {
+									title: 'Exito',
+      								icon: "success",
+									button: false,
+  									timer: 1500
+    							});
+								
+							}else{
+								swal("El registro no pudo eliminarse", {
+									title: 'Error',
+      								icon: "error",
+									button: false,
+  									timer: 1500
+    							});
+							}
+						});
+  					}
+				});
+			}
 
             </script> 
             <link rel="stylesheet" href="<?=base_url()?>admin/assets/plugins/DataTables/media/css/dataTables.bootstrap.min.css">
