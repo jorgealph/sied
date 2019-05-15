@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
 </head>
 
 <body>
@@ -223,7 +223,7 @@
             echo form_dropdown('organismo', 
             $options, 
             'Secretaria Técnica de Planeación y Evaluación', 
-            'class="form-group"'
+            'class="form-control"'
             ); ?>
     </div></div>
 
@@ -238,7 +238,7 @@
             echo form_dropdown('rol', 
             $options, 
             'Administrador', 
-            'class="form-group"'
+            'class="form-control"'
             ); ?>
             </div></div></div>
             <button onclick="dataEntry()" type="button" class='btn btn-primary'>Enviar</button>

@@ -48,13 +48,12 @@ class C_usuario extends CI_Controller {
 
         if(isset($persona_id) && !empty($persona_id)){
             
-            
             $persona = $this->mu->find($persona_id);
             //var_dump($persona);
             if(isset($persona)){
                 $vdata["id_usuario"] = $persona_id;
                 $vdata["usuario"] = $persona->vUsuario;
-                $vdata["contrasenia"] = $persona->vPassword;
+                $vdata["contrasenia"] = sha1($persona->vPassword);
                 $vdata["titulo"] = $persona->vTitulo;
                 $vdata["nombre"] = $persona->vNombres;
                 $vdata["paterno"] = $persona->vApellidoPaterno;
@@ -74,7 +73,7 @@ class C_usuario extends CI_Controller {
             //echo "POST";
             $persona_id = $this->input->post('id_usuario');
             $data["vUsuario"] = $this->input->post("usuario");
-            $data["vPassword"] = $this->input->post("contrasenia");
+            $data["vPassword"] = sha1($this->input->post("contrasenia"));
             $data["vTitulo"] = $this->input->post("titulo");
             $data["vNombres"] = $this->input->post("nombre");
             $data["vApellidoPaterno"] = $this->input->post("paterno");
