@@ -18,8 +18,13 @@
 	<link href="<?=base_url();?>admin/assets/css/default/style.min.css" rel="stylesheet" />
 	<link href="<?=base_url();?>admin/assets/css/default/style-responsive.min.css" rel="stylesheet" />
 	<link href="<?=base_url();?>admin/assets/css/default/theme/default.css" rel="stylesheet" id="theme" />
+	<link href="<?=base_url();?>admin/assets/plugins/parsley/src/parsley.css" rel="stylesheet" />
 	<!-- ================== END BASE CSS STYLE ================== -->
-	
+	<!-- ================== DataTable ================== -->
+	<link href="<?=base_url();?>admin/assets/plugins/DataTables/media/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+	<link href="<?=base_url();?>admin/assets/plugins/DataTables/extensions/Responsive/css/responsive.bootstrap.min.css" rel="stylesheet" />
+	<!-- ================== Fin DataTable ================== -->
+	<link href="<?=base_url();?>admin/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
 	<!-- ================== BEGIN BASE JS ================== -->
 	<script src="<?=base_url();?>admin/assets/plugins/pace/pace.min.js"></script>
 	<!-- ================== END BASE JS ================== -->
@@ -77,33 +82,7 @@
 		
 		<!-- begin #content -->
 		<div id="contenido" class="content">
-			<!-- begin breadcrumb -->
-			<ol class="breadcrumb pull-right">
-				<li class="breadcrumb-item"><a href="javascript:;">Home</a></li>
-				<li class="breadcrumb-item"><a href="javascript:;">Page Options</a></li>
-				<li class="breadcrumb-item active">Blank Page</li>
-			</ol>
-			<!-- end breadcrumb -->
-			<!-- begin page-header -->
-			<h1 class="page-header">Blank Page <small>header small text goes here...</small></h1>
-			<!-- end page-header -->
 			
-			<!-- begin panel -->
-			<div class="panel panel-inverse">
-				<div class="panel-heading">
-					<div class="panel-heading-btn">
-						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-redo"></i></a>
-						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
-						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
-					</div>
-					<h4 class="panel-title">Panel Title here</h4>
-				</div>
-				<div class="panel-body">
-					Panel Content Here
-				</div>
-			</div>
-			<!-- end panel -->
 		</div>
         <!-- end #content -->
         
@@ -126,13 +105,21 @@
 	<script src="<?=base_url();?>admin/assets/plugins/js-cookie/js.cookie.js"></script>
 	<script src="<?=base_url();?>admin/assets/js/theme/default.min.js"></script>
 	<script src="<?=base_url();?>admin/assets/js/apps.min.js"></script>
+	<script src="<?=base_url();?>admin/assets/plugins/parsley/dist/parsley.js?v=0.1"></script>
 	<!-- ================== END BASE JS ================== -->
 
-	<!--Libreria de notificaciones y funciones base -->
+	<!-- ================== DataTable ================== -->
+	<script src="<?=base_url();?>admin/assets/plugins/DataTables/media/js/jquery.dataTables.js"></script>
+	<script src="<?=base_url();?>admin/assets/plugins/DataTables/media/js/dataTables.bootstrap.min.js"></script>
+	<script src="<?=base_url();?>admin/assets/plugins/DataTables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+	<script src="<?=base_url();?>admin/assets/js/demo/table-manage-responsive.demo.min.js"></script>
+	<!-- ================== FIN DataTable ================== -->
+
+	<!-- ================== Libreria de notificaciones y funciones base ================== -->
 	<script src="<?=base_url();?>admin/assets/plugins/gritter/js/jquery.gritter.js"></script>
 	<script src="<?=base_url();?>admin/assets/plugins/bootstrap-sweetalert/sweetalert.min.js"></script>
 	<script src="<?=base_url();?>admin/assets/js/funciones.js"></script>
-	
+	<!-- ================== FIN Libreria de notificaciones y funciones base ================== -->
 	<script>
 		$(document).ready(function() {
 			App.init();
@@ -140,12 +127,12 @@
     </script>
     <script type="text/javascript">
     	var base_url = '<?=base_url();?>';
-        <?php /*
+        
         $(document).ready(function(){
             <?php if ($modulo_inicial != ''){ ?>
-            Cargar('<?=$modulo_inicial;?>','#contenido');
+            cargar('<?=$modulo_inicial;?>','#contenido');
             <?php } ?>
-        }); */ ?>
+        });
 
         function cerarSesion(){
         	$.ajax({

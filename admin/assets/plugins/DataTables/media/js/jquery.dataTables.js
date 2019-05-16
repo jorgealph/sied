@@ -11333,7 +11333,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sInfo": "Mostrando _START_ de _END_ de un total de _TOTAL_ entradas",
+			"sInfo": "Mostrando _START_ de _END_ de un total de _TOTAL_ registro(s)",
 	
 	
 			/**
@@ -11376,7 +11376,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sInfoFiltered": "(Filtrado de un total de _MAX_ entradas)",
+			"sInfoFiltered": "(Filtrado de un total de _MAX_ registro(s))",
 	
 	
 			/**

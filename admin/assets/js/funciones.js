@@ -150,6 +150,7 @@ function notificacion(mensaje,tipo){
 		ruta_imagen = base_url + 'admin/assets/img/error.png';
 		titulo = '¡Ha ocurrido un error!';
 	}
+
 	$.gritter.add({
 		title: titulo,
 		text: mensaje,
@@ -161,11 +162,12 @@ function notificacion(mensaje,tipo){
 	return false;
 }
 
-function confirmar(mensaje,funcion){
+function confirmar(mensaje,funcion,var1){
 	//event.preventDefault();
+	var1 = var1 || '';
 	swal({
-		title: '¿Esta seguro?',
-		text: mensaje,
+		title: mensaje,
+		/*text: mensaje,*/
 		icon: 'info',
 		buttons: {
 			cancel: {
@@ -183,6 +185,9 @@ function confirmar(mensaje,funcion){
 			}
 		}
 	}).then((value) => {
-			if(value) funcion();
+			if(value){
+				if(var1 != '') funcion(var1);
+				else funcion();
+			}
 	});
 }

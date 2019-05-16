@@ -32,7 +32,7 @@ class M_seguridad extends CI_Model {
 		}
 	}
 
-	public function inserta_registro($tabla,$datos,$con='')
+	public function insertar_registro($tabla,$datos,$con='')
 	{
 		if($con == '') $con = $this->db;
 
@@ -40,7 +40,7 @@ class M_seguridad extends CI_Model {
 		else return false;
 	}
 
-	public function inserta_registro_no_pk($tabla,$datos,$con='')
+	public function insertar_registro_no_pk($tabla,$datos,$con='')
 	{
 		if($con == '') $con = $this->db;
 
@@ -48,16 +48,34 @@ class M_seguridad extends CI_Model {
 		else return false;
 	}
 
-	public function actualiza_registro($tabla,$where,$datos,$con='')
+	public function actualizar_registro($tabla,$where,$datos,$con='')
 	{
 		if($con == '') $con = $this->db;
 		$con->where($where);
 		return $con->update($tabla, $datos);
 	}
 
-	public function elimina_registro($tabla,$where,$con)
+	public function eliminar_registro($tabla,$where,$con)
 	{
 		return $con->delete($tabla,$where);
+	}
+
+	public function desactivar_registro($tabla,$where,$con='')
+	{
+		if($con == '') $con = $this->db;
+		$con->where($where);
+		return $con->update($tabla, array('iActivo' => 0));
+
+		return ($con->affected_rows() > 0);
+	}
+
+	public function activar_registro($tabla,$where,$con='')
+	{
+		if($con == '') $con = $this->db;
+		$con->where($where);
+		$con->update($tabla, array('iActivo' => 1));
+
+		return ($con->affected_rows() > 0);
 	}
 
 	/*	Funciones para usar transacciones
