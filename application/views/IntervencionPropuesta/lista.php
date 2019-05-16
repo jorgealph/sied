@@ -145,24 +145,45 @@
 						})
 						.then((value) => {
   							if(value != '' && value != null){
-								$.get("<?=base_url()?>C_intervencionpropuesta/AprobarIntervencion/"+id+'/'+value, 
-								function(data) {
-									if(data > 0){
-										$("#contenido").load('<?=base_url()?>C_intervencionpropuesta/mostrar_vista');
-										swal("La intervención ha sido aprobada", {
-											title: 'Exito',
-      										icon: "success",
-											button: false,
-  											timer: 1500
-    									});
-									}else{
-										swal("Intente nuevamente", {
-											title: 'Error',
-      										icon: "error",
-											button: false,
-  											timer: 1500
-    									});
-									}
+								$.ajax({
+    								// la URL para la petición
+    								url : '<?=base_url()?>C_IntervencionPropuesta/AprobarIntervencion',
+
+    								// la información a enviar
+    								// (también es posible utilizar una cadena de datos)
+    								data : { id : id, clave : value },
+
+    								// especifica si será una petición POST o GET
+    								type : 'POST',
+
+    								// el tipo de información que se espera de respuesta
+    								dataType : 'json',
+
+    								// código a ejecutar si la petición es satisfactoria;
+    								// la respuesta es pasada como argumento a la función
+    								success : function(json) {
+        								$("#contenido").load('<?=base_url()?>C_IntervencionPropuesta/mostrar_vista');
+										swal('Exito', 'La petición ha sido aprobada', 'success',{
+											buttons: false,
+											timer: 1500
+										});
+    								},
+
+    								/* código a ejecutar si la petición falla;
+    								son pasados como argumentos a la función
+    								el objeto de la petición en crudo y código de estatus de la petición*/
+    								error : function(xhr, status) {
+        								swal(`La operación no pudo concluirse`, 'Intente nuevamente', 'error',
+										{
+											buttons: false,
+											timer: 1500
+										});
+    								},
+
+    								// código a ejecutar sin importar si la petición falló o no
+    								/*complete : function(xhr, status) {
+        								alert('Petición realizada');
+									}*/
 								});
 							}else{
 								if(value == ''){
