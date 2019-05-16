@@ -27,7 +27,6 @@ class M_IntervencionPropuesta extends CI_Model{
         return $query->result()[0];
     }
 
-
     public function ejeQuery(){
         $this->db->select('iIdEje, vEje');
         $this->db->from('eje');
@@ -118,4 +117,12 @@ class M_IntervencionPropuesta extends CI_Model{
         return $query->result()[0];
     }
     
+    public function GetRecord($id){
+        $this->db->select('iIdIntervencionPropuesta, iIdOrganismo, iTipo, iAnioEvaluacion, vIntervencion');
+        $this->db->from($this->table);
+        $this->db->where($this->table_id, $id);
+        $query = $this->db->get();
+        return $query->result()[0];
+    }
+
 }

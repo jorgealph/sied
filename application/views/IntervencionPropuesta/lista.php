@@ -3,7 +3,7 @@
 	<link rel="stylesheet" href="<?=base_url()?>admin/assets/plugins/DataTables/extensions/Responsive/css/responsive.bootstrap.min.css">
 
 			<!-- begin breadcrumb -->
-			<a onclick="cargar('<?=base_url();?>/C_intervencionpropuesta/mostrar_crud','#contenido');" class="btn btn-default pull-right">
+			<a onclick="cargar('<?=base_url();?>C_intervencionpropuesta/mostrar_crud','#contenido');" class="btn btn-default pull-right">
                 <li class="fas fa-lg fa-fw m-r-10 fa-plus-circle"></li><span>Agregar propuesta</span>
             </a>
 			<!-- end breadcrumb -->
@@ -33,7 +33,7 @@
 								<th>Tipo de intervención</th>
 								<th>Acción</th>
 								<th></th>
-								<!--<th></th>-->
+								<th></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -51,11 +51,11 @@
 								}else{
 									echo 'Programa de bienes o servicio';
 								} ?></td>
-								<!--<td>
-									<button  class="btn btn-success"><i class="fas fa-lg fa-fw m-r-10 fa-check-circle"></i><span>Aprobar</span></button>
-								</td>-->
 								<td>
 									<button onclick="cargar('<?=base_url();?>C_IntervencionPropuesta/edit/<?php echo $r->iIdIntervencionPropuesta; ?>', '#contenido');" class="btn btn-success"><i class="fas fa-lg fa-fw m-r-10 fa-edit"></i><span>Editar</span></button>
+								</td>
+								<td>
+									<button onclick="Aprobar(<?php echo $r->iIdIntervencionPropuesta; ?>)" class="btn btn-primary"><i class="fas fa-lg fa-fw m-r-10 fa-check-circle"></i><span>Aprobar</span></button>
 								</td>
 								<td>
 									<button onclick="deleteRow(<?php echo $r->iIdIntervencionPropuesta; ?>);" class="btn btn-danger"><i class="fas fa-lg fa-fw m-r-10 fa-exclamation-triangle"></i><span>Eliminar</span></button>
@@ -114,4 +114,98 @@
 		$(document).ready(function() {
 			TableManageDefault.init();
 		});
+		</script>
+		<script>
+			function Aprobar(id){
+				swal({
+  					title: "¿Estás seguro?",
+  					text: "La propuesta esta por ser aprobada",
+  					icon: "warning",
+  					buttons: true,
+					buttons: ['Cancelar', 'Aceptar'],
+  					dangerMode: true,
+				})
+				.then((willDelete) => {
+  					if (willDelete) {
+						swal({
+							title: 'Estas por concluir',
+							text: 'Captura la clave de intervención',
+							buttons: {
+								cancel: "Cancelar",
+    							confirm: "Continuar",
+  							},
+  							content: {
+    							element: "input",
+    							attributes: {
+      								placeholder: "Ingresa la clave",
+      								type: "text",
+									required: true
+    							},
+  							}
+						})
+						.then((value) => {
+  							if(value != '' && value != null){
+								$.ajax({
+    								// la URL para la petición
+    								url : '<?=base_url()?>C_IntervencionPropuesta/AprobarIntervencion',
+
+    								// la información a enviar
+    								// (también es posible utilizar una cadena de datos)
+    								data : { id : id, clave : value },
+
+    								// especifica si será una petición POST o GET
+    								type : 'POST',
+
+    								// el tipo de información que se espera de respuesta
+    								dataType : 'json',
+
+    								// código a ejecutar si la petición es satisfactoria;
+    								// la respuesta es pasada como argumento a la función
+    								success : function(json) {
+        								$("#contenido").load('<?=base_url()?>C_IntervencionPropuesta/mostrar_vista');
+										swal('Exito', 'La petición ha sido aprobada', 'success',{
+											buttons: false,
+											timer: 1500
+										});
+    								},
+
+    								/* código a ejecutar si la petición falla;
+    								son pasados como argumentos a la función
+    								el objeto de la petición en crudo y código de estatus de la petición*/
+    								error : function(xhr, status) {
+        								swal(`La operación no pudo concluirse`, 'Intente nuevamente', 'error',
+										{
+											buttons: false,
+											timer: 1500
+										});
+    								},
+
+    								// código a ejecutar sin importar si la petición falló o no
+    								/*complete : function(xhr, status) {
+        								alert('Petición realizada');
+									}*/
+								});
+							}else{
+								if(value == ''){
+									swal(`La operación no pudo concluir`, 'Verifique no dejar campos vacios', 'error',{
+										buttons: false,
+										timer: 1500
+									});
+								}else{
+									if(value == null){
+										swal(`La operación fue cancelada`, 'Las cambios no fueron guardados', 'warning',
+										{
+											buttons: false,
+											timer: 1500
+										});
+									}
+								}
+							}
+						});
+  					}
+				});
+			}
+			function GetClave(){
+				
+			}
 		</script>
