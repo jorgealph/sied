@@ -1,19 +1,19 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  
 </head>
 
 <body>
+<div class="card bg-light" name="capturar" id="capturar">
 <div class="container">
-    <br>
-    <a href="../listado" class="btn btn-success">Regresar</a>
-    <br><br>
-
+<div class="col-md-12"> <br>
 
     <?php echo form_open_multipart('');?>
 
-<div class="form-group">
+    <div class="row">
+        <div class="col-md-4">
+        <div class="form-group">
         <?php
         echo form_label('Usuario', 'usuario');
 
@@ -26,9 +26,10 @@
 
         echo form_input($input);
         ?>
-    </div>
+    </div></div>
 
-    <div class="form-group">
+    <div class="col-md-4">
+        <div class="form-group">
         <?php
         echo form_label('Titulo', 'titulo');
 
@@ -41,9 +42,10 @@
 
         echo form_input($input);
         ?>
-    </div>
+    </div></div>
 
-<div class="form-group">
+        <div class="col-md-4">
+        <div class="form-group">
         <?php
         echo form_label('Nombre', 'nombre');
 
@@ -56,9 +58,11 @@
 
         echo form_input($input);
         ?>
-    </div>
+    </div></div></div>
 
-    <div class="form-group">
+    <div class="row">
+        <div class="col-md-4">
+        <div class="form-group">
         <?php
         echo form_label('Paterno', 'paterno');
 
@@ -71,9 +75,10 @@
 
         echo form_input($input);
         ?>
-    </div>
+    </div></div>
 
-    <div class="form-group">
+        <div class="col-md-4">
+        <div class="form-group">
         <?php
         echo form_label('Materno', 'materno');
 
@@ -86,9 +91,10 @@
 
         echo form_input($input);
         ?>
-    </div>
+    </div></div>
 
-    <div class="form-group">
+        <div class="col-md-4">
+        <div class="form-group">
         <?php
         echo form_label('Correo1', 'correo1');
 
@@ -101,9 +107,11 @@
 
         echo form_input($input);
         ?>
-    </div>
+    </div></div></div>
 
-    <div class="form-group">
+    <div class="row">
+        <div class="col-md-4">
+        <div class="form-group">
         <?php
         echo form_label('Correo2', 'correo2');
 
@@ -116,9 +124,10 @@
 
         echo form_input($input);
         ?>
-    </div>
+    </div></div>
 
-    <div class="form-group">
+        <div class="col-md-4">
+        <div class="form-group">
         <?php
         echo form_label('Telefono', 'telefono');
 
@@ -131,9 +140,10 @@
 
         echo form_input($input);
         ?>
-    </div>
+    </div></div>
 
-    <div class="form-group">
+        <div class="col-md-4">
+        <div class="form-group">
         <?php
         echo form_label('Cargo', 'cargo');
 
@@ -146,9 +156,11 @@
 
         echo form_input($input);
         ?>
-    </div>
+    </div></div></div>
 
-    <div class="form-group">
+    <div class="row">
+        <div class="col-md-4">
+        <div class="form-group">
         <?php
         echo form_label('Celular', 'celular');
 
@@ -161,20 +173,53 @@
 
         echo form_input($input);
         ?>
-    </div>
+    </div></div>
+
+        <div class="col-md-4">
+        <div class="form-group">
+        <?php
+        echo form_label('Organismo', 'organismo');
+
+        $input = array(
+            'name' => 'celular',
+            'value' => $organismo,
+            'readonly' => 'readonly',
+            'class' => 'form-control form-control-sm'
+        );
+
+        echo form_input($input);
+        ?>
+    </div></div>
+
+        <div class="col-md-4">
+        <div class="form-group">
+        <?php
+        echo form_label('Rol', 'rol');
+
+        $input = array(
+            'name' => 'celular',
+            'value' => $rol,
+            'readonly' => 'readonly',
+            'class' => 'form-control form-control-sm'
+        );
+
+        echo form_input($input);
+        ?>
+    </div></div></div>
+
 
     <?php
-    $options = array(
+   /*  $options = array(
     '1' => 'Secretaria Técnica de Planeación y Evaluación'
     );
     echo form_dropdown('organismo', 
     $options, 
     'Secretaria Técnica de Planeación y Evaluación', 
     'class="form-group"'
-    ); ?>
+    ); */ ?>
 
     <?php
-    $options = array(
+   /*  $options = array(
     '1' => 'Administrador',
     '2' => 'Evaluador'
     );
@@ -182,11 +227,13 @@
     $options, 
     'Administrador', 
     'class="form-group"'
-    ); ?>
+    ); */ ?>
 
-    <?php echo form_submit('mysubmit', 'Enviar', "class='btn btn-primary'"); ?>
+    <?php //echo form_submit('mysubmit', 'Enviar', "class='btn btn-primary'"); ?>
 
 <?php echo form_close();?>
+    </div>
+    </div>
     </div>
 </body>
 
