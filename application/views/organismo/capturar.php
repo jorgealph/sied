@@ -11,6 +11,10 @@
 </head>
 
 <body>
+   
+    <button type="button" onclick="regresar(event);" class="btn btn-default pull-right"><li class="fas fa-lg fa-fw m-r-10 fa-arrow-left"></li><span>Regresar</span></button>
+       
+    <h3 class="page-header">Organismos</h3>
 
 	<div class="panel panel panel-inverse">
         <div class="panel-heading">
@@ -24,31 +28,31 @@
 			<div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
-                    	<label>Nombre del organismo</label>
+                    	<label>Nombre del organismo<b class="text-danger">*</b></label>
                     	<input type="hidden" name="iIdOrganismo" id="iIdOrganismo" value="<?=$iIdOrganismo;?>">
-                        <input type="text" id="vOrganismo" name="vOrganismo" class="form-control" value="<?=$vOrganismo;?>" data-parsley-required="true">
+                        <input type="text" id="vOrganismo" name="vOrganismo" class="form-control" value="<?=$vOrganismo;?>" data-parsley-required="true" maxlength="150">
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
-                    	<label>Siglas</label>
-                        <input type="text" id="vSiglas" name="vSiglas" class="form-control" value="<?=$vSiglas;?>" data-parsley-required="true">
+                    	<label>Siglas<b class="text-danger">*</b></label>
+                        <input type="text" id="vSiglas" name="vSiglas" class="form-control" value="<?=$vSiglas;?>" data-parsley-required="true" maxlength="50">
                     </div>
                 </div>
             </div>
 			<div class="row">           
                 <div class="col-md-6">
                     <div class="form-group">
-                    	<label>Nombre del titular</label>
-                        <input type="text" id="vNombreTitular" name="vNombreTitular" class="form-control" value="<?=$vNombreTitular;?>" data-parsley-required="true">
+                    	<label>Nombre del titular<b class="text-danger">*</b></label>
+                        <input type="text" id="vNombreTitular" name="vNombreTitular" class="form-control" value="<?=$vNombreTitular;?>" data-parsley-required="true" maxlength="255">
                     </div>
                 </div>
                  <div class="col-md-6">
                     <div class="form-group">
                     	<label>Nombre del enlace</label>
-                        <input type="text" id="vNombreEnlace" name="vNombreEnlace" class="form-control" value="<?=$vNombreEnlace;?>">
+                        <input type="text" id="vNombreEnlace" name="vNombreEnlace" class="form-control" value="<?=$vNombreEnlace;?>" maxlength="255">
                     </div>
                 </div>
             </div>
@@ -57,12 +61,12 @@
                 <div class="col-md-6">
                     <div class="form-group">
                     	<label>Correo de contacto</label>
-                        <input type="text" id="vCorreoContacto" name="vCorreoContacto" class="form-control" value="<?=$vCorreoContacto;?>" data-parsley-type="email">
+                        <input type="text" id="vCorreoContacto" name="vCorreoContacto" class="form-control" value="<?=$vCorreoContacto;?>" data-parsley-type="email" maxlength="150">
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                    	<label>Eje</label>
+                    	<label>Eje<b class="text-danger">*</b></label>
                         <select name="iIdEje" id="iIdEje" class="form-control" min="1">
                         	<option value="0">-Seleccione una opción-</option>
                         	<?=$options_eje?>
