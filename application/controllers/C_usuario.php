@@ -14,17 +14,20 @@ class C_usuario extends CI_Controller {
         $this->load->database();
         $this->load->library('form_validation');
     }
-  /*   public function directorio()
-	{
-        $usuario=$this->mu->find();
-		$this->load->view('usuarios/capturar_usuario');
-    } */
-    public function index(){
-        redirect("/usuarios/listado_usuario");
-    }
 
     public function listado(){
-        $vdata["personas"] = $this->mu->findAll();
+
+        if(empty($_REQUEST['eje']) && empty($_REQUEST['organismo']) && empty($_REQUEST['texto_busqueda'])){
+            $vdata["personas"] = $this->mu->findAll();
+        }else{
+            $eje = $_REQUEST['eje'];
+            $organismo = $_REQUEST['organismo'];
+            $siglas = $_REQUEST['texto_busqueda'];
+            $vdata["personas"] = $this->mu->filtro($organismo, $eje, $siglas);
+        }
+        
+        $vdata['eje'] = $this->mu->get_eje();
+        $vdata['organismo'] = $this->mu->get_dependencia();
         $this->load->view('usuarios/listado_usuario', $vdata);
     }
 
@@ -108,7 +111,6 @@ class C_usuario extends CI_Controller {
         }
     }
 
-
     public function ver($persona_id = null){
         if(!isset($persona_id)){
             show_404();
@@ -149,5 +151,67 @@ class C_usuario extends CI_Controller {
         echo $this->mu->delete($persona_id);        
     }
 
+    /*public function tabla_usuarios($where='',$like=''){
+        //$query = $this->mu->buscar_drectorio($where,$like);
+                
+        $tabla = '<p>No se encontraron registros para mostrar.</p>';
+        //var_dump($datos);
+        if($query->num_rows() > 0)
+        {
+            $tabla = '<div class="table-responsive">
+                        <table class="table table-hover table-bordered" id="tabla_usuarios">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Usuario</th>
+                                <th scope="col">Título</th>
+                                <th scope="col">Nombres</th>
+                                <th scope="col">Apellido paterno</th>
+                                <th scope="col">Apellido materno</th>
+                                <th scope="col">Correo principal</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>';
 
+            
+            $registros = $query->result();
+            foreach ($registros as $registro) {
+                $acciones = ' <button type="button" class="btn btn-grey btn-icon btn-sm" onclick="cargar('<?=base_url(); ?>C_usuario/guardar/<?=$p->iIdUsuario?>/1','.'#contenido'.');" title="Editar"><i class="fas fa-pencil-alt fa-fw"></i></button>';
+                $acciones.=  '<button type="button" class="btn btn-danger btn-icon btn-sm" onclick="confirmar(\'¿Desea eliminar este registro?\',eliminar,'.$registro->iIdOrganismo.');" title="Eliminar" ><i class="fas fa-trash-alt fa-fw"></i></button>';
+                $tabla.= "<tr>
+                        <td>{$registro->iIdOrganismo}</td>
+                        <td>{$registro->vOrganismo}</td>
+                        <td>{$registro->vSiglas}</td>
+                        <td>{$registro->vNombreTitular}</td>                        
+                        <td>$acciones</td>
+                    </tr>";
+                    
+            } 
+            $tabla .= '</tbody>
+                    </table>
+                </div>';
+
+            return $tabla;
+        }
+        else
+        {
+            return 'No se encontraron registros que coincidan con los criterios de búsqueda';
+        }
+    }*/
+
+    /*function buscar(){
+        if(isset($_POST['texto_busqueda']))
+        {
+            $where = '';
+            $like = $this->input->post('texto_busqueda');
+            if($this->input->post('iIdEje') > 0 && $this->input->post('iIdOrganismo') > 0){
+                $where['e.iIdEje'] = $this->input->post('iIdEje');
+                $where['o.iIdOrganismo'] = $this->input->post('iIdOrganismo');
+            } 
+            $pag = $this->input->post('pag');
+
+            echo $this->tabla();
+        }
+    }*/
 }

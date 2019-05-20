@@ -230,11 +230,22 @@
     ); */ ?>
 
     <?php //echo form_submit('mysubmit', 'Enviar', "class='btn btn-primary'"); ?>
-
+    <center>
+    <button type="button" class="btn btn-white" onclick="regresar();">Regresar</button> 
+    </center>
+    
 <?php echo form_close();?>
     </div>
-    </div>
+    </div><br>
     </div>
 </body>
+<script>
+function regresar(e){
+        if (!e) { var e = window.event; }
+        e.preventDefault();
+
+        cargar('<?=base_url();?>C_usuario/listado','#contenido','POST');
+    }
+</script>
 
 </html>

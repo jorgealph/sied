@@ -5,9 +5,9 @@
 </head>
 
 <body>
-<div class="card bg-light" name="capturar" id="capturar">
-<div class="container">
-<div class="col-md-12"> <br>
+    <div class="card bg-light" name="capturar" id="capturar">
+    <div class="container">
+    <div class="col-md-12"> <br>
 
 
     <?php if(validation_errors() != ""):?>
@@ -241,7 +241,10 @@
             'class="form-control"'
             ); ?>
             </div></div></div>
+            <center>
             <button onclick="dataEntry()" type="button" class='btn btn-primary'>Enviar</button>
+            <button type="button" class="btn btn-white" onclick="regresar();">Cancelar</button>
+            </center>
                 <?php echo form_close();?>
     </div> <br>
     </div>
@@ -275,6 +278,14 @@
                 }
             });
             }
+
+
+            function regresar(e){
+        if (!e) { var e = window.event; }
+        e.preventDefault();
+
+        cargar('<?=base_url();?>C_usuario/listado','#contenido','POST');
+    }
         </script>
 </body>
 
