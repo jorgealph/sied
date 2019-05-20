@@ -74,7 +74,7 @@
 					<h4 class="panel-title">Resultados de la búsqueda</h4>
 				</div>
 				<div class="panel-body">
-					<div class="row" style="padding-left:10px;padding-right:10px;" id="table">
+					<div class="row" id="table">
 							<!--Table here-->
 					</div>
 				</div>
