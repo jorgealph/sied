@@ -122,7 +122,7 @@
                                 </div>
                                 <div class="col-md-8">
                                     <select name="iTipo" id="iTipo" class="form-control" data-parsley-min="1" data-parsley-required="true" data-parsley-group="step-1">
-                                        <option value="">Seleccionar</option>
+                                        <option value="">-Seleccione una opción-</option>
                                         <option value="1" <?php echo ($record->iTipo == 1) ? 'selected' : ''; ?>>Programa presupuestario</option>
                                         <option value="2" <?php echo ($record->iTipo == 2) ? 'selected' : ''; ?>>Fondo</option>
                                         <option value="3" <?php echo ($record->iTipo == 3) ? 'selected' : ''; ?>>Programa de bienes o servicio</option>
@@ -135,7 +135,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <select name="iEntregaBienServicio" id="iEntregaBienServicio" class="form-control" data-parsley-min="0" data-parsley-required="true" data-parsley-group="step-1">
-                                        <option value="">Seleccionar</option>
+                                        <option value="">-Seleccione una opción-</option>
                                         <option value="1" <?php echo ($record->iEntregaBienServicio == 1) ? 'selected' : ''; ?>>Sí</option>
                                         <option value="0" <?php echo ($record->iEntregaBienServicio == 0) ? 'selected' : ''; ?>>No</option>
                                     </select>
@@ -149,7 +149,7 @@
                                 </div>
                                 <div class="col-md-9">
                                     <select name="iIdTipoPP" id="iIdTipoPP" class="form-control" data-parsley-min="0" data-parsley-required="true" data-parsley-group="step-1">
-                                        <option value="">Seleccionar</option>
+                                        <option value="">-Seleccione una opción-</option>
                                         <?php foreach($tipoPP as $r){
                                             echo "<option value='$r->iIdTipoPP'";
                                             echo ($record->iIdTipoPP == $r->iIdTipoPP) ? 'selected' : '';
@@ -204,7 +204,7 @@
                         </div>
                         <div class="col-md-3">
                             <select id="eje" class="form-control" data-parsley-min="-1" data-parsley-required="true" data-parsley-group="step-2" onchange="loadTema()">
-                                <option value="">Seleccionar</option>
+                                <option value="">-Seleccione una opción-</option>
                                 <?php foreach($eje as $r){
                                     echo("<option value='".$r->iIdEje."'>".$r->vEje."</option>");
                                 }
@@ -217,7 +217,7 @@
                         </div>
                         <div class="col-md-3">
                             <select id="tema" class="form-control" data-parsley-min="0" data-parsley-required="true" data-parsley-group="step-2" onchange="loadObjetivo()">
-                                <option value="">Seleccionar</option>
+                                <option value="">-Seleccione una opción-</option>
                             </select>
                         </div>
 
@@ -226,7 +226,7 @@
                         </div>
                         <div class="col-md-3">
                             <select id="iIdObjetivo" name="iIdObjetivo" class="form-control" data-parsley-min="0" data-parsley-required="true" data-parsley-group="step-2">
-                                <option value="">Seleccionar</option>
+                                <option value="">-Seleccione una opción-</option>
                             </select>
                         </div>
                     </div>
@@ -273,7 +273,7 @@
                         </div>
                         <div class="col-md-3">
                             <select name="iEjerceRecursoRamo33" id="iEjerceRecursoRamo33" class="form-control" data-parsley-min="0" data-parsley-required="true" data-parsley-group="step-2">
-                                <option value="">Seleccionar</option>
+                                <option value="">-Seleccione una opción-</option>
                                 <option value="1" <?php echo ($record->iEjerceRecursoRamo33 == 1) ? 'selected' : ''; ?>>Sí</option>
                                 <option value="0" <?php echo ($record->iEjerceRecursoRamo33 == 0) ? 'selected' : ''; ?>>No</option>
                              </select>
@@ -283,7 +283,7 @@
                         </div>
                         <div class="col-md-3">
                             <select name="iEjerceRecursoRamo23" id="iEjerceRecursoRamo23" class="form-control" data-parsley-min="0" data-parsley-required="true" data-parsley-group="step-2">
-                                <option value="">Seleccionar</option>
+                                <option value="">-Seleccione una opción-</option>
                                 <option value="1" <?php echo ($record->iEjerceRecursoRamo23 == 1) ? 'selected' : ''; ?>>Sí</option>
                                 <option value="0" <?php echo ($record->iEjerceRecursoRamo23 == 0) ? 'selected' : ''; ?>>No</option>
                             </select>
@@ -295,7 +295,7 @@
                         </div>
                         <div class="col-md-3">
                             <select name="iEjerceRecursoConvenioSubsidio" id="iEjerceRecursoRamo23" class="form-control" data-parsley-min="0" data-parsley-required="true" data-parsley-group="step-2">
-                                <option value="">Seleccionar</option>
+                                <option value="">-Seleccione una opción-</option>
                                 <option value="1" <?php echo ($record->iEjerceRecursoConvenioSubsidio == 1) ? 'selected' : ''; ?>>Sí</option>
                                 <option value="0" <?php echo ($record->iEjerceRecursoConvenioSubsidio == 0) ? 'selected' : ''; ?>>No</option>
                             </select>
@@ -425,7 +425,7 @@
                         </div>
                         <div class="col-md-2">
                             <select name="iPreviamenteEvaluado" id="iPreviamenteEvaluado" class="form-control" data-parsley-min="0" data-parsley-required="true" data-parsley-group="step-3">
-                                <option value="">Seleccionar</option>
+                                <option value="">-Seleccione una opción-</option>
                                 <option value="1" <?php echo ($record->iPreviamenteEvaluado == 1) ? 'selected' : ''; ?>>Sí</option>
                                 <option value="0" <?php echo ($record->iPreviamenteEvaluado == 0) ? 'selected' : ''; ?>>No</option>
                             </select>
@@ -437,7 +437,7 @@
                         </div>
                         <div class="col-md-4">
                             <select name="iIdTipoEvaluacion" id="" class="form-control" data-parsley-min="0" data-parsley-required="true" data-parsley-group="step-3">
-                                <option value="">Seleccionar</option>
+                                <option value="">-Seleccione una opción-</option>
                                 <?php foreach($tipoEvaluacion as $r){
                                     echo "<option value='$r->iIdTipoEvaluacion'";
                                     echo ($record->iIdTipoEvaluacion == $r->iIdTipoEvaluacion) ? 'selected' : '';
@@ -464,9 +464,9 @@
 						<!-- begin step-4 -->
 						<div id="step-4">
 							<div class="jumbotron m-b-0 text-center">
-								<h2 class="text-inverse">Register Successfully</h2>
-								<p class="m-b-30 f-s-16">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris consequat commodo porttitor. <br />Vivamus eleifend, arcu in tincidunt semper, lorem odio molestie lacus, sed malesuada est lacus ac ligula. Aliquam bibendum felis id purus ullamcorper, quis luctus leo sollicitudin. </p>
-								<p><input type="button" onclick="dataEntry()" value="Guardar cambios" class="btn btn-primary btn-lg"></p>
+                            <h2 class="text-inverse">Esta a punto de finalizar</h2>
+								<p class="m-b-30 f-s-16">Verifique haber llenado los datos correctamente. </p>
+								<p><input type="button" onclick="dataEntry()" value="Guardar" class="btn btn-primary btn-lg"></p>
 							</div>
 						</div>
 						<!-- end step-4 -->
@@ -508,32 +508,20 @@
         //loadTema();
         </script>
 
-        <script>
+<script>
             
             function dataEntry(){
                 
-            $.ajax({
+                $.ajax({
                 type: "POST",
                 url: '<?=base_url()?>C_IntervencionPropuesta/dataEntry',
                 data: $("#form").serialize(),
                 success: function(response){
                     if(response > 0){
                         $("#contenido").load('<?=base_url()?>C_IntervencionPropuesta/mostrar_vista');
-                        swal({
-                            icon: 'success',
-                            title: 'Exito',
-	                        text: 'El registro se ha actualizado exitosamente',
-                            button: false,
-                            timer: 1500
-                        })
+                        notificacion('Los datos han sido actualizados','success');
                     }else{
-                        swal({
-                            icon: 'error',
-                            title: 'Error',
-	                        text: 'El registro no pudo actualizarse',
-                            button: false,
-                            timer: 1500
-                        })
+                        notificacion(response,'error');
                     }
                 }
             });

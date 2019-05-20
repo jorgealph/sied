@@ -18,11 +18,28 @@ class C_IntervencionPropuesta extends CI_Controller {
 		{
 			$datos = $this->menu();
 			$this->load->model('M_IntervencionPropuesta');
-			$datos['intpro'] = $this->M_IntervencionPropuesta->findAll();
 			$datos['msg'] = $msg;
+			$datos['organismo'] = $this->M_IntervencionPropuesta->findDistinctOrganismo();
+			$datos['eje'] = $this->M_IntervencionPropuesta->findDistinctEje();
 			$this->load->view('IntervencionPropuesta/lista',$datos);
 
 		}else $this->index();
+	}
+
+	function drawTable(){
+		$this->load->model('M_IntervencionPropuesta');
+		
+		if(empty($_REQUEST['iTipo']) && empty($_REQUEST['iIdEje']) && empty($_REQUEST['vIntervencion']) && empty($_REQUEST['iIdOrganismo'])){
+			$datos['intpro'] = $this->M_IntervencionPropuesta->findAll();
+		}else{
+			$nombre = $_REQUEST['vIntervencion'];
+			$eje = $_REQUEST['iIdEje'];
+			$dependencia = $_REQUEST['iIdOrganismo'];
+			$tipo = $_REQUEST['iTipo'];
+			$datos['intpro'] = $this->M_IntervencionPropuesta->filterIntervencion($nombre, $eje, $dependencia, $tipo);
+		}
+		
+		$this->load->view('IntervencionPropuesta/table',$datos);
 	}
 
 	function mostrar_crud()
@@ -173,9 +190,13 @@ class C_IntervencionPropuesta extends CI_Controller {
 
 	}
 
-	public function delete($id){
-		$this->load->model('M_IntervencionPropuesta');
-		echo $delete = $this->M_IntervencionPropuesta->delete($id);
+	public function delete(){
+		if(isset($_POST['id']) && !empty($_POST['id'])){
+			$this->load->model('M_IntervencionPropuesta');
+			echo $delete = $this->M_IntervencionPropuesta->delete($_REQUEST['id']);
+		}else{
+			echo '0';
+		}
 	}
 
 	public function AprobarIntervencion(){

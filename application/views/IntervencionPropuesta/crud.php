@@ -34,7 +34,6 @@
 								<span class="number">1</span> 
 								<span class="info text-ellipsis">
 									Pestaña 1
-									<small class="text-ellipsis">Name, Address, IC No and DOB</small>
 								</span>
 							</a>
 						</li>
@@ -43,7 +42,6 @@
 								<span class="number">2</span> 
 								<span class="info text-ellipsis">
 									Pestaña 2
-									<small class="text-ellipsis">Email and phone no. is required</small>
 								</span>
 							</a>
 						</li>
@@ -52,7 +50,6 @@
 								<span class="number">3</span>
 								<span class="info text-ellipsis">
 									Pestaña 3
-									<small class="text-ellipsis">Enter your username and password</small>
 								</span>
 							</a>
 						</li>
@@ -61,7 +58,6 @@
 								<span class="number">4</span> 
 								<span class="info text-ellipsis">
 									Finalizar
-									<small class="text-ellipsis">Terminar registro</small>
 								</span>
 							</a>
 						</li>
@@ -121,7 +117,7 @@
                                 </div>
                                 <div class="col-md-8">
                                     <select name="iTipo" id="iTipo" class="form-control" data-parsley-min="1" data-parsley-required="true" data-parsley-group="step-1">
-                                        <option value="">Seleccionar</option>
+                                        <option value="">-Seleccione una opción-</option>
                                         <option value="1">Programa presupuestario</option>
                                         <option value="2">Fondo</option>
                                         <option value="3">Programa de bienes o servicio</option>
@@ -134,7 +130,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <select name="iEntregaBienServicio" id="iEntregaBienServicio" class="form-control" data-parsley-min="0" data-parsley-required="true" data-parsley-group="step-1">
-                                        <option value="">Seleccionar</option>
+                                        <option value="">-Seleccione una opción-</option>
                                         <option value="1">Sí</option>
                                         <option value="0">No</option>
                                     </select>
@@ -148,7 +144,7 @@
                                 </div>
                                 <div class="col-md-9">
                                     <select name="iIdTipoPP" id="iIdTipoPP" class="form-control" data-parsley-min="0" data-parsley-required="true" data-parsley-group="step-1">
-                                        <option value="">Seleccionar</option>
+                                        <option value="">-Seleccione una opción-</option>
                                         <?php foreach($tipoPP as $r){
                                             echo "<option value='$r->iIdTipoPP'>$r->vTipoPP</option>";
                                         }
@@ -201,7 +197,7 @@
                         </div>
                         <div class="col-md-3">
                             <select id="eje" class="form-control" data-parsley-min="-1" data-parsley-required="true" data-parsley-group="step-2" onchange="loadTema()">
-                                <option value="">Seleccionar</option>
+                                <option value="">-Seleccione una opción-</option>
                                 <?php foreach($eje as $r){
                                     echo("<option value='".$r->iIdEje."'>".$r->vEje."</option>");
                                 }
@@ -214,7 +210,7 @@
                         </div>
                         <div class="col-md-3">
                             <select id="tema" class="form-control" data-parsley-min="0" data-parsley-required="true" data-parsley-group="step-2" onchange="loadObjetivo()">
-                                <option value="">Seleccionar</option>
+                                <option value="">-Seleccione una opción-</option>
                             </select>
                         </div>
 
@@ -223,7 +219,7 @@
                         </div>
                         <div class="col-md-3">
                             <select id="iIdObjetivo" name="iIdObjetivo" class="form-control" data-parsley-min="0" data-parsley-required="true" data-parsley-group="step-2">
-                                <option value="">Seleccionar</option>
+                                <option value="">-Seleccione una opción-</option>
                             </select>
                         </div>
                     </div>
@@ -270,7 +266,7 @@
                         </div>
                         <div class="col-md-3">
                             <select name="iEjerceRecursoRamo33" id="iEjerceRecursoRamo33" class="form-control" data-parsley-min="0" data-parsley-required="true" data-parsley-group="step-2">
-                                <option value="">Seleccionar</option>
+                                <option value="">-Seleccione una opción-</option>
                                 <option value="1">Sí</option>
                                 <option value="0">No</option>
                              </select>
@@ -280,7 +276,7 @@
                         </div>
                         <div class="col-md-3">
                             <select name="iEjerceRecursoRamo23" id="iEjerceRecursoRamo23" class="form-control" data-parsley-min="0" data-parsley-required="true" data-parsley-group="step-2">
-                                <option value="">Seleccionar</option>
+                                <option value="">-Seleccione una opción-</option>
                                 <option value="1">Sí</option>
                                 <option value="0">No</option>
                             </select>
@@ -292,7 +288,7 @@
                         </div>
                         <div class="col-md-3">
                             <select name="iEjerceRecursoConvenioSubsidio" id="iEjerceRecursoRamo23" class="form-control" data-parsley-min="0" data-parsley-required="true" data-parsley-group="step-2">
-                                <option value="">Seleccionar</option>
+                                <option value="">-Seleccione una opción-</option>
                                 <option value="1">Sí</option>
                                 <option value="0">No</option>
                             </select>
@@ -422,7 +418,7 @@
                         </div>
                         <div class="col-md-2">
                             <select name="iPreviamenteEvaluado" id="iPreviamenteEvaluado" class="form-control" data-parsley-min="0" data-parsley-required="true" data-parsley-group="step-3">
-                                <option value="">Seleccionar</option>
+                                <option value="">-Seleccione una opción-</option>
                                 <option value="1">Sí</option>
                                 <option value="0">No</option>
                             </select>
@@ -434,7 +430,7 @@
                         </div>
                         <div class="col-md-4">
                             <select name="iIdTipoEvaluacion" id="" class="form-control" data-parsley-min="0" data-parsley-required="true" data-parsley-group="step-3">
-                                <option value="">Seleccionar</option>
+                                <option value="">-Seleccione una opción-</option>
                                 <?php foreach($tipoEvaluacion as $r){
                                     echo("<option value='$r->iIdTipoEvaluacion'>$r->vTipoEvaluacion</option>");
                                 }
@@ -459,8 +455,8 @@
 						<!-- begin step-4 -->
 						<div id="step-4">
 							<div class="jumbotron m-b-0 text-center">
-								<h2 class="text-inverse">Register Successfully</h2>
-								<p class="m-b-30 f-s-16">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris consequat commodo porttitor. <br />Vivamus eleifend, arcu in tincidunt semper, lorem odio molestie lacus, sed malesuada est lacus ac ligula. Aliquam bibendum felis id purus ullamcorper, quis luctus leo sollicitudin. </p>
+								<h2 class="text-inverse">Esta a punto de finalizar</h2>
+								<p class="m-b-30 f-s-16">Verifique haber llenado los datos correctamente. </p>
 								<p><input type="button" onclick="dataEntry()" value="Guardar" class="btn btn-primary btn-lg"></p>
 							</div>
 						</div>
@@ -508,21 +504,9 @@
                 success: function(response){
                     if(response > 0){
                         $("#contenido").load('<?=base_url()?>C_IntervencionPropuesta/mostrar_vista');
-                        swal({
-                            icon: 'success',
-                            title: 'Exito',
-	                        text: 'El registro se ha guardado exitosamente',
-                            button: false,
-                            timer: 1500
-                        })
+                        notificacion('Los datos han sido guardados','success');
                     }else{
-                        swal({
-                            icon: 'error',
-                            title: 'Algo salio mal',
-	                        text: 'Ha ocurrido un error al guardar los datos',
-                            button: false,
-                            timer: 1500
-                        })
+                        notificacion(response,'error');
                     }
                 }
             });

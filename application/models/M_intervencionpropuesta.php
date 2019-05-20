@@ -10,7 +10,7 @@ class M_IntervencionPropuesta extends CI_Model{
     }
 
     public function findAll(){
-        $this->db->select('ip.iIdIntervencionPropuesta, ip.vIntervencion, ip.iAnioCreacion, ip.iAnioEvaluacion, o.vOrganismo, e.vEje, ip.iTipo');
+        $this->db->select('ip.iIdIntervencionPropuesta, ip.vIntervencion, ip.iAnioCreacion, ip.iAnioEvaluacion, o.vOrganismo, o.iIdOrganismo, e.iIdEje, e.vEje, ip.iTipo');
         $this->db->from("$this->table as ip");
         $this->db->join('Organismo o', 'ip.iIdOrganismo = o.iIdOrganismo', 'INNER');
         $this->db->join('Eje e', 'e.iIdEje = o.iIdEje', 'INNER');
@@ -123,6 +123,55 @@ class M_IntervencionPropuesta extends CI_Model{
         $this->db->where($this->table_id, $id);
         $query = $this->db->get();
         return $query->result()[0];
+    }
+
+    public function filterIntervencion($nombre, $eje, $dependencia, $tipo){
+        $this->db->select('ip.iIdIntervencionPropuesta, ip.vIntervencion, ip.iAnioCreacion, ip.iAnioEvaluacion, o.vOrganismo, o.iIdOrganismo, e.iIdEje, e.vEje, ip.iTipo');
+        $this->db->from("$this->table as ip");
+        $this->db->join('Organismo o', 'ip.iIdOrganismo = o.iIdOrganismo', 'INNER');
+        $this->db->join('Eje e', 'e.iIdEje = o.iIdEje', 'INNER');
+        $this->db->where('ip.iActivo', 1);
+        
+        if(!empty($nombre) && $nombre != null){
+            $this->db->like('ip.vIntervencion', $nombre);
+        }
+        
+        if(!empty($eje) && $eje != null){
+            $this->db->where('e.iIdEje', $eje);
+        }
+        
+        if(!empty($dependencia) && $dependencia != null){
+            $this->db->where('o.iIdOrganismo', $dependencia);
+        }
+        
+        if(!empty($tipo) && $tipo != null){
+            $this->db->where('ip.iTipo', $tipo);
+        }
+        
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function findDistinctOrganismo(){
+        $this->db->distinct();
+        $this->db->select('o.vOrganismo, o.iIdOrganismo');
+        $this->db->from("$this->table as ip");
+        $this->db->join('Organismo o', 'ip.iIdOrganismo = o.iIdOrganismo', 'INNER');
+        $this->db->join('Eje e', 'e.iIdEje = o.iIdEje', 'INNER');
+        $this->db->where('ip.iActivo', 1);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function findDistinctEje(){
+        $this->db->distinct();
+        $this->db->select('e.vEje, o.iIdEje');
+        $this->db->from("$this->table as ip");
+        $this->db->join('Organismo o', 'ip.iIdOrganismo = o.iIdOrganismo', 'INNER');
+        $this->db->join('Eje e', 'e.iIdEje = o.iIdEje', 'INNER');
+        $this->db->where('ip.iActivo', 1);
+        $query = $this->db->get();
+        return $query->result();
     }
 
 }
