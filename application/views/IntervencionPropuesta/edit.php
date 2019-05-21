@@ -17,8 +17,6 @@
 					<h4 class="panel-title">Edición de propuestas de intervenciones</h4>
 				</div>
 				<div class="panel-body">
-                
-	<link href="<?=base_url();?>admin/assets/plugins/parsley/src/parsley.css" rel="stylesheet">
 	<link href="<?=base_url();?>admin/assets/plugins/jquery-smart-wizard/src/css/smart_wizard.css" rel="stylesheet">
 	<!--action="C_IntervencionPropuesta/dataEntry" method="POST"-->
     <!-- begin wizard-form -->
@@ -475,7 +473,6 @@
 			</form>
             <!-- end wizard-form -->
             
-        <script src="<?=base_url();?>admin/assets/plugins/parsley/dist/parsley.js"></script>
 	    <script src="<?=base_url();?>admin/assets/plugins/jquery-smart-wizard/src/js/jquery.smartWizard.js"></script>
         <script src="<?=base_url();?>admin/assets/js/demo/form-wizards-validation.demo.min.js"></script>
     

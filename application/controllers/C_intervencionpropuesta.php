@@ -19,8 +19,9 @@ class C_IntervencionPropuesta extends CI_Controller {
 			$datos = $this->menu();
 			$this->load->model('M_IntervencionPropuesta');
 			$datos['table'] = $this->generateTable($this->M_IntervencionPropuesta->findAll());
+			$datos['eje'] = $this->M_IntervencionPropuesta->ejeQuery();
+
 			$datos['organismo'] = $this->M_IntervencionPropuesta->findDistinctOrganismo();
-			$datos['eje'] = $this->M_IntervencionPropuesta->findDistinctEje();
 			$this->load->view('IntervencionPropuesta/lista',$datos);
 
 		}else $this->index();

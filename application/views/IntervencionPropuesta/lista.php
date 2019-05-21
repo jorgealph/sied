@@ -12,17 +12,6 @@
 				<div class="panel-body">
 				<form id="form" onkeypress="return pulsar(event)">
 					<div class="row" style="padding-left:10px;padding-right:10px;">
-						<div class="col-md-3">
-							<label for="iIdOrganismo">Dependencia</label>
-							<select name="iIdOrganismo" id="iIdOrganismo" class="form-control">
-								<option value="">-Todos-</option>
-								<?php
-									foreach($organismo as $r){
-										echo "<option value='$r->iIdOrganismo'>$r->vOrganismo</option>";
-									}
-								?>
-							</select>
-						</div>
 						<div class="col-md-2">
 							<label for="iIdEje">Eje</label>
 							<select name="iIdEje" id="iIdEje" class="form-control">
@@ -30,6 +19,17 @@
 								<?php
 									foreach($eje as $r){
 										echo "<option value='$r->iIdEje'>$r->vEje</option>";
+									}
+								?>
+							</select>
+						</div>
+						<div class="col-md-3">
+							<label for="iIdOrganismo">Dependencia</label>
+							<select name="iIdOrganismo" id="iIdOrganismo" class="form-control">
+								<option value="">-Todos-</option>
+								<?php
+									foreach($organismo as $r){
+										echo "<option value='$r->iIdOrganismo'>$r->vOrganismo</option>";
 									}
 								?>
 							</select>
@@ -219,4 +219,8 @@
   				// si la tecla no es 13 devuelve verdadero,  si es 13 devuelve false y la pulsación no se ejecuta
   				return (tecla!=13);
 			}
+			function loadTema(){
+            	var value = $("#iIdEje").val();
+            	$("#iIdOrganism").load('C_intervencionpropuesta/temaQuery/'+value);
+        	}
 		</script>
