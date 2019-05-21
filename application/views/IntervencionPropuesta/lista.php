@@ -10,7 +10,7 @@
 					<h4 class="panel-title">Filtro de búsqueda</h4>
 				</div>
 				<div class="panel-body">
-				<form id="form">
+				<form id="form" onkeypress="return pulsar(event)">
 					<div class="row" style="padding-left:10px;padding-right:10px;">
 						<div class="col-md-3">
 							<label for="iIdOrganismo">Dependencia</label>
@@ -46,7 +46,7 @@
 						<div class="col-md-3">
 							<label for="vIntervencion">Nombre</label>
 							<div class="input-group mb-12">
-								<input type="text" name="vIntervencion" id="vIntervencion" class="form-control">
+								<input type="text" name="vIntervencion" id="vIntervencion" class="form-control" onkeypress="return pulsar(event)">
 								<div class="input-group-append">
 									<button class="btn btn-success" onclick="filter()" type="button"> 
 										<li class="fas fa-lg fa-fw m-r-10 fa-search"></li>
@@ -74,7 +74,7 @@
 					<h4 class="panel-title">Resultados de la búsqueda</h4>
 				</div>
 				<div class="panel-body">
-					<div class="row" id="table">
+					<div class="table-responsive" id="table">
 							<!--Table here-->
 					</div>
 				</div>
@@ -146,21 +146,14 @@
     								// la respuesta es pasada como argumento a la función
     								success : function(json) {
         								$("#contenido").load('<?=base_url()?>C_IntervencionPropuesta/mostrar_vista');
-										swal('Exito', 'La petición ha sido aprobada', 'success',{
-											buttons: false,
-											timer: 1500
-										});
+										notificacion('La intervención ha sido aprobada','success');
     								},
 
     								/* código a ejecutar si la petición falla;
     								son pasados como argumentos a la función
     								el objeto de la petición en crudo y código de estatus de la petición*/
     								error : function(xhr, status) {
-        								swal(`La operación no pudo concluirse`, 'Intente nuevamente', 'error',
-										{
-											buttons: false,
-											timer: 1500
-										});
+        								notificacion('La operación no pudo concluirse','error');
     								},
 
     								// código a ejecutar sin importar si la petición falló o no
@@ -170,17 +163,10 @@
 								});
 							}else{
 								if(value == ''){
-									swal(`La operación no pudo concluir`, 'Verifique no dejar campos vacios', 'error',{
-										buttons: false,
-										timer: 1500
-									});
+									notificacion('Error, procure no dejar campos vacios','error');
 								}else{
 									if(value == null){
-										swal(`La operación fue cancelada`, 'Las cambios no fueron guardados', 'warning',
-										{
-											buttons: false,
-											timer: 1500
-										});
+										notificacion('La operación ha sido cancelada','error');
 									}
 								}
 							}
@@ -192,41 +178,45 @@
 
 			function filter(){
 				$.ajax({
-    								// la URL para la petición
-    								url : '<?=base_url()?>C_IntervencionPropuesta/drawTable',
+    				// la URL para la petición
+    				url : '<?=base_url()?>C_IntervencionPropuesta/drawTable',
+					// la información a enviar
+    				// (también es posible utilizar una cadena de datos)
+    				data : $("#form").serialize(),
 
-    								// la información a enviar
-    								// (también es posible utilizar una cadena de datos)
-    								data : $("#form").serialize(),
+    				// especifica si será una petición POST o GET
+    				type : 'POST',
 
-    								// especifica si será una petición POST o GET
-    								type : 'POST',
+    				// el tipo de información que se espera de respuesta
+    				/*dataType : 'json',*/
 
-    								// el tipo de información que se espera de respuesta
-    								/*dataType : 'json',*/
+    				// código a ejecutar si la petición es satisfactoria;
+    				// la respuesta es pasada como argumento a la función
+    				success : function(json) {
+        				$("#table").html(json);
+    				},
+					
+					/* código a ejecutar si la petición falla;
+    				son pasados como argumentos a la función
+    				el objeto de la petición en crudo y código de estatus de la petición*/
+    				error : function(xhr, status) {
+        				swal(`La operación no pudo concluirse`, 'Intente nuevamente', 'error',
+						{
+							buttons: false,
+							timer: 1500
+						});
+    				},
 
-    								// código a ejecutar si la petición es satisfactoria;
-    								// la respuesta es pasada como argumento a la función
-    								success : function(json) {
-        								$("#table").html(json);
-    								},
-
-    								/* código a ejecutar si la petición falla;
-    								son pasados como argumentos a la función
-    								el objeto de la petición en crudo y código de estatus de la petición*/
-    								error : function(xhr, status) {
-        								swal(`La operación no pudo concluirse`, 'Intente nuevamente', 'error',
-										{
-											buttons: false,
-											timer: 1500
-										});
-    								},
-
-    								// código a ejecutar sin importar si la petición falló o no
-    								/*complete : function(xhr, status) {
-        								alert('Petición realizada');
-									}*/
-								});
+    				// código a ejecutar sin importar si la petición falló o no
+    				/*complete : function(xhr, status) {
+        				alert('Petición realizada');
+					}*/
+				});
 			}
-
+			function pulsar(e) {
+  				// averiguamos el código de la tecla pulsada (keyCode para IE y which para Firefox)
+  				tecla = (document.all) ? e.keyCode :e.which;
+  				// si la tecla no es 13 devuelve verdadero,  si es 13 devuelve false y la pulsación no se ejecuta
+  				return (tecla!=13);
+			}
 		</script>
