@@ -15,8 +15,8 @@ class M_IntervencionPropuesta extends CI_Model{
         $this->db->join('Organismo o', 'ip.iIdOrganismo = o.iIdOrganismo', 'INNER');
         $this->db->join('Eje e', 'e.iIdEje = o.iIdEje', 'INNER');
         $this->db->where('ip.iActivo', 1);
-        $query = $this->db->get();
-        return $query->result();
+        return $query = $this->db->get();
+        //return $query->result();
     }
 
     public function findRecord($id){

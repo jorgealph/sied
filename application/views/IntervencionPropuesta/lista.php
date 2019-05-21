@@ -75,7 +75,7 @@
 				</div>
 				<div class="panel-body">
 					<div class="table-responsive" id="table">
-							<!--Table here-->
+							<?=$table?>
 					</div>
 				</div>
 				
@@ -174,7 +174,7 @@
   					}
 				});
 			}
-			$("#table").load('<?=base_url()?>C_IntervencionPropuesta/drawTable');
+			//	$("#table").load('<?=base_url()?>C_IntervencionPropuesta/drawTable');
 
 			function filter(){
 				$.ajax({
