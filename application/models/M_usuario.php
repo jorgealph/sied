@@ -77,8 +77,9 @@ class M_usuario extends CI_Model {
 		}
 		return $this->db->get();
     }
-   /*public function filtro($organismo, $eje, $siglas){
-        $this->db->select('u.iIdUsuario, u.vUsuario, u.vNombres, u.vApellidoPaterno, u.vCorreo1, u.vCargo, u.vCelular, o.vOrganismo, o.vOrganismo, e.vEje');	
+
+    public function filtro($organismo, $eje, $siglas){
+        $this->db->select('u.iIdUsuario, u.vUsuario, u.vNombres, u.vApellidoPaterno, u.vApellidoMaterno, u.vCorreo1, u.vCargo, u.vCelular, o.vOrganismo, o.vOrganismo, e.vEje, u.vTitulo');	
 		$this->db->from('usuario u');
         $this->db->join('organismo o','u.iIdOrganismo = o.iIdOrganismo AND o.iActivo = 1','INNER');
         $this->db->join('eje e','e.iIdEje = o.iIdEje AND e.iActivo = 1','INNER');
@@ -97,7 +98,7 @@ class M_usuario extends CI_Model {
         
         $query = $this->db->get();
         return $query->result();
-   }*/
+   }
 }
 
 ?>

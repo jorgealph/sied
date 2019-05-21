@@ -31,6 +31,25 @@ class C_usuario extends CI_Controller {
         $this->load->view('usuarios/listado_usuario', $vdata);
     }
 
+    public function tabla(){
+        if(empty($_REQUEST['eje']) && empty($_REQUEST['organismo']) && empty($_REQUEST['texto_busqueda'])){
+            $vdata["personas"] = $this->mu->findAll();
+        }else{
+            $eje = $_REQUEST['eje'];
+            $organismo = $_REQUEST['organismo'];
+            $siglas = $_REQUEST['texto_busqueda'];
+            $vdata["personas"] = $this->mu->filtro($organismo, $eje, $siglas);
+        }
+        
+        $this->load->view('usuarios/tabla', $vdata);
+    }
+
+    public function select(){
+        $vdata['eje'] = $this->mu->get_eje();
+        $vdata['organismo'] = $this->mu->get_dependencia();
+        $this->load->view('usuarios/capturar_usuario');
+    }
+
      public function guardar($persona_id = null, $vista = null)
      {
         $this->form_validation->set_rules('usuario', 'Usuario', 'required|max_length[100]');

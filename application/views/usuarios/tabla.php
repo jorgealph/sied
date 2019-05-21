@@ -1,11 +1,4 @@
- <div class="panel panel-inverse">
-        <div class="panel-heading">
-            <div class="panel-heading-btn">
-                <a href="javascript:;" class="table table-hover table-bordered dataTable no-footer dtr-inline" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-            </div>
-            <h4 class="panel-title">Resultados de la búsqueda</h4>
-        </div> <br>
-        <div class="col-md-12">
+
             <table id="listado" class="table table-striped table-bordered">
                 <thead>
                     <tr>
@@ -49,10 +42,11 @@
                     <?php endforeach; ?>       
                 </tbody>
             </table>
-            </div>
-            <div class="col-md-12">
-            <div class="row">
-           
-            </div>
-        </div>
-    </div>
+         <script>
+         $(document).ready(function(){
+            $('#listado').DataTable({
+            responsive: true,
+            searching: false,
+            lengthChange: false
+        });
+    });</script>
