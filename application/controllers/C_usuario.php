@@ -44,17 +44,11 @@ class C_usuario extends CI_Controller {
         $this->load->view('usuarios/tabla', $vdata);
     }
 
-    public function select(){
-        $vdata['eje'] = $this->mu->get_eje();
-        $vdata['organismo'] = $this->mu->get_dependencia();
-        $this->load->view('usuarios/capturar_usuario');
-    }
-
      public function guardar($persona_id = null, $vista = null)
      {
         $this->form_validation->set_rules('usuario', 'Usuario', 'required|max_length[100]');
-        $this->form_validation->set_rules('contrasenia', 'Contraseña (8 caracteres mínimo)', 'required|min_length[8]');
-        $this->form_validation->set_rules('confirmar', 'Confirmar contraseña', 'required|matches[contrasenia]');
+       // $this->form_validation->set_rules('contrasenia', 'Contraseña (8 caracteres mínimo)', 'required|min_length[8]');
+      //  $this->form_validation->set_rules('confirmar', 'Confirmar contraseña', 'required|matches[contrasenia]');
         $this->form_validation->set_rules('titulo', 'Titulo', 'required|max_length[100]');
         $this->form_validation->set_rules('nombre', 'Nombre', 'required|max_length[100]');
         $this->form_validation->set_rules('paterno', 'Apellido paterno', 'required|max_length[100]');
@@ -91,7 +85,7 @@ class C_usuario extends CI_Controller {
         }
       
         //if($this->input->server("REQUEST_METHOD") == "POST"){
-        if(isset($_POST['id_usuario'])){    
+        if(isset($_POST['id_usuario'])){
             //echo "POST";
             $persona_id = $this->input->post('id_usuario');
             $data["vUsuario"] = $this->input->post("usuario");
@@ -110,27 +104,37 @@ class C_usuario extends CI_Controller {
 
             if ($this->form_validation->run()) {
                 if($persona_id > 0){
-
+                   // $this->load->view('usuarios/editar_usuario', $vdata);
                     $this->mu->update($persona_id, $data);
-                }else $persona_id =  $this->mu->insert($data);
-
-                //var_dump($data);
+                }else{
+                    // $this->load->view('usuarios/capturar_usuario', $vdata);
+                    $persona_id =  $this->mu->insert($data);
+                } 
                 //$error = $this->do_upload($persona_id);
                 if($error === ""){
                     echo 1;
                 }           
-            }else{
+            } else{
                 echo 'NO';
             }
         }
         
         if($vista>0){
-            $vdata["error"] = $error;
-            $this->load->view('usuarios/capturar_usuario', $vdata);
+            if($persona_id > 0){
+                $vdata['organismo'] = $this->mu->get_dependencia();
+                $this->load->view('usuarios/editar_usuario', $vdata); 
+            }else {
+                $vdata["error"] = $error;
+                $vdata['eje'] = $this->mu->get_eje();
+                $vdata['organismo'] = $this->mu->get_dependencia();
+                $this->load->view('usuarios/capturar_usuario', $vdata);
+            }
         }
     }
 
     public function ver($persona_id = null){
+      /*   $this->form_validation->set_rules('contrasenia', 'Contraseña (8 caracteres mínimo)', 'required|min_length[8]');
+        $this->form_validation->set_rules('confirmar', 'Confirmar contraseña', 'required|matches[contrasenia]'); */
         if(!isset($persona_id)){
             show_404();
         }
@@ -157,6 +161,15 @@ class C_usuario extends CI_Controller {
         }else{
             $vdata["usuario"] = $vdata["contrasenia"] = $vdata["titulo"] = $vdata["nombre"] =  $vdata["paterno"] =  $vdata["materno"] = $vdata["correo1"] = $vdata["correo2"] = $vdata["telefono"] = $vdata["cargo"] = $vdata["celular"] = "";
         }
+/*         if(isset($_POST['id_usuario'])){
+            $data["vPassword"] = sha1($this->input->post("contrasenia"));
+            
+            if ($this->form_validation->run()) {
+                if($persona_id > 0){
+                   // $this->load->view('usuarios/editar_usuario', $vdata);
+                    $this->mu->update($persona_id, $data);
+                }
+        } */
         $this->load->view('usuarios/ver_usuario', $vdata);
     }
 

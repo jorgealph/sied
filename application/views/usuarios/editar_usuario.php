@@ -10,19 +10,7 @@
     <div class="col-md-12"> <br>
 
 
-    <?php if(validation_errors() != ""):?>
-    <div class="alert alert-danger" role="alert">
-    <?php echo validation_errors();?>
-    </div>
-<?php endif; ?>
-
-
-<?php if($error != ""):?>
-    <div class="alert alert-danger" role="alert">
-        <?php echo $error;?>
-    </div>
-    <?php endif; ?>
-
+   
     <form class="form" onsubmit="guardar(this,event);" id="form-captura" name="form-captura">
     <div class="row">
         <div class="col-md-4">
@@ -39,36 +27,31 @@
 
                 echo form_input($input);
                 ?>
-            </div></div>
+            </div> </div>
+            <div class="col-md-4">
+            <div class="form-group">
+            <label>Dependecia: </label>
+            <select class="form-control" id="organismo" name="organismo">
+            <option value="">Seleccionar</option>
+            <?php foreach ($organismo as $row) {?>
+                <option value="<?=$row->iIdOrganismo;?>"><?=$row->vOrganismo;?></option>
+            <?php } ?>
+            </select>
+    </div></div>
 
             <div class="col-md-4">
             <div class="form-group">
-                <?php
-                echo form_label('Contraseña (8 caracteres mínimo)', 'contrasenia');
-
-                $input = array(
-                    'name' => 'contrasenia',
-                    'value' => $contrasenia,
-                    'class' => 'form-control form-control-sm'
-                );
-
-                echo form_password($input);
-                ?>
-            </div></div>
-
-            <div class="col-md-4">
-        <div class="form-group">
-                <?php
-                echo form_label('Confirmar contraseña', 'confirmar');
-
-                $input = array(
-                    'name' => 'confirmar',
-                    'value' => '',
-                    'class' => 'form-control form-control-sm'
-                );
-
-                echo form_password($input);
-                ?>
+            <?php
+            echo form_label('Rol', 'rol'); echo "<br>";
+            $options = array(
+            '1' => 'Administrador',
+            '2' => 'Evaluador'
+            );
+            echo form_dropdown('rol', 
+            $options, 
+            'Administrador', 
+            'class="form-control"'
+            ); ?>
             </div></div></div>
 
 
@@ -212,32 +195,7 @@
                 ?>
             </div></div></div>
 
-            <div class="row">
-            <div class="col-md-6">
-            <div class="form-group">
-            <label>Dependecia: </label>
-            <select class="form-control" id="organismo" name="organismo">
-            <option value="">Seleccionar</option>
-            <?php foreach ($organismo as $row) {?>
-                <option value="<?=$row->iIdOrganismo;?>"><?=$row->vOrganismo;?></option>
-            <?php } ?>
-            </select>
-    </div></div>
 
-            <div class="col-md-6">
-            <div class="form-group">
-            <?php
-            echo form_label('Rol', 'rol'); echo "<br>";
-            $options = array(
-            '1' => 'Administrador',
-            '2' => 'Evaluador'
-            );
-            echo form_dropdown('rol', 
-            $options, 
-            'Administrador', 
-            'class="form-control"'
-            ); ?>
-            </div></div></div>
             <center>
             <button type="submit" class='btn btn-primary'>Enviar</button>
             <button type="button" class="btn btn-white" onclick="regresar();">Cancelar</button>

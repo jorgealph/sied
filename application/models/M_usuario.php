@@ -51,12 +51,14 @@ class M_usuario extends CI_Model {
     function get_eje(){
         $this->db->select('*');
         $this->db->from('eje');
+        $this->db->where('iActivo', 1); 
         $query = $this->db->get();
         return $query->result();
     }
 
     function get_dependencia(){
         $this->db->select('*');
+        $this->db->where('iActivo', 1); 
         $this->db->from('organismo');
         $query = $this->db->get();
         return $query->result();
@@ -99,6 +101,13 @@ class M_usuario extends CI_Model {
         $query = $this->db->get();
         return $query->result();
    }
+
+   public function cambiar_contrasenia($id, $vdata){
+    $this->db->where($this->table_id, $id);
+    $data =  array('vPassword' => $vdata["contrasenia"] );
+    $this->db->update($this->table, $data);
+    return $this->db->affected_rows();
+    }
 }
 
 ?>

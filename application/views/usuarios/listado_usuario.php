@@ -165,8 +165,9 @@
         </script>
 
         <script>
-        function filter(){
+        function filter(event){
 				$.ajax({
+                    event.preventDefault();
     								// la URL para la petición
     								url : '<?=base_url()?>C_usuario/tabla',
 
