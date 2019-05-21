@@ -23,7 +23,7 @@
     </div>
     <?php endif; ?>
 
-    <?php echo form_open_multipart('controller', 'id="form"');?>
+    <form class="form" onsubmit="guardar(this,event);" id="form-captura" name="form-captura">
     <div class="row">
         <div class="col-md-4">
         <div class="form-group">
@@ -218,7 +218,11 @@
             <?php
             echo form_label('Organización', 'organizacion'); echo "<br>";
             $options = array(
-            '1' => 'Secretaria Técnica de Planeación y Evaluación'
+            '1' => 'Secretaria Técnica de Planeación y Evaluación',
+            '2' => 'Secretaría de las mujeres',
+            '3' => 'Secretaría General de Gobierno',
+            '4' => 'Secretaría de Administración y finanzas',
+            '5' => 'Consejería Jurídica'
             );
             echo form_dropdown('organismo', 
             $options, 
@@ -242,10 +246,10 @@
             ); ?>
             </div></div></div>
             <center>
-            <button onclick="dataEntry()" type="button" class='btn btn-primary'>Enviar</button>
+            <button type="submit" class='btn btn-primary'>Enviar</button>
             <button type="button" class="btn btn-white" onclick="regresar();">Cancelar</button>
             </center>
-                <?php echo form_close();?>
+            </form>
     </div> <br>
     </div>
     </div>
@@ -279,7 +283,6 @@
             });
             }
 
-
             function regresar(e){
         if (!e) { var e = window.event; }
         e.preventDefault();
@@ -287,6 +290,45 @@
         cargar('<?=base_url();?>C_usuario/listado','#contenido','POST');
     }
         </script>
+
+        <script type="text/javascript">
+	function guardar(form,event){
+		event.preventDefault();
+		var loading;
+		if(validarFormulario(form)){
+			$.ajax({
+		        url: '<?=base_url()?>C_usuario/guardar',
+		        type: 'POST',
+		        async: false,	//	Para obligar al usuario a esperar una respuesta
+		        data: $(form).serialize(),
+		        beforeSend: function(){
+		           /*loading = new Loading({
+		                discription: 'Espere...',
+		                defaultApply: true
+		            });*/
+		        },
+		        error: function(XMLHttpRequest, errMsg, exception){
+		            var msg = "Ha fallado la petición al servidor";
+		            //loading.out();
+		            notificacion(msg);
+		        },
+		        success: function(htmlcode){
+		        	//loading.out();
+		        	var cod = htmlcode.split("-");
+		        	switch(cod[0]){
+		                case "1":
+		                	notificacion('Los datos han sido guardados','success');
+		                	regresar();
+		                    break;
+		                default:
+		                    notificacion(htmlcode,'error');
+		                    break;
+		            }
+		        }
+		    });
+		}
+	}
+    </script>
 </body>
 
 </html>
