@@ -1,5 +1,5 @@
 
-<table id="data-table-default" class="table table-striped table-bordered">
+<table id="data-table-default" class="table table-hover table-bordered">
     <thead>
 	    <tr>
 		    <th>Intervención pública</th>
@@ -28,11 +28,11 @@
 			} ?>
 			</td>
 			<td>
-			    <button onclick="cargar('<?=base_url();?>C_IntervencionPropuesta/edit/<?php echo $r->iIdIntervencionPropuesta; ?>', '#contenido');" class="btn btn-success btn-icon btn-sm"><i class="fas fa-fw fa-edit"></i></button>
+			    <button onclick="cargar('<?=base_url();?>C_IntervencionPropuesta/edit/<?php echo $r->iIdIntervencionPropuesta; ?>', '#contenido');" class="btn btn-grey btn-icon btn-sm"><i class="fas fa-pencil-alt fa-fw"></i></button>
 		
-			    <button onclick="Aprobar(<?php echo $r->iIdIntervencionPropuesta; ?>)" class="btn btn-grey btn-icon btn-sm"><i class="fas fa-lg fa-fw  fa-check-circle"></i></button>
+			    <button onclick="Aprobar(<?php echo $r->iIdIntervencionPropuesta; ?>)" class="btn btn-success btn-icon btn-sm"><i class="fas fa-lg fa-fw fa-check-circle"></i></button>
 			
-			    <button onclick="confirmar('¿Desea eliminar este registro?',eliminar,'<?php echo $r->iIdIntervencionPropuesta; ?>');" class="btn btn-danger btn-icon btn-sm"><i class="fas fa-lg fa-fw  fa-exclamation-triangle"></i></button>
+			    <button onclick="confirmar('¿Desea eliminar este registro?',eliminar,'<?php echo $r->iIdIntervencionPropuesta; ?>');" class="btn btn-danger btn-icon btn-sm"><i class="fas fa-trash-alt fa-fw"></i></button>
 			</td>
 		</tr>
 		<?php } ?>
