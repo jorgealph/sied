@@ -14,7 +14,7 @@
 					<div class="row" style="padding-left:10px;padding-right:10px;">
 						<div class="col-md-2">
 							<label for="iIdEje">Eje</label>
-							<select name="iIdEje" id="iIdEje" class="form-control">
+							<select name="iIdEje" id="iIdEje" class="form-control" onchange="loadDependencia()">
 								<option value="">-Todos-</option>
 								<?php
 									foreach($eje as $r){
@@ -219,8 +219,10 @@
   				// si la tecla no es 13 devuelve verdadero,  si es 13 devuelve false y la pulsación no se ejecuta
   				return (tecla!=13);
 			}
-			function loadTema(){
+			function loadDependencia(){
             	var value = $("#iIdEje").val();
-            	$("#iIdOrganism").load('C_intervencionpropuesta/temaQuery/'+value);
+            	$("#iIdOrganismo").load('C_intervencionpropuesta/dependenciaQuery/'+value);
         	}
+			
+
 		</script>
