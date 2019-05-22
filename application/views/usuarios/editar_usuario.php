@@ -22,7 +22,8 @@
                 $input = array(
                     'name' => 'usuario',
                     'value' => $usuario,
-                    'class' => 'form-control form-control-sm'
+                    'class' => 'form-control form-control-sm',
+                    'data-parsley-required' => 'true'
                 );
 
                 echo form_input($input);
@@ -64,7 +65,8 @@
                 $input = array(
                     'name' => 'nombre',
                     'value' => $nombre,
-                    'class' => 'form-control form-control-sm'
+                    'class' => 'form-control form-control-sm',
+                    'data-parsley-required' => 'true'
                 );
 
                 echo form_input($input);
@@ -79,7 +81,8 @@
                 $input = array(
                     'name' => 'paterno',
                     'value' => $paterno,
-                    'class' => 'form-control form-control-sm'
+                    'class' => 'form-control form-control-sm',
+                    'data-parsley-required' => 'true'
                 );
 
                 echo form_input($input);
@@ -94,7 +97,8 @@
                 $input = array(
                     'name' => 'materno',
                     'value' => $materno,
-                    'class' => 'form-control form-control-sm'
+                    'class' => 'form-control form-control-sm',
+                    'data-parsley-required' => 'true'
                 );
 
                 echo form_input($input);
@@ -112,7 +116,8 @@
                 $input = array(
                     'name' => 'correo1',
                     'value' => $correo1,
-                    'class' => 'form-control form-control-sm'
+                    'class' => 'form-control form-control-sm',
+                    'data-parsley-required' => 'true'
                 );
 
                 echo form_input($input);
@@ -158,7 +163,8 @@
                 $input = array(
                     'name' => 'titulo',
                     'value' => $titulo,
-                    'class' => 'form-control form-control-sm'
+                    'class' => 'form-control form-control-sm',
+                    'data-parsley-required' => 'true'
                 );
 
                 echo form_input($input);
@@ -173,7 +179,8 @@
                 $input = array(
                     'name' => 'cargo',
                     'value' => $cargo,
-                    'class' => 'form-control form-control-sm'
+                    'class' => 'form-control form-control-sm',
+                    'data-parsley-required' => 'true'
                 );
 
                 echo form_input($input);
@@ -188,7 +195,8 @@
                 $input = array(
                     'name' => 'celular',
                     'value' => $celular,
-                    'class' => 'form-control form-control-sm'
+                    'class' => 'form-control form-control-sm',
+                    'data-parsley-required' => 'true'
                 );
 
                 echo form_input($input);

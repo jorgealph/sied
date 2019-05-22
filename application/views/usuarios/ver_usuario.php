@@ -5,15 +5,16 @@
 </head>
 
 <body>
-<div class="card bg-light" name="capturar" id="capturar">
-<div class="container">
-<div class="col-md-12"> <br>
+    <div class="card bg-light" name="capturar" id="capturar">
+    <div class="container">
+    <div class="col-md-12"> <br>
 
     <?php echo form_open_multipart('');?>
 
     <div class="row">
-        <div class="col-md-4">
-        <div class="form-group">
+            <div class="col-md-4">
+            <div class="form-group">
+           
         <?php
         echo form_label('Usuario', 'usuario');
 
@@ -44,8 +45,8 @@
         ?>
     </div></div>
 
-        <div class="col-md-4">
-        <div class="form-group">
+            <div class="col-md-4">
+            <div class="form-group">
         <?php
         echo form_label('Nombre', 'nombre');
 
@@ -206,10 +207,11 @@
         echo form_input($input);
         ?>
     </div></div></div>
+    <?php echo form_close();?>
 
     <form class="form" onsubmit="guardar(this,event);" id="form-captura" name="form-captura">
     <div class="row">
-        
+    <input type="hidden" name="id_usuario" value="<?=$id_usuario?>">
 
             <div class="col-md-6">
             <div class="form-group">
@@ -217,9 +219,11 @@
                 echo form_label('Contraseña (8 caracteres mínimo)', 'contrasenia');
 
                 $input = array(
+                    'id' => 'contrasenia',
                     'name' => 'contrasenia',
-                    'value' => $contrasenia,
-                    'class' => 'form-control form-control-sm'
+                    'value' => '',
+                    'class' => 'form-control form-control-sm',
+                    'data-parsley-required' => 'true'
                 );
 
                 echo form_password($input);
@@ -234,7 +238,8 @@
                 $input = array(
                     'name' => 'confirmar',
                     'value' => '',
-                    'class' => 'form-control form-control-sm'
+                    'class' => 'form-control form-control-sm',
+                    'data-parsley-required' => 'true'
                 );
 
                 echo form_password($input);
@@ -247,7 +252,7 @@
             </center>
             </form>
     
-<?php echo form_close();?>
+
     </div>
     </div><br>
     </div>
@@ -265,10 +270,11 @@ function regresar(e){
 		var loading;
 		if(validarFormulario(form)){
 			$.ajax({
-		        url: '<?=base_url()?>C_usuario/ver',
+		        url: '<?=base_url()?>C_usuario/cambiar_contra',
 		        type: 'POST',
 		        async: false,	//	Para obligar al usuario a esperar una respuesta
 		        data: $(form).serialize(),
+                
 		        beforeSend: function(){
 		           /*loading = new Loading({
 		                discription: 'Espere...',

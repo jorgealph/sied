@@ -97,16 +97,15 @@ class M_usuario extends CI_Model {
             $this->db->like('o.vSiglas', $siglas);
         }
         
-        
         $query = $this->db->get();
         return $query->result();
    }
 
-   public function cambiar_contrasenia($id, $vdata){
-    $this->db->where($this->table_id, $id);
-    $data =  array('vPassword' => $vdata["contrasenia"] );
-    $this->db->update($this->table, $data);
-    return $this->db->affected_rows();
+    public function cambiar_contrasenia($id, $vdata){
+        $this->db->where($this->table_id, $id);
+        $data =  array('vPassword' => $vdata["vPassword"]);
+        $this->db->update($this->table, $data);
+        return $this->db->affected_rows();
     }
 }
 

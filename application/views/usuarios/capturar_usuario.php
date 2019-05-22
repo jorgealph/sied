@@ -34,7 +34,8 @@
                 $input = array(
                     'name' => 'usuario',
                     'value' => $usuario,
-                    'class' => 'form-control form-control-sm'
+                    'class' => 'form-control form-control-sm',
+                    'data-parsley-required' => 'true'
                 );
 
                 echo form_input($input);
@@ -49,7 +50,8 @@
                 $input = array(
                     'name' => 'contrasenia',
                     'value' => $contrasenia,
-                    'class' => 'form-control form-control-sm'
+                    'class' => 'form-control form-control-sm',
+                    'data-parsley-required' => 'true'
                 );
 
                 echo form_password($input);
@@ -64,7 +66,8 @@
                 $input = array(
                     'name' => 'confirmar',
                     'value' => '',
-                    'class' => 'form-control form-control-sm'
+                    'class' => 'form-control form-control-sm',
+                    'data-parsley-required' => 'true'
                 );
 
                 echo form_password($input);
@@ -81,7 +84,8 @@
                 $input = array(
                     'name' => 'nombre',
                     'value' => $nombre,
-                    'class' => 'form-control form-control-sm'
+                    'class' => 'form-control form-control-sm',
+                    'data-parsley-required' => 'true'
                 );
 
                 echo form_input($input);
@@ -96,7 +100,8 @@
                 $input = array(
                     'name' => 'paterno',
                     'value' => $paterno,
-                    'class' => 'form-control form-control-sm'
+                    'class' => 'form-control form-control-sm',
+                    'data-parsley-required' => 'true'
                 );
 
                 echo form_input($input);
@@ -111,7 +116,8 @@
                 $input = array(
                     'name' => 'materno',
                     'value' => $materno,
-                    'class' => 'form-control form-control-sm'
+                    'class' => 'form-control form-control-sm',
+                    'data-parsley-required' => 'true'
                 );
 
                 echo form_input($input);
@@ -129,7 +135,8 @@
                 $input = array(
                     'name' => 'correo1',
                     'value' => $correo1,
-                    'class' => 'form-control form-control-sm'
+                    'class' => 'form-control form-control-sm',
+                    'data-parsley-required' => 'true'
                 );
 
                 echo form_input($input);
@@ -175,7 +182,8 @@
                 $input = array(
                     'name' => 'titulo',
                     'value' => $titulo,
-                    'class' => 'form-control form-control-sm'
+                    'class' => 'form-control form-control-sm',
+                    'data-parsley-required' => 'true'
                 );
 
                 echo form_input($input);
@@ -190,7 +198,8 @@
                 $input = array(
                     'name' => 'cargo',
                     'value' => $cargo,
-                    'class' => 'form-control form-control-sm'
+                    'class' => 'form-control form-control-sm',
+                    'data-parsley-required' => 'true'
                 );
 
                 echo form_input($input);
@@ -205,7 +214,8 @@
                 $input = array(
                     'name' => 'celular',
                     'value' => $celular,
-                    'class' => 'form-control form-control-sm'
+                    'class' => 'form-control form-control-sm',
+                    'data-parsley-required' => 'true'
                 );
 
                 echo form_input($input);
@@ -216,7 +226,7 @@
             <div class="col-md-6">
             <div class="form-group">
             <label>Dependecia: </label>
-            <select class="form-control" id="organismo" name="organismo">
+            <select class="form-control" id="organismo" name="organismo" data-parsley-required="true">
             <option value="">Seleccionar</option>
             <?php foreach ($organismo as $row) {?>
                 <option value="<?=$row->iIdOrganismo;?>"><?=$row->vOrganismo;?></option>
