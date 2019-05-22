@@ -21,7 +21,7 @@ class C_IntervencionPropuesta extends CI_Controller {
 			$datos['table'] = $this->generateTable($this->M_IntervencionPropuesta->findAll());
 			$datos['eje'] = $this->M_IntervencionPropuesta->ejeQuery();
 
-			$datos['organismo'] = $this->M_IntervencionPropuesta->findDistinctOrganismo();
+			$datos['organismo'] = $this->M_IntervencionPropuesta->findOrganismo(null);
 			$this->load->view('IntervencionPropuesta/lista',$datos);
 
 		}else $this->index();
@@ -180,11 +180,14 @@ class C_IntervencionPropuesta extends CI_Controller {
 		echo $option;
 	}
 
-	public function test($id){
+	public function dependenciaQuery($id = null){
 		$this->load->model('M_IntervencionPropuesta');
-		$data = $this->M_IntervencionPropuesta->GetRecord($id);
-
-		print_r($data);
+		$data = $this->M_IntervencionPropuesta->findOrganismo($id);
+		$option = '<option value="">-Todos-</option>';
+		foreach($data as $r){
+			$option .= "<option value='$r->iIdOrganismo'>$r->vOrganismo</option>";
+		}
+		echo $option;
 	}
 
 
