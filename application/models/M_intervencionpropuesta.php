@@ -65,7 +65,7 @@ class M_IntervencionPropuesta extends CI_Model{
         $this->db->select('iIdObjetivo, vObjetivo');
         $this->db->from('objetivo');
         $this->db->where('iActivo', 1);
-        $this->db->where('iIdPoliticaPublica',$id);
+        $this->db->where('iIdPoliticaPublica', $id);
         $query = $this->db->get();
         return $query->result();
     }

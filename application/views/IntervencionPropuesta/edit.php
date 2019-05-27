@@ -200,7 +200,7 @@
                         </div>
                         <div class="col-md-3">
                             <select id="eje" class="form-control" data-parsley-min="-1" data-parsley-required="true" data-parsley-group="step-2" onchange="loadTema()">
-                                <option value="">-Seleccione una opción-</option>
+                                <option value="null">-Seleccione una opción-</option>
                                 <?php foreach($eje as $r){
                                     echo("<option value='".$r->iIdEje."'>".$r->vEje."</option>");
                                 }
@@ -212,8 +212,8 @@
                             <label for="" class="col-form-label text-md-left">Tema</label>
                         </div>
                         <div class="col-md-3">
-                            <select id="tema" class="form-control" data-parsley-min="0" data-parsley-required="true" data-parsley-group="step-2" onchange="loadObjetivo()">
-                                <option value="">-Seleccione una opción-</option>
+                            <select id="tema" class="form-control" data-parsley-min="-1" data-parsley-required="true" data-parsley-group="step-2" onchange="loadObjetivo()">
+                                <option value="null">-Seleccione una opción-</option>
                             </select>
                         </div>
 

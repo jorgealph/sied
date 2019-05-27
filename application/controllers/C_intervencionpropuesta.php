@@ -144,7 +144,7 @@ class C_IntervencionPropuesta extends CI_Controller {
 
 	public function temaQuery($id = null, $find = ''){
 		
-		$option = '<option value="">Seleccionar</option>';
+		$option = '<option value="null">-Seleccione una opción-</option>';
 		if($id != null){
 			$this->load->model('M_IntervencionPropuesta');
 			$tema = $this->M_IntervencionPropuesta->temaQuery($id);
@@ -155,7 +155,7 @@ class C_IntervencionPropuesta extends CI_Controller {
 				$option .= ">$r->vPoliticaPublica</option>";*/
 				$option .= "<option value='$r->iIdPoliticaPublica'>$r->vPoliticaPublica</option>";
 				if($find == $r->iIdPoliticaPublica){
-					$option .= "<script>$('#tema').val($find).change(); loadTema();</script>";
+					$option .= "<script>$('#tema').val($find).change();</script>";
 				}
 			}
 			
@@ -164,15 +164,15 @@ class C_IntervencionPropuesta extends CI_Controller {
 	}
 
 	public function objetivoQuery($id = null, $objetivo = ''){
-		$option = '<option value="">Seleccionar</option>';
+		$option = '<option value="null">-Seleccione una opción-</option>';
 
 		if($id != null){
 			$this->load->model('M_IntervencionPropuesta');
-			$tema = $this->M_IntervencionPropuesta->objetivoQuery($id);
-			foreach($tema as $r){
+			$organismo = $this->M_IntervencionPropuesta->objetivoQuery($id);
+			foreach($organismo as $r){
 				$option .= "<option value='$r->iIdObjetivo'>$r->vObjetivo</option>";
 				if($objetivo == $r->iIdObjetivo){
-					$option .= "<script>$('#iIdObjetivo').val($objetivo).change();</script>";
+					$option .= "<script>$('#iIdObjetivo').val($objetivo).change();loadObjetivo();</script>";
 				}
 			}
 			
