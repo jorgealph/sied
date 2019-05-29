@@ -82,19 +82,6 @@ class C_pregunta extends CI_Controller {
 			return $content;
 		}
 
-		public function text(){
-			$cadena = "    asdasdasd 
-			
-
-			asd
-
-			asdasda \nsdasd     ";
-			$sustituye = array(chr(13).chr(10), "\r\n", "\n\r", "\n", "\r");
-			$content = str_replace($sustituye, "", $cadena);
-			$content = preg_replace("/\s+/", " ", $content);
-			return trim($content);
-		}
-
     public function pregunta(){
 		if(isset($_SESSION[PREFIJO.'_idrol']) && !empty($_SESSION[PREFIJO.'_idrol']))
 		{
@@ -118,4 +105,77 @@ class C_pregunta extends CI_Controller {
 
 		return $datos;
 	}
+
+	public function Word($apartado = 1){
+		$this->load->library('word');
+		$this->load->model('M_pregunta','mp');
+
+		$header = $this->mp->findApartado($apartado);
+
+		$pregunta = $this->mp->findPregunta($apartado);
+
+		// Creating the new document...
+		$phpWord = new \PhpOffice\PhpWord\PhpWord();
+
+		/* Note: any element you append to a document must reside inside of a Section. */
+
+		// Adding an empty Section to the document...
+		$section = $phpWord->addSection();
+		
+		// Adding Text element with font customized using explicitly created font style object...
+		$fontStyle = new \PhpOffice\PhpWord\Style\Font();
+		$fontStyle->setBold(true);
+		$fontStyle->setName('Arial');
+		$fontStyle->setSize(16);
+		$paragraphStyle = new \PhpOffice\PhpWord\Style\Paragraph();
+		$paragraphStyle->setAlign('both');
+		$paragraphStyle->setlineHeight(1.5);
+		$paragraphStyle->setSpaceAfter(300);
+		$myTextElement = $section->addText($header->vApartado);
+		$myTextElement->setFontStyle($fontStyle);
+		$myTextElement->setParagraphStyle($paragraphStyle);
+
+		//Set Text
+		$text = '"The greatest accomplishment is not in never falling, '
+		. 'but in rising again after you fall." '
+		. '(Vince Lombardi)';
+		// Adding Text element with font customized using named font style...
+		$fontStyleName = 'fontStyle';
+		$phpWord->addFontStyle(
+    		$fontStyleName,
+    		array('name' => 'Arial', 'size' => 12, 'color' => '1B2232', 'bold' => true)
+		);
+		// Adding Paragraph element
+		$paragraphStyleName = 'paragraphStyle';
+		$phpWord->addParagraphStyle(
+			$paragraphStyleName,
+			array('align' => 'both', 'lineHeight' => 1.5, "spaceAfter" => 300)
+		);
+
+		foreach($pregunta as $r){
+			$section->addText(
+				$r->vPregunta, 
+				$fontStyleName, 
+				$paragraphStyleName
+			);
+		}
+
+		// Saving the document as OOXML file...
+		$objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
+		$filename = "helloWorld.docx";
+		$objWriter->save($filename);
+
+		header('Content-Description: File Transfer');
+		header('Content-Type: application/octet-stream');
+		header('Content-Disposition: attachment; filename='.$filename);
+		header('Content-Transfer-Encoding: binary');
+		header('Expires: 0');
+		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+		header('Pragma: public');
+		header('Content-Length: ' . filesize($filename));
+		flush();
+		readfile($filename);
+		unlink($filename);
+	}
+	
 }
