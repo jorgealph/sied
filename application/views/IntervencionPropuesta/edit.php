@@ -222,7 +222,7 @@
                         </div>
                         <div class="col-md-3">
                             <select id="iIdObjetivo" name="iIdObjetivo" class="form-control" data-parsley-min="0" data-parsley-required="true" data-parsley-group="step-2">
-                                <option value="">-Seleccione una opción-</option>
+                                <option value="null">-Seleccione una opción-</option>
                             </select>
                         </div>
                     </div>
@@ -486,6 +486,7 @@
         function loadTema(){
             var value = $("#eje").val();
             $("#tema").load('C_intervencionpropuesta/temaQuery/'+value+'/<?php echo $select->iIdPoliticaPublica; ?>');
+            $("#iIdObjetivo").load('C_intervencionpropuesta/objetivoQuery/null/<?php echo $record->iIdObjetivo; ?>');
         }
         function loadObjetivo(){
             var value = $("#tema").val();
@@ -521,4 +522,15 @@
                 }
             });
             }
+            function focusObjetivo(obj){
+            var exists = false; 
+            $('#iIdObjetivo  option').each(function(){
+                if (this.value == obj) {
+                    exists = true;
+                }
+            });
+            if(exists == true){
+                $('#iIdObjetivo').val(obj).change();
+            }
+        }
         </script>

@@ -471,14 +471,34 @@
     </script>
 
     <script>
+
+
+
         function loadTema(){
             var value = $("#eje").val();
             $("#tema").load('C_intervencionpropuesta/temaQuery/'+value);
+            $("#iIdObjetivo").load('C_intervencionpropuesta/objetivoQuery/null/<?php echo $record->iIdObjetivo; ?>');
         }
         function loadObjetivo(){
             var value = $("#tema").val();
             $("#iIdObjetivo").load('C_intervencionpropuesta/objetivoQuery/'+value);
         }
+
+        function focusObjetivo(obj){
+            var exists = false; 
+            $('#iIdObjetivo  option').each(function(){
+                if (this.value == obj) {
+                    exists = true;
+                }
+            });
+            if(exists == true){
+                $('#iIdObjetivo').val(obj).change();
+            }
+        }
+
+        
+
+
     </script>
                 </div>
 			</div>

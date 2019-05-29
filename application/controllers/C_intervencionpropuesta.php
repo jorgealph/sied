@@ -150,15 +150,11 @@ class C_IntervencionPropuesta extends CI_Controller {
 			$tema = $this->M_IntervencionPropuesta->temaQuery($id);
 		
 			foreach($tema as $r){
-				/*$option .= "<option value='$r->iIdPoliticaPublica'";
-				$option .= ($r->iIdPoliticaPublica == $find) ? 'selected' : '';
-				$option .= ">$r->vPoliticaPublica</option>";*/
 				$option .= "<option value='$r->iIdPoliticaPublica'>$r->vPoliticaPublica</option>";
 				if($find == $r->iIdPoliticaPublica){
 					$option .= "<script>$('#tema').val($find).change();</script>";
 				}
 			}
-			
 		}
 		echo $option;
 	}
@@ -170,14 +166,17 @@ class C_IntervencionPropuesta extends CI_Controller {
 			$this->load->model('M_IntervencionPropuesta');
 			$organismo = $this->M_IntervencionPropuesta->objetivoQuery($id);
 			foreach($organismo as $r){
-				$option .= "<option value='$r->iIdObjetivo'>$r->vObjetivo</option>";
+				
 				if($objetivo == $r->iIdObjetivo){
-					$option .= "<script>$('#iIdObjetivo').val($objetivo).change();loadObjetivo();</script>";
+					$option .= "<option value='$r->iIdObjetivo' selected>$r->vObjetivo</option>";
+				}else{
+					$option .= "<option value='$r->iIdObjetivo'>$r->vObjetivo</option>";
 				}
 			}
-			
 		}
+		echo "<script>focusObjetivo($objetivo)</script>";
 		echo $option;
+		
 	}
 
 	public function dependenciaQuery($id = null){
