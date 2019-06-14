@@ -31,18 +31,31 @@ class C_usuario extends CI_Controller {
         $this->load->view('usuarios/listado_usuario', $vdata);
     }
 
+    public function tabla(){
+        if(empty($_REQUEST['eje']) && empty($_REQUEST['organismo']) && empty($_REQUEST['texto_busqueda'])){
+            $vdata["personas"] = $this->mu->findAll();
+        }else{
+            $eje = $_REQUEST['eje'];
+            $organismo = $_REQUEST['organismo'];
+            $siglas = $_REQUEST['texto_busqueda'];
+            $vdata["personas"] = $this->mu->filtro($organismo, $eje, $siglas);
+        }
+        
+        $this->load->view('usuarios/tabla', $vdata);
+    }
+
      public function guardar($persona_id = null, $vista = null)
      {
         $this->form_validation->set_rules('usuario', 'Usuario', 'required|max_length[100]');
-        $this->form_validation->set_rules('contrasenia', 'Contraseña (8 caracteres mínimo)', 'required|min_length[8]');
-        $this->form_validation->set_rules('confirmar', 'Confirmar contraseña', 'required|matches[contrasenia]');
+       // $this->form_validation->set_rules('contrasenia', 'Contraseña (8 caracteres mínimo)', 'required|min_length[8]');
+      //  $this->form_validation->set_rules('confirmar', 'Confirmar contraseña', 'required|matches[contrasenia]');
         $this->form_validation->set_rules('titulo', 'Titulo', 'required|max_length[100]');
         $this->form_validation->set_rules('nombre', 'Nombre', 'required|max_length[100]');
         $this->form_validation->set_rules('paterno', 'Apellido paterno', 'required|max_length[100]');
         $this->form_validation->set_rules('materno', 'Apellido materno', 'required|max_length[100]');
         $this->form_validation->set_rules('correo1', 'Correo principal', 'required|valid_email|max_length[100]');
-        $this->form_validation->set_rules('correo2', 'Correo secundario', 'required|valid_email|max_length[100]');
-        $this->form_validation->set_rules('telefono', 'Telefono', 'required|max_length[100]'); 
+        $this->form_validation->set_rules('correo2', 'Correo secundario', 'valid_email|max_length[100]');
+       // $this->form_validation->set_rules('telefono', 'Telefono', 'required|max_length[100]'); 
         $this->form_validation->set_rules('cargo', 'Cargo', 'required|max_length[100]');
         $this->form_validation->set_rules('celular', 'Celular', 'required|max_length[100]'); 
 
@@ -72,7 +85,7 @@ class C_usuario extends CI_Controller {
         }
       
         //if($this->input->server("REQUEST_METHOD") == "POST"){
-        if(isset($_POST['id_usuario'])){    
+        if(isset($_POST['id_usuario'])){
             //echo "POST";
             $persona_id = $this->input->post('id_usuario');
             $data["vUsuario"] = $this->input->post("usuario");
@@ -91,23 +104,31 @@ class C_usuario extends CI_Controller {
 
             if ($this->form_validation->run()) {
                 if($persona_id > 0){
-
+                   // $this->load->view('usuarios/editar_usuario', $vdata);
                     $this->mu->update($persona_id, $data);
-                }else $persona_id =  $this->mu->insert($data);
-
-                //var_dump($data);
+                }else{
+                    // $this->load->view('usuarios/capturar_usuario', $vdata);
+                    $persona_id =  $this->mu->insert($data);
+                } 
                 //$error = $this->do_upload($persona_id);
                 if($error === ""){
                     echo 1;
                 }           
-            }else{
+            } else{
                 echo 'NO';
             }
         }
         
         if($vista>0){
-            $vdata["error"] = $error;
-            $this->load->view('usuarios/capturar_usuario', $vdata);
+            if($persona_id > 0){
+                $vdata['organismo'] = $this->mu->get_dependencia();
+                $this->load->view('usuarios/editar_usuario', $vdata); 
+            }else {
+                $vdata["error"] = $error;
+                $vdata['eje'] = $this->mu->get_eje();
+                $vdata['organismo'] = $this->mu->get_dependencia();
+                $this->load->view('usuarios/capturar_usuario', $vdata);
+            }
         }
     }
 
@@ -122,6 +143,7 @@ class C_usuario extends CI_Controller {
         }
 
         if(isset($persona)){
+            $vdata["id_usuario"] = $persona_id;
             $vdata["usuario"] = $persona->vUsuario;
             $vdata["contrasenia"] = $persona->vPassword;
             $vdata["titulo"] = $persona->vTitulo;
@@ -138,6 +160,17 @@ class C_usuario extends CI_Controller {
         }else{
             $vdata["usuario"] = $vdata["contrasenia"] = $vdata["titulo"] = $vdata["nombre"] =  $vdata["paterno"] =  $vdata["materno"] = $vdata["correo1"] = $vdata["correo2"] = $vdata["telefono"] = $vdata["cargo"] = $vdata["celular"] = "";
         }
+/*         if(isset($_POST['id_usuario'])){
+            $data["vPassword"] = sha1($this->input->post("contrasenia"));
+           // $vdata["contrasenia"] = $persona->vPassword;
+            
+            if ($this->form_validation->run()) {
+                if($persona_id > 0){
+                    $this->mu->cambiar_contrasenia($persona_id, $data);
+                    $this->load->view('usuarios/listado', $vdata);
+                }
+            }
+        } */
         $this->load->view('usuarios/ver_usuario', $vdata);
     }
 
@@ -150,68 +183,24 @@ class C_usuario extends CI_Controller {
     public function borrar_ajax($persona_id = null){
         echo $this->mu->delete($persona_id);        
     }
-
-    /*public function tabla_usuarios($where='',$like=''){
-        //$query = $this->mu->buscar_drectorio($where,$like);
-                
-        $tabla = '<p>No se encontraron registros para mostrar.</p>';
-        //var_dump($datos);
-        if($query->num_rows() > 0)
-        {
-            $tabla = '<div class="table-responsive">
-                        <table class="table table-hover table-bordered" id="tabla_usuarios">
-                        <thead>
-                            <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Usuario</th>
-                                <th scope="col">Título</th>
-                                <th scope="col">Nombres</th>
-                                <th scope="col">Apellido paterno</th>
-                                <th scope="col">Apellido materno</th>
-                                <th scope="col">Correo principal</th>
-                                <th scope="col">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>';
-
+    
+    public function cambiar_contra($persona_id = null, $vista = null){
+        $this->form_validation->set_rules('contrasenia', 'Contraseña (8 caracteres mínimo)', 'required|min_length[8]');
+        $this->form_validation->set_rules('confirmar', 'Confirmar contraseña', 'required|matches[contrasenia]');
+        if(isset($_POST['id_usuario'])){
+            $persona_id = $this->input->post('id_usuario');
+            $data["vPassword"] = sha1($this->input->post("contrasenia"));
+           // $vdata["contrasenia"] = $persona->vPassword;
             
-            $registros = $query->result();
-            foreach ($registros as $registro) {
-                $acciones = ' <button type="button" class="btn btn-grey btn-icon btn-sm" onclick="cargar('<?=base_url(); ?>C_usuario/guardar/<?=$p->iIdUsuario?>/1','.'#contenido'.');" title="Editar"><i class="fas fa-pencil-alt fa-fw"></i></button>';
-                $acciones.=  '<button type="button" class="btn btn-danger btn-icon btn-sm" onclick="confirmar(\'¿Desea eliminar este registro?\',eliminar,'.$registro->iIdOrganismo.');" title="Eliminar" ><i class="fas fa-trash-alt fa-fw"></i></button>';
-                $tabla.= "<tr>
-                        <td>{$registro->iIdOrganismo}</td>
-                        <td>{$registro->vOrganismo}</td>
-                        <td>{$registro->vSiglas}</td>
-                        <td>{$registro->vNombreTitular}</td>                        
-                        <td>$acciones</td>
-                    </tr>";
-                    
-            } 
-            $tabla .= '</tbody>
-                    </table>
-                </div>';
-
-            return $tabla;
+            if ($this->form_validation->run()) {
+                if($persona_id > 0){
+                   // $this->load->view('usuarios/editar_usuario', $vdata);
+                    echo $this->mu->cambiar_contrasenia($persona_id, $data);
+                }
+            }
         }
-        else
-        {
-            return 'No se encontraron registros que coincidan con los criterios de búsqueda';
-        }
-    }*/
+        //$this->load->view('usuarios/ver_usuario', $vdata);
 
-    /*function buscar(){
-        if(isset($_POST['texto_busqueda']))
-        {
-            $where = '';
-            $like = $this->input->post('texto_busqueda');
-            if($this->input->post('iIdEje') > 0 && $this->input->post('iIdOrganismo') > 0){
-                $where['e.iIdEje'] = $this->input->post('iIdEje');
-                $where['o.iIdOrganismo'] = $this->input->post('iIdOrganismo');
-            } 
-            $pag = $this->input->post('pag');
-
-            echo $this->tabla();
-        }
-    }*/
+    }
+ 
 }

@@ -5,15 +5,16 @@
 </head>
 
 <body>
-<div class="card bg-light" name="capturar" id="capturar">
-<div class="container">
-<div class="col-md-12"> <br>
+    <div class="card bg-light" name="capturar" id="capturar">
+    <div class="container">
+    <div class="col-md-12"> <br>
 
     <?php echo form_open_multipart('');?>
 
     <div class="row">
-        <div class="col-md-4">
-        <div class="form-group">
+            <div class="col-md-4">
+            <div class="form-group">
+           
         <?php
         echo form_label('Usuario', 'usuario');
 
@@ -44,8 +45,8 @@
         ?>
     </div></div>
 
-        <div class="col-md-4">
-        <div class="form-group">
+            <div class="col-md-4">
+            <div class="form-group">
         <?php
         echo form_label('Nombre', 'nombre');
 
@@ -206,35 +207,52 @@
         echo form_input($input);
         ?>
     </div></div></div>
+    <?php echo form_close();?>
 
+    <form class="form" onsubmit="guardar(this,event);" id="form-captura" name="form-captura">
+    <div class="row">
+    <input type="hidden" name="id_usuario" value="<?=$id_usuario?>">
 
-    <?php
-   /*  $options = array(
-    '1' => 'Secretaria Técnica de Planeación y Evaluación'
-    );
-    echo form_dropdown('organismo', 
-    $options, 
-    'Secretaria Técnica de Planeación y Evaluación', 
-    'class="form-group"'
-    ); */ ?>
+            <div class="col-md-6">
+            <div class="form-group">
+                <?php
+                echo form_label('Contraseña (8 caracteres mínimo)', 'contrasenia');
 
-    <?php
-   /*  $options = array(
-    '1' => 'Administrador',
-    '2' => 'Evaluador'
-    );
-    echo form_dropdown('rol', 
-    $options, 
-    'Administrador', 
-    'class="form-group"'
-    ); */ ?>
+                $input = array(
+                    'id' => 'contrasenia',
+                    'name' => 'contrasenia',
+                    'value' => '',
+                    'class' => 'form-control form-control-sm',
+                    'data-parsley-required' => 'true'
+                );
 
-    <?php //echo form_submit('mysubmit', 'Enviar', "class='btn btn-primary'"); ?>
-    <center>
-    <button type="button" class="btn btn-white" onclick="regresar();">Regresar</button> 
-    </center>
+                echo form_password($input);
+                ?>
+            </div></div>
+
+            <div class="col-md-6">
+        <div class="form-group">
+                <?php
+                echo form_label('Confirmar contraseña', 'confirmar');
+
+                $input = array(
+                    'name' => 'confirmar',
+                    'value' => '',
+                    'class' => 'form-control form-control-sm',
+                    'data-parsley-required' => 'true'
+                );
+
+                echo form_password($input);
+                ?>
+            </div></div></div>
+
+            <center>
+            <button type="submit" class='btn btn-primary'>Enviar</button>
+            <button type="button" class="btn btn-white" onclick="regresar();">Cancelar</button>
+            </center>
+            </form>
     
-<?php echo form_close();?>
+
     </div>
     </div><br>
     </div>
@@ -246,6 +264,44 @@ function regresar(e){
 
         cargar('<?=base_url();?>C_usuario/listado','#contenido','POST');
     }
+
+    function guardar(form,event){
+		event.preventDefault();
+		var loading;
+		if(validarFormulario(form)){
+			$.ajax({
+		        url: '<?=base_url()?>C_usuario/cambiar_contra',
+		        type: 'POST',
+		        async: false,	//	Para obligar al usuario a esperar una respuesta
+		        data: $(form).serialize(),
+                
+		        beforeSend: function(){
+		           /*loading = new Loading({
+		                discription: 'Espere...',
+		                defaultApply: true
+		            });*/
+		        },
+		        error: function(XMLHttpRequest, errMsg, exception){
+		            var msg = "Ha fallado la petición al servidor";
+		            //loading.out();
+		            notificacion(msg);
+		        },
+		        success: function(htmlcode){
+		        	//loading.out();
+		        	var cod = htmlcode.split("-");
+		        	switch(cod[0]){
+		                case "1":
+		                	notificacion('Los datos han sido guardados','success');
+		                	regresar();
+		                    break;
+		                default:
+		                    notificacion(htmlcode,'error');
+		                    break;
+		            }
+		        }
+		    });
+		}
+	}
 </script>
 
 </html>

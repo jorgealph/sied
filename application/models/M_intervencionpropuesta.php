@@ -15,8 +15,8 @@ class M_IntervencionPropuesta extends CI_Model{
         $this->db->join('Organismo o', 'ip.iIdOrganismo = o.iIdOrganismo', 'INNER');
         $this->db->join('Eje e', 'e.iIdEje = o.iIdEje', 'INNER');
         $this->db->where('ip.iActivo', 1);
-        $query = $this->db->get();
-        return $query->result();
+        return $query = $this->db->get();
+        //return $query->result();
     }
 
     public function findRecord($id){
@@ -65,7 +65,7 @@ class M_IntervencionPropuesta extends CI_Model{
         $this->db->select('iIdObjetivo, vObjetivo');
         $this->db->from('objetivo');
         $this->db->where('iActivo', 1);
-        $this->db->where('iIdPoliticaPublica',$id);
+        $this->db->where('iIdPoliticaPublica', $id);
         $query = $this->db->get();
         return $query->result();
     }
@@ -152,26 +152,20 @@ class M_IntervencionPropuesta extends CI_Model{
         return $query->result();
     }
 
-    public function findDistinctOrganismo(){
+    public function findOrganismo($id = null){
         $this->db->distinct();
         $this->db->select('o.vOrganismo, o.iIdOrganismo');
-        $this->db->from("$this->table as ip");
-        $this->db->join('Organismo o', 'ip.iIdOrganismo = o.iIdOrganismo', 'INNER');
+        $this->db->from("organismo as o");
         $this->db->join('Eje e', 'e.iIdEje = o.iIdEje', 'INNER');
-        $this->db->where('ip.iActivo', 1);
+        $this->db->where('o.iActivo', 1);
+        
+        if($id != null && !empty($id)){
+            $this->db->where('o.iIdEje', $id);
+        }
+
         $query = $this->db->get();
         return $query->result();
     }
 
-    public function findDistinctEje(){
-        $this->db->distinct();
-        $this->db->select('e.vEje, o.iIdEje');
-        $this->db->from("$this->table as ip");
-        $this->db->join('Organismo o', 'ip.iIdOrganismo = o.iIdOrganismo', 'INNER');
-        $this->db->join('Eje e', 'e.iIdEje = o.iIdEje', 'INNER');
-        $this->db->where('ip.iActivo', 1);
-        $query = $this->db->get();
-        return $query->result();
-    }
 
 }

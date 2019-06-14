@@ -18,19 +18,93 @@ class C_IntervencionPropuesta extends CI_Controller {
 		{
 			$datos = $this->menu();
 			$this->load->model('M_IntervencionPropuesta');
-			$datos['msg'] = $msg;
-			$datos['organismo'] = $this->M_IntervencionPropuesta->findDistinctOrganismo();
-			$datos['eje'] = $this->M_IntervencionPropuesta->findDistinctEje();
+			$datos['table'] = $this->generateTable($this->M_IntervencionPropuesta->findAll());
+			$datos['eje'] = $this->M_IntervencionPropuesta->ejeQuery();
+
+			$datos['organismo'] = $this->M_IntervencionPropuesta->findOrganismo(null);
 			$this->load->view('IntervencionPropuesta/lista',$datos);
 
 		}else $this->index();
 	}
 
-	function drawTable(){
+	function buscar(){
 		$this->load->model('M_IntervencionPropuesta');
 		
 		if(empty($_REQUEST['iTipo']) && empty($_REQUEST['iIdEje']) && empty($_REQUEST['vIntervencion']) && empty($_REQUEST['iIdOrganismo'])){
-			$datos['intpro'] = $this->M_IntervencionPropuesta->findAll();
+			$data = $this->M_IntervencionPropuesta->findAll();
+		}else{
+			$nombre = $_REQUEST['vIntervencion'];
+			$eje = $_REQUEST['iIdEje'];
+			$dependencia = $_REQUEST['iIdOrganismo'];
+			$tipo = $_REQUEST['iTipo'];
+			$data = $this->M_IntervencionPropuesta->filterIntervencion($nombre, $eje, $dependencia, $tipo);
+		}
+		
+		echo $this->generateTable($data);
+	}
+
+	private function generateTable($data){
+		$table = '<p>No se encontraron registros para mostrar.</p>';
+		if($data->num_rows() > 0){
+			$table = '<table id="data-table-default" class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+								<th>Intervención pública</th>
+								<th>Año de creación</th>
+								<th>Año de evaluación</th>
+								<th>Eje</th>
+								<th>Dependencia</th>
+								<th>Tipo de intervención</th>
+								<th width="100px">Acciones</th>
+                            </tr>
+                        </thead>
+						<tbody>';
+							
+			foreach ($data->result() as $registro) {
+				$acciones = '';				
+				$acciones .= '<button onclick="cargar(\''.base_url().'C_IntervencionPropuesta/edit/'.$registro->iIdIntervencionPropuesta.'\', \'#contenido\');" class="btn btn-grey btn-icon btn-sm"><i class="fas fa-pencil-alt fa-fw"></i></button>&nbsp;';
+		
+			    $acciones .= '<button onclick="Aprobar('.$registro->iIdIntervencionPropuesta.')" class="btn btn-success btn-icon btn-sm"><i class="fas fa-lg fa-fw fa-check-circle"></i></button>&nbsp;';
+			
+			    $acciones .= '<button onclick="confirmar(\'¿Desea eliminar este registro?\', eliminar ,'.$registro->iIdIntervencionPropuesta.');" class="btn btn-danger btn-icon btn-sm"><i class="fas fa-trash-alt fa-fw"></i></button>';
+				$table .= " <tr>
+								<td>{$registro->vIntervencion}</td>
+								<td>{$registro->iAnioCreacion}</td>
+								<td>{$registro->iAnioEvaluacion}</td>
+								<td>{$registro->vEje}</td>
+								<td>{$registro->vOrganismo}</td>
+								<td>{$this->GetType($registro->iTipo)}</td>                        
+								<td>$acciones</td>
+							</tr>";
+						} 
+				$table .= '</tbody>
+						</table>';
+				$table .= '<script>
+				$(document).ready(function() {
+					TableManageDefault.init();
+				});
+			</script>';
+			return $table;
+		}else{
+			return 'No se encontraron coincidencias';
+		}
+	}
+
+	private function GetType($iTipo){
+		if($iTipo == 1){
+			return 'Programa presupuestario';
+		}elseif($iTipo == 2){
+			return 'Fondo';
+		}else{
+			return 'Programa de bienes o servicio';
+		}
+	}
+
+	public function drawTable(){
+		$this->load->model('M_IntervencionPropuesta');
+		
+		if(empty($_REQUEST['iTipo']) && empty($_REQUEST['iIdEje']) && empty($_REQUEST['vIntervencion']) && empty($_REQUEST['iIdOrganismo'])){
+			$datos['intpro'] = $this->M_IntervencionPropuesta->filterIntervencion(null, null, null, null);
 		}else{
 			$nombre = $_REQUEST['vIntervencion'];
 			$eje = $_REQUEST['iIdEje'];
@@ -70,47 +144,49 @@ class C_IntervencionPropuesta extends CI_Controller {
 
 	public function temaQuery($id = null, $find = ''){
 		
-		$option = '<option value="">Seleccionar</option>';
+		$option = '<option value="null">-Seleccione una opción-</option>';
 		if($id != null){
 			$this->load->model('M_IntervencionPropuesta');
 			$tema = $this->M_IntervencionPropuesta->temaQuery($id);
 		
 			foreach($tema as $r){
-				/*$option .= "<option value='$r->iIdPoliticaPublica'";
-				$option .= ($r->iIdPoliticaPublica == $find) ? 'selected' : '';
-				$option .= ">$r->vPoliticaPublica</option>";*/
 				$option .= "<option value='$r->iIdPoliticaPublica'>$r->vPoliticaPublica</option>";
 				if($find == $r->iIdPoliticaPublica){
-					$option .= "<script>$('#tema').val($find).change(); loadTema();</script>";
+					$option .= "<script>$('#tema').val($find).change();</script>";
 				}
 			}
-			
 		}
 		echo $option;
 	}
 
 	public function objetivoQuery($id = null, $objetivo = ''){
-		$option = '<option value="">Seleccionar</option>';
+		$option = '<option value="null">-Seleccione una opción-</option>';
 
 		if($id != null){
 			$this->load->model('M_IntervencionPropuesta');
-			$tema = $this->M_IntervencionPropuesta->objetivoQuery($id);
-			foreach($tema as $r){
-				$option .= "<option value='$r->iIdObjetivo'>$r->vObjetivo</option>";
+			$organismo = $this->M_IntervencionPropuesta->objetivoQuery($id);
+			foreach($organismo as $r){
+				
 				if($objetivo == $r->iIdObjetivo){
-					$option .= "<script>$('#iIdObjetivo').val($objetivo).change();</script>";
+					$option .= "<option value='$r->iIdObjetivo' selected>$r->vObjetivo</option>";
+				}else{
+					$option .= "<option value='$r->iIdObjetivo'>$r->vObjetivo</option>";
 				}
 			}
-			
 		}
+		echo "<script>focusObjetivo($objetivo)</script>";
 		echo $option;
+		
 	}
 
-	public function test($id){
+	public function dependenciaQuery($id = null){
 		$this->load->model('M_IntervencionPropuesta');
-		$data = $this->M_IntervencionPropuesta->GetRecord($id);
-
-		print_r($data);
+		$data = $this->M_IntervencionPropuesta->findOrganismo($id);
+		$option = '<option value="">-Todos-</option>';
+		foreach($data as $r){
+			$option .= "<option value='$r->iIdOrganismo'>$r->vOrganismo</option>";
+		}
+		echo $option;
 	}
 
 

@@ -23,7 +23,7 @@
     </div>
     <?php endif; ?>
 
-    <?php echo form_open_multipart('controller', 'id="form"');?>
+    <form class="form" onsubmit="guardar(this,event);" id="form-captura" name="form-captura">
     <div class="row">
         <div class="col-md-4">
         <div class="form-group">
@@ -34,7 +34,8 @@
                 $input = array(
                     'name' => 'usuario',
                     'value' => $usuario,
-                    'class' => 'form-control form-control-sm'
+                    'class' => 'form-control form-control-sm',
+                    'data-parsley-required' => 'true'
                 );
 
                 echo form_input($input);
@@ -49,7 +50,8 @@
                 $input = array(
                     'name' => 'contrasenia',
                     'value' => $contrasenia,
-                    'class' => 'form-control form-control-sm'
+                    'class' => 'form-control form-control-sm',
+                    'data-parsley-required' => 'true'
                 );
 
                 echo form_password($input);
@@ -64,7 +66,8 @@
                 $input = array(
                     'name' => 'confirmar',
                     'value' => '',
-                    'class' => 'form-control form-control-sm'
+                    'class' => 'form-control form-control-sm',
+                    'data-parsley-required' => 'true'
                 );
 
                 echo form_password($input);
@@ -81,7 +84,8 @@
                 $input = array(
                     'name' => 'nombre',
                     'value' => $nombre,
-                    'class' => 'form-control form-control-sm'
+                    'class' => 'form-control form-control-sm',
+                    'data-parsley-required' => 'true'
                 );
 
                 echo form_input($input);
@@ -96,7 +100,8 @@
                 $input = array(
                     'name' => 'paterno',
                     'value' => $paterno,
-                    'class' => 'form-control form-control-sm'
+                    'class' => 'form-control form-control-sm',
+                    'data-parsley-required' => 'true'
                 );
 
                 echo form_input($input);
@@ -111,7 +116,8 @@
                 $input = array(
                     'name' => 'materno',
                     'value' => $materno,
-                    'class' => 'form-control form-control-sm'
+                    'class' => 'form-control form-control-sm',
+                    'data-parsley-required' => 'true'
                 );
 
                 echo form_input($input);
@@ -129,7 +135,8 @@
                 $input = array(
                     'name' => 'correo1',
                     'value' => $correo1,
-                    'class' => 'form-control form-control-sm'
+                    'class' => 'form-control form-control-sm',
+                    'data-parsley-required' => 'true'
                 );
 
                 echo form_input($input);
@@ -175,7 +182,8 @@
                 $input = array(
                     'name' => 'titulo',
                     'value' => $titulo,
-                    'class' => 'form-control form-control-sm'
+                    'class' => 'form-control form-control-sm',
+                    'data-parsley-required' => 'true'
                 );
 
                 echo form_input($input);
@@ -190,7 +198,8 @@
                 $input = array(
                     'name' => 'cargo',
                     'value' => $cargo,
-                    'class' => 'form-control form-control-sm'
+                    'class' => 'form-control form-control-sm',
+                    'data-parsley-required' => 'true'
                 );
 
                 echo form_input($input);
@@ -205,7 +214,8 @@
                 $input = array(
                     'name' => 'celular',
                     'value' => $celular,
-                    'class' => 'form-control form-control-sm'
+                    'class' => 'form-control form-control-sm',
+                    'data-parsley-required' => 'true'
                 );
 
                 echo form_input($input);
@@ -215,16 +225,13 @@
             <div class="row">
             <div class="col-md-6">
             <div class="form-group">
-            <?php
-            echo form_label('Organización', 'organizacion'); echo "<br>";
-            $options = array(
-            '1' => 'Secretaria Técnica de Planeación y Evaluación'
-            );
-            echo form_dropdown('organismo', 
-            $options, 
-            'Secretaria Técnica de Planeación y Evaluación', 
-            'class="form-control"'
-            ); ?>
+            <label>Dependecia: </label>
+            <select class="form-control" id="organismo" name="organismo" data-parsley-required="true">
+            <option value="">Seleccionar</option>
+            <?php foreach ($organismo as $row) {?>
+                <option value="<?=$row->iIdOrganismo;?>"><?=$row->vOrganismo;?></option>
+            <?php } ?>
+            </select>
     </div></div>
 
             <div class="col-md-6">
@@ -242,10 +249,10 @@
             ); ?>
             </div></div></div>
             <center>
-            <button onclick="dataEntry()" type="button" class='btn btn-primary'>Enviar</button>
+            <button type="submit" class='btn btn-primary'>Enviar</button>
             <button type="button" class="btn btn-white" onclick="regresar();">Cancelar</button>
             </center>
-                <?php echo form_close();?>
+            </form>
     </div> <br>
     </div>
     </div>
@@ -279,7 +286,6 @@
             });
             }
 
-
             function regresar(e){
         if (!e) { var e = window.event; }
         e.preventDefault();
@@ -287,6 +293,45 @@
         cargar('<?=base_url();?>C_usuario/listado','#contenido','POST');
     }
         </script>
+
+        <script type="text/javascript">
+	function guardar(form,event){
+		event.preventDefault();
+		var loading;
+		if(validarFormulario(form)){
+			$.ajax({
+		        url: '<?=base_url()?>C_usuario/guardar',
+		        type: 'POST',
+		        async: false,	//	Para obligar al usuario a esperar una respuesta
+		        data: $(form).serialize(),
+		        beforeSend: function(){
+		           /*loading = new Loading({
+		                discription: 'Espere...',
+		                defaultApply: true
+		            });*/
+		        },
+		        error: function(XMLHttpRequest, errMsg, exception){
+		            var msg = "Ha fallado la petición al servidor";
+		            //loading.out();
+		            notificacion(msg);
+		        },
+		        success: function(htmlcode){
+		        	//loading.out();
+		        	var cod = htmlcode.split("-");
+		        	switch(cod[0]){
+		                case "1":
+		                	notificacion('Los datos han sido guardados','success');
+		                	regresar();
+		                    break;
+		                default:
+		                    notificacion(htmlcode,'error');
+		                    break;
+		            }
+		        }
+		    });
+		}
+	}
+    </script>
 </body>
 
 </html>

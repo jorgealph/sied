@@ -13,14 +13,10 @@
 				<div class="panel-heading">
 					<div class="panel-heading-btn">
 						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-redo"></i></a>
-						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
 					</div>
 					<h4 class="panel-title">Edición de propuestas de intervenciones</h4>
 				</div>
 				<div class="panel-body">
-                
-	<link href="<?=base_url();?>admin/assets/plugins/parsley/src/parsley.css" rel="stylesheet">
 	<link href="<?=base_url();?>admin/assets/plugins/jquery-smart-wizard/src/css/smart_wizard.css" rel="stylesheet">
 	<!--action="C_IntervencionPropuesta/dataEntry" method="POST"-->
     <!-- begin wizard-form -->
@@ -204,7 +200,7 @@
                         </div>
                         <div class="col-md-3">
                             <select id="eje" class="form-control" data-parsley-min="-1" data-parsley-required="true" data-parsley-group="step-2" onchange="loadTema()">
-                                <option value="">-Seleccione una opción-</option>
+                                <option value="null">-Seleccione una opción-</option>
                                 <?php foreach($eje as $r){
                                     echo("<option value='".$r->iIdEje."'>".$r->vEje."</option>");
                                 }
@@ -216,8 +212,8 @@
                             <label for="" class="col-form-label text-md-left">Tema</label>
                         </div>
                         <div class="col-md-3">
-                            <select id="tema" class="form-control" data-parsley-min="0" data-parsley-required="true" data-parsley-group="step-2" onchange="loadObjetivo()">
-                                <option value="">-Seleccione una opción-</option>
+                            <select id="tema" class="form-control" data-parsley-min="-1" data-parsley-required="true" data-parsley-group="step-2" onchange="loadObjetivo()">
+                                <option value="null">-Seleccione una opción-</option>
                             </select>
                         </div>
 
@@ -226,7 +222,7 @@
                         </div>
                         <div class="col-md-3">
                             <select id="iIdObjetivo" name="iIdObjetivo" class="form-control" data-parsley-min="0" data-parsley-required="true" data-parsley-group="step-2">
-                                <option value="">-Seleccione una opción-</option>
+                                <option value="null">-Seleccione una opción-</option>
                             </select>
                         </div>
                     </div>
@@ -477,7 +473,6 @@
 			</form>
             <!-- end wizard-form -->
             
-        <script src="<?=base_url();?>admin/assets/plugins/parsley/dist/parsley.js"></script>
 	    <script src="<?=base_url();?>admin/assets/plugins/jquery-smart-wizard/src/js/jquery.smartWizard.js"></script>
         <script src="<?=base_url();?>admin/assets/js/demo/form-wizards-validation.demo.min.js"></script>
     
@@ -491,6 +486,7 @@
         function loadTema(){
             var value = $("#eje").val();
             $("#tema").load('C_intervencionpropuesta/temaQuery/'+value+'/<?php echo $select->iIdPoliticaPublica; ?>');
+            $("#iIdObjetivo").load('C_intervencionpropuesta/objetivoQuery/null/<?php echo $record->iIdObjetivo; ?>');
         }
         function loadObjetivo(){
             var value = $("#tema").val();
@@ -526,4 +522,15 @@
                 }
             });
             }
+            function focusObjetivo(obj){
+            var exists = false; 
+            $('#iIdObjetivo  option').each(function(){
+                if (this.value == obj) {
+                    exists = true;
+                }
+            });
+            if(exists == true){
+                $('#iIdObjetivo').val(obj).change();
+            }
+        }
         </script>

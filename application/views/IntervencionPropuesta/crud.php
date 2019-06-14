@@ -1,4 +1,4 @@
-
+<link href="<?=base_url();?>admin/assets/plugins/jquery-smart-wizard/src/css/smart_wizard.css" rel="stylesheet">
 			<!-- begin breadcrumb -->
 			<a onclick="cargar('<?=base_url();?>C_IntervencionPropuesta/mostrar_vista', '#contenido');" class="btn btn-default pull-right">
                 <li class="fas fa-lg fa-fw m-r-10 fa-arrow-left"></li><span>Regresar</span>
@@ -13,16 +13,10 @@
 				<div class="panel-heading">
 					<div class="panel-heading-btn">
 						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-redo"></i></a>
-						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
 					</div>
 					<h4 class="panel-title">Captura de propuestas de intervenciones</h4>
 				</div>
 				<div class="panel-body">
-                
-	<link href="<?=base_url();?>admin/assets/plugins/parsley/src/parsley.css" rel="stylesheet">
-	<link href="<?=base_url();?>admin/assets/plugins/jquery-smart-wizard/src/css/smart_wizard.css" rel="stylesheet">
-	
     <!-- begin wizard-form -->
     <form id="form" name="form-wizard" class="form-control-with-bg">
 				<!-- begin wizard -->
@@ -467,8 +461,6 @@
 				<!-- end wizard -->
 			</form>
             <!-- end wizard-form -->
-            
-        <script src="<?=base_url();?>admin/assets/plugins/parsley/dist/parsley.js"></script>
 	    <script src="<?=base_url();?>admin/assets/plugins/jquery-smart-wizard/src/js/jquery.smartWizard.js"></script>
         <script src="<?=base_url();?>admin/assets/js/demo/form-wizards-validation.demo.min.js"></script>
     
@@ -479,14 +471,34 @@
     </script>
 
     <script>
+
+
+
         function loadTema(){
             var value = $("#eje").val();
             $("#tema").load('C_intervencionpropuesta/temaQuery/'+value);
+            $("#iIdObjetivo").load('C_intervencionpropuesta/objetivoQuery/null/<?php echo $record->iIdObjetivo; ?>');
         }
         function loadObjetivo(){
             var value = $("#tema").val();
             $("#iIdObjetivo").load('C_intervencionpropuesta/objetivoQuery/'+value);
         }
+
+        function focusObjetivo(obj){
+            var exists = false; 
+            $('#iIdObjetivo  option').each(function(){
+                if (this.value == obj) {
+                    exists = true;
+                }
+            });
+            if(exists == true){
+                $('#iIdObjetivo').val(obj).change();
+            }
+        }
+
+        
+
+
     </script>
                 </div>
 			</div>
