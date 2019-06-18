@@ -46,7 +46,7 @@
                             <div class="input-group-append">
                                 <button class="btn btn-info" type="button" onclick="filter()"><i class="ti-search"></i>&nbsp;Buscar</button>
                             </div>
-                    </div>
+                    </div> 
                 </div>
                 <a class="btn btn-success col-md-2" type="button" name="guardar" id="guardar" onclick="cargar('<?=base_url(); ?>C_plantilla/guardar_plantilla/0/1','#contenido');"style="margin-top:25px; color: white;"><i class="fas fa-lg fa-fw m-r-10 fa-plus-circle" style="color: white"></i>Nueva plantilla</a>
                 </div>

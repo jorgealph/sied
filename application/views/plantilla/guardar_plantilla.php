@@ -9,7 +9,7 @@
             <div class="panel-body">
             <form class="form" id="form-captura" name="form-captura" onkeypress="return pulsar(event)">
                 <div class="col-md-12">
-                
+                <input type="hidden" name="id_plantilla" value="<?php if(isset($iIdPlantilla)) echo $iIdPlantilla;?>">
                 <div class="row">
                     <div class="col-md-6">
                         <label>Nombre de la plantilla: </label>
@@ -118,6 +118,11 @@
         
     <div id="table"></div>
     <div id="bo"></div>
+
+    <center>
+        <button type="button" onclick="dataEntry2()" class='btn btn-primary'>Enviar</button>
+    </center>
+    
         <script src="<?=base_url()?>admin/assets/js/demo/table-manage-default.demo.min.js"></script>
         <script src="<?=base_url()?>admin/assets/plugins/select2/dist/js/select2.min.js"></script>
 
@@ -157,13 +162,12 @@
         
 
 <br>
-<select class="simple-select2 w-100" multiple>
-                    <optgroup label="Alaskan/Hawaiian Time Zone">
-                        <option value="AK">Alaska</option>
-                        <option value="HI">Hawaii</option>
-                    </optgroup>
-
-                </select>
+            <select class="simple-select2 w-100" multiple>
+                <option value="null">Seleccionar</option>
+                    <?php foreach ($eje as $row) {?>
+                        <option value="<?=$row->iIdEje;?>"><?=$row->vEje;?></option>
+                    <?php } ?>
+            </select>
 
                 <script>
                     function de(){
@@ -198,6 +202,47 @@
 				$.ajax({
     				// la URL para la petición
     				url : '<?=base_url()?>C_plantilla/insertar_plantilla',
+					// la información a enviar
+    				// (también es posible utilizar una cadena de datos)
+    				data : $("#form-captura").serialize(),
+
+    				// especifica si será una petición POST o GET
+    				type : 'POST',
+
+    				// el tipo de información que se espera de respuesta
+    				/*dataType : 'json',*/
+
+    				// código a ejecutar si la petición es satisfactoria;
+    				// la respuesta es pasada como argumento a la función
+    				success : function(data) {
+        				alert(data);
+                        if(data>0){
+                            $("#id_plantilla").val(data);
+                        }
+    				},
+					
+					/* código a ejecutar si la petición falla;
+    				son pasados como argumentos a la función
+    				el objeto de la petición en crudo y código de estatus de la petición*/
+    				error : function(xhr, status) {
+        				swal(`La operación no pudo concluirse`, 'Intente nuevamente', 'error',
+						{
+							buttons: false,
+							timer: 1500
+						});
+    				},
+
+    				// código a ejecutar sin importar si la petición falló o no
+    				/*complete : function(xhr, status) {
+        				alert('Petición realizada');
+					}*/
+				});
+			}
+
+            function dataEntry2(){
+				$.ajax({
+    				// la URL para la petición
+    				url : '<?=base_url()?>C_plantilla/insertarEvaluacion',
 					// la información a enviar
     				// (también es posible utilizar una cadena de datos)
     				data : $("#form-captura").serialize(),

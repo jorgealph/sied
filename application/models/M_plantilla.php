@@ -31,6 +31,11 @@ class M_plantilla extends CI_Model {
         $this->db->insert($this->table, $data);
         return $this->db->insert_id();
     }
+
+    function insertIntercencion($data){
+        $this->db->insert('evaluacion', $data);
+        return $this->db->insert_id();
+    }
     
     function update($id, $data){
         $this->db->where($this->table_id, $id); 

@@ -130,7 +130,11 @@ class C_plantilla extends CI_Controller {
             <tr>
                 <th scope="col">Clave</th>
                 <th scope="col">Nombre</th>
-                <th scope="col">Dependencia corresponsable</th>
+                <th scope="col">Clave</th>
+                <th scope="col">Año</th>
+                <th scope="col">Tipo</th>
+                <th scope="col">Intervención Propuesta</th>
+                <th scope="col">Organismo</th>
             </tr>
         </thead>';
         return $thead;
@@ -151,11 +155,14 @@ class C_plantilla extends CI_Controller {
                 $tcontent .= '<tr>';
                 $tcontent .=  '<td>'.$r->iIdIntervencion.'</td>';
                 $tcontent .=  '<td>'.$r->vIntervencion.'</td>';
-                $tcontent .=  '<td>'.'<select class="simple-select2-sm input-sm w-100" multiple>
-                <optgroup label="Alaskan/Hawaiian Time Zone">
-                    <option value="AK">Alaska</option>
-                </optgroup>
-                </select>';
+                $tcontent .=  '<td>'.$r->vClave.'</td>';
+                $tcontent .=  '<td>'.$r->iAnio.'</td>';
+                $tcontent .=  '<td>'.$r->iTipo.'</td>';
+                $tcontent .=  '<td>'.$r->iIdIntervencionPropuesta.'</td>';
+                $tcontent .=  '<td>'.$r->iIdOrganismo.'</td>';
+/*                 $tcontent .=  '<td>'.'<select class="simple-select2-sm input-sm w-100" multiple>
+                <option value="null">Seleccionar</option>
+                </select>'; */
                 $tcontent .= '</tr>';
             }
             $tcontent .= ' <script>
@@ -174,6 +181,8 @@ class C_plantilla extends CI_Controller {
                     });
                 });
             </script>';
+            $tcontent .= '<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.full.min.js"></script> ';
+            $tcontent .= '<script src="<?=base_url()?>admin/assets/plugins/select2/dist/js/select2.min.js"></script>';
         }
         return $tcontent;
     }
@@ -182,20 +191,34 @@ class C_plantilla extends CI_Controller {
          if(isset($_POST['iIdPlantilla']) && !empty($_POST['iIdPlantilla']))
             $data['iIdPlantilla'] = $_POST['iIdPlantilla'];  
         $data["iIdPlantilla"] = 0;
-        $iIdPlantilla = $this->input->post("nombre");
+        $iIdPlantilla = $this->input->post("id_plantilla");
         $data['vPlantilla'] = $this->input->post("nombre");
         $data['iAnioEvaluacion'] = $this->input->post("anio");
         $data['iOrigenEvaluacion'] = $this->input->post("origen");
         $data['iIdTipoEvaluacion'] = $this->input->post("tipo");
-
+        $intervencion = $_SESSION['intervencion'];
         //if(isset($_POST['iIdPlantilla']) && !empty($_POST['iIdPlantilla'])){
 			//$insert = $this->mp->update($data);
 		//}else{
-            if($iIdPlantilla > 0){
+            /* if($iIdPlantilla > 0){
                 echo $insert = $this->mp->update($data);
-            }else{
-                echo $insert = $this->mp->insert($data);
-            }
-	//	}
-    }
+            }else{ */
+                $iIdPlantilla = $this->mp->insert($data);
+
+                if($iIdPlantilla>0){
+                    foreach($intervencion as $r){
+                        $tmp['iIdPlantilla'] = $iIdPlantilla;
+                        $tmp['iIdIntervencion'] = $r->iIdIntervencion;
+                        $tmp['vNombreEvaluacion'] = '';
+                        $tmp['vObjetivo'] = '';
+                        $tmp['vObjetivoEspecifico'] = ''; 
+                        $tmp['vEspecificarOtro'] = '';
+                        $tmp['vRutaArchivo'] = '';
+                        $tmp['vComentarioGeneral'] = '';
+                        echo $insert = $this->mp->insertIntercencion($tmp);
+                    }
+                }
+            //}
+		}
+    //}
 }
