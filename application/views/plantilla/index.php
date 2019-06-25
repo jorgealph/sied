@@ -88,5 +88,42 @@
             $("#table").load('<?=base_url()?>C_plantilla/tabla');
             </script>
 
+            <script>
+                        function deleteRow(id){
+				swal({
+  					title: "¿Estás seguro?",
+  					text: "Una vez eliminado, este registro no se puede recuperar",
+  					icon: "warning",
+  					buttons: true,
+					buttons: ['Cancelar', 'Aceptar'],
+  					dangerMode: true,
+				})
+				.then((willDelete) => {
+  					if (willDelete) {
+						$.get("<?=base_url()?>C_plantilla/borrar_ajax/"+id, 
+						function(data) {
+							if(data == 1){
+								$("#contenido").load('<?=base_url()?>C_plantilla/index');
+								swal("El registro ha sido eliminado correctamente", {
+									title: 'Exito',
+      								icon: "success",
+									button: false,
+  									timer: 1500
+    							});
+								
+							}else{
+								swal("El registro no pudo eliminarse", {
+									title: 'Error',
+      								icon: "error",
+									button: false,
+  									timer: 1500
+    							});
+							}
+						});
+  					}
+				});
+			}
+            </script>
+
 </body>
 </html>

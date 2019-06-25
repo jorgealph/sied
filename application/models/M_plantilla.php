@@ -17,6 +17,15 @@ class M_plantilla extends CI_Model {
         return $query->row();
     }
 
+    function findIdEvaluacion($id){
+        $this->db->select('*');
+        $this->db->from('evaluacion');
+        $this->db->where($this->table_id, $id);
+
+        $query=$this->db->get();
+        return $query->row();
+    }
+
     public function findAll(){
         $this->db->select();
         $this->db->from($this->table); 
@@ -24,6 +33,23 @@ class M_plantilla extends CI_Model {
 
         $query=$this->db->get();
         
+        return $query->result();
+    }
+
+    public function findEvaluacion($iIdPlantilla){
+/*         $this->db->select('*');
+        $this->db->from('evaluacion');
+        $this->db->where('iActivo', 1); 
+        $this->db->where('iIdPlantilla', $iIdPlantillas); */
+
+
+        $this->db->select('i.iIdIntervencion, i.vIntervencion, i.vClave, i.iAnio, i.iTipo, i.iIdIntervencionPropuesta, i.iIdOrganismo, e.iIdEvaluacion');
+        $this->db->from('intervencion as i');
+        $this->db->join('evaluacion e', 'i.iIdIntervencion = e.iIdIntervencion', 'INNER');
+        $this->db->where('iIdPlantilla', $iIdPlantilla);
+       // $this->db->join('Eje e', 'e.iIdEje = o.iIdEje', 'INNER');
+
+        $query = $this->db->get();
         return $query->result();
     }
 
@@ -39,7 +65,11 @@ class M_plantilla extends CI_Model {
     
     function update($id, $data){
         $this->db->where($this->table_id, $id); 
-        return $this->db->update($this->table, $data);       
+        return $this->db->update($this->table, $data);        
+    }
+
+    function updateIntervencion(){
+        
     }
 
     public function delete($id){

@@ -135,6 +135,7 @@ class C_plantilla extends CI_Controller {
                 <th scope="col">Tipo</th>
                 <th scope="col">Intervención Propuesta</th>
                 <th scope="col">Organismo</th>
+                <th scope="col">Eliminar</th>
             </tr>
         </thead>';
         return $thead;
@@ -160,9 +161,7 @@ class C_plantilla extends CI_Controller {
                 $tcontent .=  '<td>'.$r->iTipo.'</td>';
                 $tcontent .=  '<td>'.$r->iIdIntervencionPropuesta.'</td>';
                 $tcontent .=  '<td>'.$r->iIdOrganismo.'</td>';
-/*                 $tcontent .=  '<td>'.'<select class="simple-select2-sm input-sm w-100" multiple>
-                <option value="null">Seleccionar</option>
-                </select>'; */
+                $tcontent .=  '<td>'.'<button type="button" class="btn btn-danger btn-icon btn-sm" onclick="deleteRowIntervencion('.$r->iIdIntervencion.')" title="Eliminar"><i class="fas fa-trash-alt fa-fw"></i></button>'; 
                 $tcontent .= '</tr>';
             }
             $tcontent .= ' <script>
@@ -221,4 +220,44 @@ class C_plantilla extends CI_Controller {
             //}
 		}
     //}
-}
+    
+    public function borrar_registro(){
+        $intervencion = $_SESSION['intervencion'];
+        unset($_SESSION['intervencion'][$intervencion]);        
+    }
+
+    public function borrar_ajax($iIdPlantilla = null){
+        echo $this->mp->delete($iIdPlantilla);        
+    }
+
+    public function modificar_plantilla($iIdPlantilla = null, $vista = null){
+        if(isset($iIdPlantilla) && !empty($iIdPlantilla)){
+            $plantilla = $this->mp->find($iIdPlantilla);
+
+            if(isset($plantilla)){
+                $data['nombre'] = $plantilla->vPlantilla;
+                $data['anio'] = $this->mp->get_anio();
+                $data['buscar'] = $plantilla->iAnioEvaluacion;
+                $data['anio2'] = $this->mp->get_anio_intervencion();
+                $data['origen'] = $this->mp->get_origen();
+                $data['origen2'] = $plantilla->iOrigenEvaluacion;
+                $data['tipo'] = $this->mp->get_tipo();
+                $data['tipo2'] = $plantilla->iIdTipoEvaluacion;
+                $data['iIdPlantilla'] = $plantilla->iIdPlantilla;
+                $data['eje'] = $this->mp->get_eje();
+
+                //$_SESSION['intervencion'] = $this->mp->findEvaluacion();
+                $resultado = $this->mp->findEvaluacion($iIdPlantilla);
+                $intervencion = null;
+                foreach($resultado as $fila){
+                    $intervencion[] = $fila;
+                }
+                
+                $_SESSION['intervencion'] = $intervencion;
+                //$data['tabla'] = $this->GenerateTable();
+                print_r($intervencion);
+                $this->load->view('plantilla/guardar_plantilla', $data);
+            }
+        }    
+    }
+}   

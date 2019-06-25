@@ -18,7 +18,6 @@
             <input type="hidden" name="id_usuario" value="<?=$id_usuario?>">
                 <?php
                 echo form_label('Usuario', 'usuario');
-
                 $input = array(
                     'name' => 'usuario',
                     'value' => $usuario,
@@ -33,7 +32,7 @@
             <div class="form-group">
             <label>Dependecia: </label>
             <select class="form-control" id="organismo" name="organismo">
-            <option value="">Seleccionar</option>
+            <!-- <option value="">Seleccionar</option> -->
             <?php foreach ($organismo as $row) {?>
                 <option value="<?=$row->iIdOrganismo;?>"><?=$row->vOrganismo;?></option>
             <?php } ?>

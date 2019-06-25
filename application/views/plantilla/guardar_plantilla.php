@@ -18,7 +18,7 @@
                 </div> 
                 <div class="row">
                     <div class="container" >
-                        <textarea rows="3" cols="50" class="col-md-12" data-parsley-required="true" id="nombre" name="nombre"></textarea> 
+                        <textarea rows="3" cols="50" class="col-md-12" data-parsley-required="true" id="nombre" name="nombre"><?php if(isset($nombre)){echo $nombre;} ?></textarea> 
                     </div>
                 </div>
                 
@@ -26,19 +26,19 @@
                     <div class="col-md-4">
                     <label>Año de la evaluación: </label>
                     <select class="form-control" id="anio" name="anio">
-                        <option value="2019">2019</option>
-                        <option value="2018">2018</option>
-                        <option value="2017">2017</option>
-                        <option value="2016">2016</option>
-                        <option value="2015">2015</option>
-                        <option value="2014">2014</option>
+                        <option <?php if(isset($iAnioEvaluacion) && $iAnioEvaluacion == '2019') echo 'selected'; ?> value="2019">2019</option>
+                        <option <?php if(isset($iAnioEvaluacion) && $iAnioEvaluacion == '2018') echo 'selected'; ?> value="2018">2018</option>
+                        <option <?php if(isset($iAnioEvaluacion) && $iAnioEvaluacion == '2017') echo 'selected'; ?> value="2017">2017</option>
+                        <option <?php if(isset($iAnioEvaluacion) && $iAnioEvaluacion == '2016') echo 'selected'; ?> value="2016">2016</option>
+                        <option <?php if(isset($iAnioEvaluacion) && $iAnioEvaluacion == '2015') echo 'selected'; ?> value="2015">2015</option>
+                        <option <?php if(isset($iAnioEvaluacion) && $iAnioEvaluacion == '2014') echo 'selected'; ?> value="2014">2014</option>
                     </select>
                     </div>
                 <div class="col-md-4">
                 <label>Origen de la envaluación: </label>
-                <select class="form-control" id="origen" name="origen">
-                    <option value="1">Externa</option>
-                    <option value="2">Interna</option>
+                <select class="form-control" id="origen" name="origen" <?php if(isset($iOrigenEvaluacion)){echo $iOrigenEvaluacion;} ?>>
+                    <option <?php if(isset($iOrigenEvaluacion) && $iOrigenEvaluacion == 1) echo 'selected'; ?> value="1">Externa</option>
+                    <option <?php if(isset($iOrigenEvaluacion) && $iOrigenEvaluacion == 2) echo 'selected'; ?> value="2">Interna</option>
                 </select>
                 </div>
                 <div class="col-md-4">
@@ -49,11 +49,13 @@
                         <option value="<?=$row->iIdTipoEvaluacion;?>"><?=$row->vTipoEvaluacion;?></option>
                     <?php } ?>
                 </select>
+                <script>
+                    $("#tipo").val(<?php if(isset($tipo2)){echo $tipo2;}?>);
+                    $("#anio").val(<?php if(isset($buscar)){echo $buscar;}?>);
+                    $("#origen").val(<?php if(isset($origen2)){echo $origen2;}?>);
+                </script>
                 </div>
             </div> 
-            <center>
-                <button type="button" onclick="dataEntry()" class='btn btn-primary'>Enviar</button>
-            </center>
         </form> 
          
 
@@ -120,7 +122,7 @@
     <div id="bo"></div>
 
     <center>
-        <button type="button" onclick="dataEntry2()" class='btn btn-primary'>Enviar</button>
+        <button type="button" onclick="<?php echo (isset($iIdPlantilla)) ? 'update()': 'dataEntry()'; ?>" class='btn btn-primary'>Enviar</button>
     </center>
     
         <script src="<?=base_url()?>admin/assets/js/demo/table-manage-default.demo.min.js"></script>
@@ -239,10 +241,10 @@
 				});
 			}
 
-            function dataEntry2(){
+            function update(){
 				$.ajax({
     				// la URL para la petición
-    				url : '<?=base_url()?>C_plantilla/insertarEvaluacion',
+    				url : '<?=base_url()?>C_plantilla/modificar_plantilla',
 					// la información a enviar
     				// (también es posible utilizar una cadena de datos)
     				data : $("#form-captura").serialize(),
@@ -343,4 +345,38 @@
   				return (tecla!=13);
 			}
                     
+            function deleteRowIntervencion(id){
+				swal({
+  					title: "¿Estás seguro?",
+  					text: "Una vez eliminado, este registro no se puede recuperar",
+  					icon: "warning",
+  					buttons: true,
+					buttons: ['Cancelar', 'Aceptar'],
+  					dangerMode: true,
+				})
+				.then((willDelete) => {
+  					if (willDelete) {
+						$.get("<?=base_url()?>C_plantilla/borrar_registro/"+id, 
+						function(data) {
+							if(data == 1){
+								$("#contenido").load('<?=base_url()?>C_plantilla/guardar_plantilla');
+								swal("El registro ha sido eliminado correctamente", {
+									title: 'Exito',
+      								icon: "success",
+									button: false,
+  									timer: 1500
+    							});
+								
+							}else{
+								swal("El registro no pudo eliminarse", {
+									title: 'Error',
+      								icon: "error",
+									button: false,
+  									timer: 1500
+    							});
+							}
+						});
+  					}
+				});
+			}
                 </script>

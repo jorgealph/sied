@@ -10,7 +10,7 @@
                     </tr>
                 </thead>
                 <tbody class="contenidobusqueda">
-
+                
                     <?php foreach ($plantilla as $key => $p) : ?>
                         <tr>
                             <th scope="row"><?php echo $p->vPlantilla ?></th>
@@ -18,7 +18,7 @@
                             <td><?php echo $p->iIdTipoEvaluacion ?></td>
                             <td><?php echo $p->iOrigenEvaluacion ?></td>
                              <td>
-                                <button type="button" class="btn btn-grey btn-icon btn-sm" onclick="cargar('<?=base_url(); ?>C_usuario/guardar/<?=$p->iIdPlantilla?>/1','#contenido');" title="Editar"><i class="fas fa-pencil-alt fa-fw"></i></button>
+                                <button type="button" class="btn btn-grey btn-icon btn-sm" onclick="cargar('<?=base_url(); ?>C_plantilla/modificar_plantilla/<?=$p->iIdPlantilla?>/1','#contenido');" title="Editar"><i class="fas fa-pencil-alt fa-fw"></i></button>
                                 
                                 <button type="button" class="btn btn-danger btn-icon btn-sm" onclick="deleteRow(<?php echo $p->iIdPlantilla ?>)" title="Eliminar"><i class="fas fa-trash-alt fa-fw"></i></button>
                             </td> 
