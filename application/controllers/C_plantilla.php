@@ -231,8 +231,6 @@ class C_plantilla extends CI_Controller {
                     });
                 });
             </script>';
-            $tcontent .= '<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.full.min.js"></script> ';
-            $tcontent .= '<script src="<?=base_url()?>admin/assets/plugins/select2/dist/js/select2.min.js"></script>';
         }
         return $tcontent;
     }
