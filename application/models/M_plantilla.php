@@ -79,7 +79,15 @@ class M_plantilla extends CI_Model {
         return $this->db->affected_rows();
     }
 
+    public function deleteEvaluacion($id){
+        $this->db->where($this->table_id, $id);
+        $data =  array('iActivo' => 0 );
+        $this->db->update('evaluacion', $data);
+        return $this->db->affected_rows();
+    }
+
     function get_anio(){
+        $this->db->distinct();
         $this->db->select('iAnioEvaluacion');
         $this->db->from($this->table);
         $this->db->where('iActivo', 1); 
@@ -88,7 +96,8 @@ class M_plantilla extends CI_Model {
     }
 
     function get_anio_intervencion(){
-        $this->db->select('*');
+        $this->db->distinct();
+        $this->db->select('iAnio');
         $this->db->from('intervencion');
         $this->db->where('iActivo', 1); 
         $query = $this->db->get();

@@ -112,7 +112,7 @@
                         
                         </select>
                     </div>        
-                <button class="btn btn-success col-md-3" type="button" name="guardar" id="guardar" onclick="setIntervencion()" style="margin-top:25px; color: white;"><i class="fas fa-lg fa-fw m-r-10 fa-plus-circle" style="color: white"></i>Agregar intervención pública</button>
+                <button class="btn btn-success col-md-3" type="button" name="guardar" id="guardar" onclick="setIntervencionCambio()" style="margin-top:25px; color: white;"><i class="fas fa-lg fa-fw m-r-10 fa-plus-circle" style="color: white"></i>Agregar intervención pública</button>
                 <button type="button" class="btn btn-white col-md-2" onclick="regresar();" style="margin-top:25px;">Cancelar</button>
             </div>
         </div>
@@ -308,6 +308,29 @@
                         var formData = new FormData();
                         formData.append('intervencion', $("#intervencion").val());
                         var url = "C_plantilla/tempIntervencion";
+                        $.ajax({
+                            url: url,
+                            type: 'POST',
+                            data: formData,
+                            async: false,
+                            success: function(data){
+                                if(data == 1){
+                                    $("#table").load('C_plantilla/GenerateTable');
+                                }else{
+                                    alert('existe');
+                                    $("#table").load('C_plantilla/GenerateTable');
+                                }
+                            },
+                            cache:false,
+                            contentType: false,
+                            processData: false
+                        });
+                    }
+
+                    function setIntervencionCambio(){
+                        var formData = new FormData();
+                        formData.append('intervencion', $("#intervencion").val());
+                        var url = "C_plantilla/tempIntervencionCambio";
                         $.ajax({
                             url: url,
                             type: 'POST',

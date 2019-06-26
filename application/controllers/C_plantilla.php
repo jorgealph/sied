@@ -106,7 +106,18 @@ class C_plantilla extends CI_Controller {
             $existe = true;
         }
         if($existe == false){
-            $intervencion[] = $this->mp->getRecord($_POST['intervencion']);
+            $query = $this->mp->getRecord($_POST['intervencion']);
+            $intervencion = null;
+            
+                $tmp['iIdIntervencion'] = $query->iIdIntervencion;
+                $tmp['vIntervencion'] = $query->vIntervencion;
+                $tmp['vClave'] = $query->vClave;
+                $tmp['iAnio'] = $query->iAnio;
+                $tmp['iTipo'] = $query->iTipo;
+                $tmp['iIdIntervencionPropuesta'] = $query->iIdIntervencionPropuesta;
+                $tmp['iIdOrganismo'] = $query->iIdOrganismo;
+                $tmp['activo'] = 1;
+           
             $_SESSION['intervencion'] = $intervencion;
             echo 1;
         }else{
@@ -115,6 +126,44 @@ class C_plantilla extends CI_Controller {
         
     }
 
+    public function tempIntervencionCambio(){
+        $intervencionC = $_SESSION['intervencionC'];
+
+        $existe = false;
+
+        if($intervencionC == null){
+            $intervencionC = array();
+        }else{
+            foreach($intervencionC as $r){
+                if($r->iIdIntervencion == $_POST['intervencionC']){
+                    $existe = true;
+                    break;
+                }
+            }
+        }
+        if($_POST['intervencionC'] == 'null'){
+            $existe = true;
+        }
+        if($existe == false){
+            $query = $this->mp->getRecord($_POST['intervencionC']);
+            $intervencionC = array();
+            
+                $intervencionC['iIdIntervencion'] = $query->iIdIntervencion;
+                $intervencionC['vIntervencion'] = $query->vIntervencion;
+                $intervencionC['vClave'] = $query->vClave;
+                $intervencionC['iAnio'] = $query->iAnio;
+                $intervencionC['iTipo'] = $query->iTipo;
+                $intervencionC['iIdIntervencionPropuesta'] = $query->iIdIntervencionPropuesta;
+                $intervencionC['iIdOrganismo'] = $query->iIdOrganismo;
+                $intervencionC['activo'] = 1;
+           
+            $_SESSION['intervencionC'] = $intervencion;
+            echo 1;
+        }else{
+            echo 0;
+        }
+        
+    }
 
     public function GenerateTable(){
         
@@ -153,16 +202,18 @@ class C_plantilla extends CI_Controller {
         $intervencion = $_SESSION['intervencion'];
         if($intervencion != null){
             foreach($intervencion as $r){
-                $tcontent .= '<tr>';
-                $tcontent .=  '<td>'.$r->iIdIntervencion.'</td>';
-                $tcontent .=  '<td>'.$r->vIntervencion.'</td>';
-                $tcontent .=  '<td>'.$r->vClave.'</td>';
-                $tcontent .=  '<td>'.$r->iAnio.'</td>';
-                $tcontent .=  '<td>'.$r->iTipo.'</td>';
-                $tcontent .=  '<td>'.$r->iIdIntervencionPropuesta.'</td>';
-                $tcontent .=  '<td>'.$r->iIdOrganismo.'</td>';
-                $tcontent .=  '<td>'.'<button type="button" class="btn btn-danger btn-icon btn-sm" onclick="deleteRowIntervencion('.$r->iIdIntervencion.')" title="Eliminar"><i class="fas fa-trash-alt fa-fw"></i></button>'; 
+                if($r['activo'] == 1){
+                    $tcontent .= '<tr>';
+                $tcontent .=  '<td>'.$r['iIdIntervencion'].'</td>';
+                $tcontent .=  '<td>'.$r['vIntervencion'].'</td>';
+                $tcontent .=  '<td>'.$r['vClave'].'</td>';
+                $tcontent .=  '<td>'.$r['iAnio'].'</td>';
+                $tcontent .=  '<td>'.$r['iTipo'].'</td>';
+                $tcontent .=  '<td>'.$r['iIdIntervencionPropuesta'].'</td>';
+                $tcontent .=  '<td>'.$r['iIdOrganismo'].'</td>';
+                $tcontent .=  '<td>'.'<button type="button" class="btn btn-danger btn-icon btn-sm" onclick="deleteRowIntervencion('.$r['iIdIntervencion'].')" title="Eliminar"><i class="fas fa-trash-alt fa-fw"></i></button>'; 
                 $tcontent .= '</tr>';
+                }
             }
             $tcontent .= ' <script>
                 $(document).ready(function() {
@@ -221,9 +272,19 @@ class C_plantilla extends CI_Controller {
 		}
     //}
     
-    public function borrar_registro(){
+    public function borrar_registro($key){
         $intervencion = $_SESSION['intervencion'];
-        unset($_SESSION['intervencion'][$intervencion]);        
+        $result = 0;
+        $c = 0;
+        foreach($intervencion as $r){
+            if($r->iIdIntervencion == $key){
+                $intervencion[$c]['activo'] = 0;
+                break;
+            }
+            $c++;
+        }
+        $_SESSION['intervencion'] = $intervencion;        
+        echo $result;
     }
 
     public function borrar_ajax($iIdPlantilla = null){
@@ -249,15 +310,59 @@ class C_plantilla extends CI_Controller {
                 //$_SESSION['intervencion'] = $this->mp->findEvaluacion();
                 $resultado = $this->mp->findEvaluacion($iIdPlantilla);
                 $intervencion = null;
-                foreach($resultado as $fila){
-                    $intervencion[] = $fila;
+                foreach($resultado as $query){
+                    $tmp['iIdIntervencion'] = $query->iIdIntervencion;
+                    $tmp['vIntervencion'] = $query->vIntervencion;
+                    $tmp['vClave'] = $query->vClave;
+                    $tmp['iAnio'] = $query->iAnio;
+                    $tmp['iTipo'] = $query->iTipo;
+                    $tmp['iIdIntervencionPropuesta'] = $query->iIdIntervencionPropuesta;
+                    $tmp['iIdOrganismo'] = $query->iIdOrganismo;
+                    $tmp['activo'] = 1;
+                    $intervencion[] = $tmp;
                 }
                 
                 $_SESSION['intervencion'] = $intervencion;
                 //$data['tabla'] = $this->GenerateTable();
-                print_r($intervencion);
+                //print_r($intervencion);
                 $this->load->view('plantilla/guardar_plantilla', $data);
             }
-        }    
+        }
+    }
+
+    public function ActualizarPlantilla($iIdPlantilla){
+        $intervencion = $_SESSION['intervencion'];
+        $intervencionC = $_SESSION['intervencionC'];
+        $iIdPlantilla = $this->input->post("id_plantilla");
+        $data["vPlantilla"] = $this->input->post("nombre");
+        $data["iAnioEvaluacion"] = $this->input->post("anio");
+        $data["iOrigenEvaluacion"] = $this->input->post("origen");
+        $data["iIdTipoEvaluacion"] = $this->input->post("tipo");
+        
+        if(isset($iIdPlantilla) && !empty($iIdPlantilla)){
+            $iIdPlantilla = $this->mu->update($iIdPlantilla, $data);
+            if($iIdPlantilla>0){
+                foreach($intervencion as $r){
+                    $tmp['iIdEvaluacion'] = $iIdEvaluacion;
+                    $tmp['iIdPlantilla'] = $iIdPlantilla;
+                    if($r['activo'] == 0){
+                        echo $insert = $this->mp->deleteEvaluacion($tmp);
+                    }
+                }
+                //crear otra variable de sesión donde poner nuevas intervenciones
+                //validar la variable anterior para ver cuál existe y cual no para cambiar estatus en BD
+                foreach($intervencionC as $r){
+                    $tmp['iIdPlantilla'] = $iIdPlantilla;
+                    $tmp['iIdIntervencion'] = $r->iIdIntervencion;
+                    $tmp['vNombreEvaluacion'] = '';
+                    $tmp['vObjetivo'] = '';
+                    $tmp['vObjetivoEspecifico'] = ''; 
+                    $tmp['vEspecificarOtro'] = '';
+                    $tmp['vRutaArchivo'] = '';
+                    $tmp['vComentarioGeneral'] = '';
+                    echo $insert = $this->mp->insertIntercencion($tmp);
+                }
+            }
+        }
     }
 }   
