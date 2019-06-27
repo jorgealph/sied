@@ -286,18 +286,13 @@ class C_plantilla extends CI_Controller {
     //}
     
     public function borrar_registro($key){
-        $intervencion = $_SESSION['intervencion'];
-        $result = 0;
-        $c = 0;
-        foreach($intervencion as $r){
-            if($r->iIdIntervencion == $key){
-                $intervencion[$c]['activo'] = 0;
-                break;
-            }
-            $c++;
+
+        //$_SESSION['intervencion'];        
+        for ($i=0; $i < count($_SESSION['intervencion']); $i++) { 
+            if($_SESSION['intervencion'][$i]['iIdIntervencion'] == $key) $_SESSION['intervencion'][$i]['activo'] = 0;
         }
-        $_SESSION['intervencion'] = $intervencion;        
-        echo $result;
+        
+        echo '1';
     }
 
     public function borrar_ajax($iIdPlantilla = null){

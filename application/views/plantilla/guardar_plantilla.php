@@ -367,7 +367,8 @@
 						$.get("<?=base_url()?>C_plantilla/borrar_registro/"+id, 
 						function(data) {
 							if(data == 1){
-								$("#contenido").load('<?=base_url()?>C_plantilla/guardar_plantilla');
+								//$("#contenido").load('<?=base_url()?>C_plantilla/guardar_plantilla');
+                                $("#table").load('C_plantilla/GenerateTable');
 								swal("El registro ha sido eliminado correctamente", {
 									title: 'Exito',
       								icon: "success",
