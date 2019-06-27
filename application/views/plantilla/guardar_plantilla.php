@@ -145,60 +145,48 @@
                     placeholder: "Select an option",
                     allowClear: true
                 });
+
+                TableManageDefault.init();
+
+                $("#table").load('C_plantilla/GenerateTable');
+                //$("#bo").load('C_plantilla/dropTable');
             });
-        </script>
-		<script>
-		$(document).ready(function() {
-			TableManageDefault.init();
-		});
-		</script>
-    <script> 
+        
             //$("#table").load('<?=base_url()?>C_plantilla/tabla');
-            $("#table").load('C_plantilla/GenerateTable');
+            
 
             function loadDependencia(){
             	var value = $("#eje").val();
             	$("#dependencia").load('C_intervencionpropuesta/dependenciaQuery/'+value);
         	}
-            </script>
+            
+            function de(){
         
-
-<br>
-            <select class="simple-select2 w-100" multiple>
-                <option value="null">Seleccionar</option>
-                    <?php foreach ($eje as $row) {?>
-                        <option value="<?=$row->iIdEje;?>"><?=$row->vEje;?></option>
-                    <?php } ?>
-            </select>
-
-                <script>
-                    function de(){
-                
-                        $.ajax({
-                        type: "POST",
-                        url: '<?=base_url()?>C_plantilla/insertar_plantilla',
-                        data: $("#form-captura").serialize(),
-                        success: function(response){
-                            if(response > 0){
-                                $("#contenido").load('<?=base_url()?>C_plantilla/index');
-                                swal({
-                                    icon: 'success',
-                                    title: 'Exito',
-                                    text: 'El registro se ha guardado exitosamente',
-                                    button: false,
-                                    timer: 1500
-                                })
-                            }else{
-                                swal({
-                                    icon: 'error',
-                                    title: 'Algo salio mal',
-                                    text: 'El registro no se guardó',
-                                    button: false
-                                })
-                            }
+                $.ajax({
+                    type: "POST",
+                    url: '<?=base_url()?>C_plantilla/insertar_plantilla',
+                    data: $("#form-captura").serialize(),
+                    success: function(response){
+                        if(response > 0){
+                            $("#contenido").load('<?=base_url()?>C_plantilla/index');
+                            swal({
+                                icon: 'success',
+                                title: 'Exito',
+                                text: 'El registro se ha guardado exitosamente',
+                                button: false,
+                                timer: 1500
+                            })
+                        }else{
+                            swal({
+                                icon: 'error',
+                                title: 'Algo salio mal',
+                                text: 'El registro no se guardó',
+                                button: false
+                            })
                         }
-                    });
                     }
+                });
+            }
                     
                     function dataEntry(){
 				$.ajax({
@@ -279,9 +267,6 @@
 				});
 			}
 
-                </script>
-
-                <script>
                 
                     function getIntervencion(){
                         var formData = new FormData();
@@ -317,8 +302,8 @@
                                 if(data == 1){
                                     $("#table").load('C_plantilla/GenerateTable');
                                 }else{
-                                    alert('existe');
-                                    $("#table").load('C_plantilla/GenerateTable');
+                                    alert('La intervención ya ha sido agregada');
+                                    //$("#table").load('C_plantilla/GenerateTable');
                                 }
                             },
                             cache:false,
@@ -340,8 +325,8 @@
                                 if(data == 1){
                                     $("#table").load('C_plantilla/GenerateTable');
                                 }else{
-                                    alert('existe');
-                                    $("#table").load('C_plantilla/GenerateTable');
+                                    alert('La intervención ya ha sido agregada');
+                                    //$("#table").load('C_plantilla/GenerateTable');
                                 }
                             },
                             cache:false,
@@ -351,7 +336,7 @@
                     }
 
                     $(document).ready(function() {
-                        $("#bo").load('C_plantilla/dropTable');
+                        
                     });
 
                     function regresar(e){

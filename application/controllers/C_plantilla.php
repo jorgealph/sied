@@ -127,37 +127,52 @@ class C_plantilla extends CI_Controller {
     }
 
     public function tempIntervencionCambio(){
-        $intervencionC = $_SESSION['intervencionC'];
+        var_dump($_SESSION['intervencion']);
+
+        $intervencion = $_SESSION['intervencion'];
+        $iIdIntervencion = $this->input->post('intervencion');
+        $n = 0;
 
         $existe = false;
 
-        if($intervencionC == null){
-            $intervencionC = array();
+        if($intervencion == null){
+            $intervencion = array();
         }else{
-            foreach($intervencionC as $r){
+            for ($i=0; $i < count($intervencion); $i++) { 
+                if($intervencion[$i]['iIdIntervencion'] == $iIdIntervencion){
+                    $existe = true;
+                    break;
+                }
+
+                $n = $i + 1;
+            }
+            
+            /*foreach($intervencionC as $r){
+                var_dump($r);
                 if($r->iIdIntervencion == $_POST['intervencionC']){
                     $existe = true;
                     break;
                 }
-            }
+            }*/
         }
-        if($_POST['intervencionC'] == 'null'){
+        /*if($_POST['intervencionC'] == 'null'){
             $existe = true;
-        }
+        }*/
         if($existe == false){
-            $query = $this->mp->getRecord($_POST['intervencionC']);
-            $intervencionC = array();
+            $query = $this->mp->getRecord($_POST['intervencion']);
+            //$intervencionC = array();
             
-                $intervencionC['iIdIntervencion'] = $query->iIdIntervencion;
-                $intervencionC['vIntervencion'] = $query->vIntervencion;
-                $intervencionC['vClave'] = $query->vClave;
-                $intervencionC['iAnio'] = $query->iAnio;
-                $intervencionC['iTipo'] = $query->iTipo;
-                $intervencionC['iIdIntervencionPropuesta'] = $query->iIdIntervencionPropuesta;
-                $intervencionC['iIdOrganismo'] = $query->iIdOrganismo;
-                $intervencionC['activo'] = 1;
+            $intervencion[$n]['iIdIntervencion'] = $query->iIdIntervencion;
+            $intervencion[$n]['vIntervencion'] = $query->vIntervencion;
+            $intervencion[$n]['vClave'] = $query->vClave;
+            $intervencion[$n]['iAnio'] = $query->iAnio;
+            $intervencion[$n]['iTipo'] = $query->iTipo;
+            $intervencion[$n]['iIdIntervencionPropuesta'] = $query->iIdIntervencionPropuesta;
+            $intervencion[$n]['iIdOrganismo'] = $query->iIdOrganismo;
+            $intervencion[$n]['activo'] = 1;
            
-            $_SESSION['intervencionC'] = $intervencion;
+            $_SESSION['intervencion'] = $intervencion;
+            //var_dump($_SESSION['intervencion']);
             echo 1;
         }else{
             echo 0;
