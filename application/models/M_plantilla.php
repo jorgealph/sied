@@ -46,11 +46,22 @@ class M_plantilla extends CI_Model {
         $this->db->select('i.iIdIntervencion, i.vIntervencion, i.vClave, i.iAnio, i.iTipo, i.iIdIntervencionPropuesta, i.iIdOrganismo, e.iIdEvaluacion');
         $this->db->from('intervencion as i');
         $this->db->join('evaluacion e', 'i.iIdIntervencion = e.iIdIntervencion', 'INNER');
-        $this->db->where('iIdPlantilla', $iIdPlantilla);
+        $this->db->where('e.iIdPlantilla', $iIdPlantilla);
+        $this->db->where('e.iActivo', 1);
        // $this->db->join('Eje e', 'e.iIdEje = o.iIdEje', 'INNER');
 
         $query = $this->db->get();
         return $query->result();
+    }
+
+    public function ValidaExisteEvaluacion($iIdPlantilla, $iIdIntervencion){
+        $this->db->select('iIdEvaluacion');
+        $this->db->from('evaluacion');
+        $this->db->where('iIdPlantilla', $iIdPlantilla);
+        $this->db->where('iIdIntervencion', $iIdIntervencion);
+        $this->db->where('iActivo', 1);
+        $query = $this->db->get();
+        return $query->num_rows();
     }
 
     function insert($data){
@@ -68,10 +79,6 @@ class M_plantilla extends CI_Model {
         return $this->db->update($this->table, $data);        
     }
 
-    function updateIntervencion(){
-        
-    }
-
     public function delete($id){
         $this->db->where($this->table_id, $id);
         $data =  array('iActivo' => 0 );
@@ -79,8 +86,9 @@ class M_plantilla extends CI_Model {
         return $this->db->affected_rows();
     }
 
-    public function deleteEvaluacion($id){
-        $this->db->where($this->table_id, $id);
+    public function deleteEvaluacion($iIdPlantilla, $iIdIntervencion){
+        $this->db->where('iIdPlantilla', $iIdPlantilla);
+        $this->db->where('iIdIntervencion', $iIdIntervencion);
         $data =  array('iActivo' => 0 );
         $this->db->update('evaluacion', $data);
         return $this->db->affected_rows();

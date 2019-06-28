@@ -25,7 +25,7 @@
                 <div class="row">
                     <div class="col-md-4">
                     <label>Año de la evaluación: </label>
-                    <select class="form-control" id="anio" name="anio">
+                    <select class="form-control" id="anio" name="anio" data-parsley-required="true">
                         <option <?php if(isset($iAnioEvaluacion) && $iAnioEvaluacion == '2019') echo 'selected'; ?> value="2019">2019</option>
                         <option <?php if(isset($iAnioEvaluacion) && $iAnioEvaluacion == '2018') echo 'selected'; ?> value="2018">2018</option>
                         <option <?php if(isset($iAnioEvaluacion) && $iAnioEvaluacion == '2017') echo 'selected'; ?> value="2017">2017</option>
@@ -36,14 +36,14 @@
                     </div>
                 <div class="col-md-4">
                 <label>Origen de la envaluación: </label>
-                <select class="form-control" id="origen" name="origen" <?php if(isset($iOrigenEvaluacion)){echo $iOrigenEvaluacion;} ?>>
+                <select class="form-control" id="origen" name="origen" <?php if(isset($iOrigenEvaluacion)){echo $iOrigenEvaluacion;} ?> data-parsley-required="true">
                     <option <?php if(isset($iOrigenEvaluacion) && $iOrigenEvaluacion == 1) echo 'selected'; ?> value="1">Externa</option>
                     <option <?php if(isset($iOrigenEvaluacion) && $iOrigenEvaluacion == 2) echo 'selected'; ?> value="2">Interna</option>
                 </select>
                 </div>
                 <div class="col-md-4">
                 <label>Tipo de evaluación: </label>
-                <select class="form-control" id="tipo" name="tipo">
+                <select class="form-control" id="tipo" name="tipo" data-parsley-required="true">
                     <option value="">Seleccionar</option>
                     <?php foreach ($tipo as $row) {?>
                         <option value="<?=$row->iIdTipoEvaluacion;?>"><?=$row->vTipoEvaluacion;?></option>
@@ -58,7 +58,6 @@
             </div> 
         </form> 
          
-
             <div class="row">
                 <div class="col-md-12">
                     <h3><br> Tipo de intervención pública</h3>
@@ -107,8 +106,8 @@
                     </div>        
                     <div class="col-md-3">
                         <label>Nombre: </label>
-                        <select class="form-control" id="intervencion" name="intervencion">
-                            <option value="null">Seleccionar</option>
+                        <select class="form-control" id="intervencion" name="intervencion" data-parsley-required="true">
+                            <option value="0">Seleccionar</option>
                         
                         </select>
                     </div>        
@@ -229,10 +228,10 @@
 				});
 			}
 
-            function update(){
+            function update(id){
 				$.ajax({
     				// la URL para la petición
-    				url : '<?=base_url()?>C_plantilla/modificar_plantilla',
+    				url : '<?=base_url()?>C_plantilla/ActualizarPlantilla/'+id,
 					// la información a enviar
     				// (también es posible utilizar una cadena de datos)
     				data : $("#form-captura").serialize(),
@@ -290,49 +289,59 @@
                     
 
                     function setIntervencion(){
-                        var formData = new FormData();
-                        formData.append('intervencion', $("#intervencion").val());
-                        var url = "C_plantilla/tempIntervencion";
-                        $.ajax({
-                            url: url,
-                            type: 'POST',
-                            data: formData,
-                            async: false,
-                            success: function(data){
-                                if(data == 1){
-                                    $("#table").load('C_plantilla/GenerateTable');
-                                }else{
-                                    alert('La intervención ya ha sido agregada');
-                                    //$("#table").load('C_plantilla/GenerateTable');
-                                }
-                            },
-                            cache:false,
-                            contentType: false,
-                            processData: false
-                        });
+                        if ($('#intervencion').val().trim() == '0') {
+                            alert('Debe seleccionar una opción');
+
+                        }else{
+                            var formData = new FormData();
+                                    formData.append('intervencion', $("#intervencion").val());
+                                    var url = "C_plantilla/tempIntervencion";
+                                    $.ajax({
+                                        url: url,
+                                        type: 'POST',
+                                        data: formData,
+                                        async: false,
+                                        success: function(data){
+                                            if(data == 1){
+                                                $("#table").load('C_plantilla/GenerateTable');
+                                            }else{
+                                                alert('La intervención ya ha sido agregada');
+                                                //$("#table").load('C_plantilla/GenerateTable');
+                                            }
+                                        },
+                                        cache:false,
+                                        contentType: false,
+                                        processData: false
+                                    });
+                        }
                     }
 
                     function setIntervencionCambio(){
-                        var formData = new FormData();
-                        formData.append('intervencion', $("#intervencion").val());
-                        var url = "C_plantilla/tempIntervencionCambio";
-                        $.ajax({
-                            url: url,
-                            type: 'POST',
-                            data: formData,
-                            async: false,
-                            success: function(data){
-                                if(data == 1){
-                                    $("#table").load('C_plantilla/GenerateTable');
-                                }else{
-                                    alert('La intervención ya ha sido agregada');
-                                    //$("#table").load('C_plantilla/GenerateTable');
-                                }
-                            },
-                            cache:false,
-                            contentType: false,
-                            processData: false
-                        });
+                        if ($('#intervencion').val().trim() == '0') {
+                            alert('Debe seleccionar una opción');
+
+                        }else{
+                            var formData = new FormData();
+                                    formData.append('intervencion', $("#intervencion").val());
+                                    var url = "C_plantilla/tempIntervencion";
+                                    $.ajax({
+                                        url: url,
+                                        type: 'POST',
+                                        data: formData,
+                                        async: false,
+                                        success: function(data){
+                                            if(data == 1){
+                                                $("#table").load('C_plantilla/GenerateTable');
+                                            }else{
+                                                alert('La intervención ya ha sido agregada');
+                                                //$("#table").load('C_plantilla/GenerateTable');
+                                            }
+                                        },
+                                        cache:false,
+                                        contentType: false,
+                                        processData: false
+                                    });
+                        }
                     }
 
                     $(document).ready(function() {
@@ -388,4 +397,12 @@
   					}
 				});
 			}
+
+            $('#guardar').click(function() {
+
+            if ($('#intervencion').val().trim() == '0') {
+                alert('Debe seleccionar una opción');
+
+            }
+            });
                 </script>

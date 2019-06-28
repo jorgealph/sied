@@ -62,9 +62,7 @@
                     </div>
                     <h4 class="panel-title">Resultados de la búsqueda</h4>
                 </div> <br>
-                <div class="col-md-12" id="table">
-                
-                    </div>
+                <div class="col-md-12" id="table"></div>
                     <div class="col-md-12">
                     <div class="row">
            
