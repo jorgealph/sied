@@ -290,7 +290,12 @@
 
                     function setIntervencion(){
                         if ($('#intervencion').val().trim() == '0') {
-                            alert('Debe seleccionar una opción');
+                            swal("Debe seleccionar una opción", {
+									title: 'Error',
+      								icon: "error",
+									button: false,
+  									timer: 1500
+    							});
 
                         }else{
                             var formData = new FormData();
@@ -305,7 +310,12 @@
                                             if(data == 1){
                                                 $("#table").load('C_plantilla/GenerateTable');
                                             }else{
-                                                alert('La intervención ya ha sido agregada');
+                                                swal("Ya ha sido agregada", {
+									title: 'Error',
+      								icon: "error",
+									button: false,
+  									timer: 1500
+    							});
                                                 //$("#table").load('C_plantilla/GenerateTable');
                                             }
                                         },
@@ -318,7 +328,12 @@
 
                     function setIntervencionCambio(){
                         if ($('#intervencion').val().trim() == '0') {
-                            alert('Debe seleccionar una opción');
+                            swal("Debe seleccionar una opción", {
+									title: 'Error',
+      								icon: "error",
+									button: false,
+  									timer: 1500
+    							});
 
                         }else{
                             var formData = new FormData();
@@ -333,7 +348,12 @@
                                             if(data == 1){
                                                 $("#table").load('C_plantilla/GenerateTable');
                                             }else{
-                                                alert('La intervención ya ha sido agregada');
+                                                swal("Ya ha sido agregada", {
+									title: 'Error',
+      								icon: "error",
+									button: false,
+  									timer: 1500
+    							});
                                                 //$("#table").load('C_plantilla/GenerateTable');
                                             }
                                         },
@@ -397,12 +417,4 @@
   					}
 				});
 			}
-
-            $('#guardar').click(function() {
-
-            if ($('#intervencion').val().trim() == '0') {
-                alert('Debe seleccionar una opción');
-
-            }
-            });
                 </script>
