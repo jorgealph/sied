@@ -30,13 +30,13 @@ class C_IntervencionPropuesta extends CI_Controller {
 	function buscar(){
 		$this->load->model('M_IntervencionPropuesta');
 		
-		if(empty($_REQUEST['iTipo']) && empty($_REQUEST['iIdEje']) && empty($_REQUEST['vIntervencion']) && empty($_REQUEST['iIdOrganismo'])){
+		if(empty($_POST['iTipo']) && empty($_POST['iIdEje']) && empty($_POST['vIntervencion']) && empty($_POST['iIdOrganismo'])){
 			$data = $this->M_IntervencionPropuesta->findAll();
 		}else{
-			$nombre = $_REQUEST['vIntervencion'];
-			$eje = $_REQUEST['iIdEje'];
-			$dependencia = $_REQUEST['iIdOrganismo'];
-			$tipo = $_REQUEST['iTipo'];
+			$nombre = $_POST['vIntervencion'];
+			$eje = $_POST['iIdEje'];
+			$dependencia = $_POST['iIdOrganismo'];
+			$tipo = $_POST['iTipo'];
 			$data = $this->M_IntervencionPropuesta->filterIntervencion($nombre, $eje, $dependencia, $tipo);
 		}
 		
@@ -103,13 +103,13 @@ class C_IntervencionPropuesta extends CI_Controller {
 	public function drawTable(){
 		$this->load->model('M_IntervencionPropuesta');
 		
-		if(empty($_REQUEST['iTipo']) && empty($_REQUEST['iIdEje']) && empty($_REQUEST['vIntervencion']) && empty($_REQUEST['iIdOrganismo'])){
+		if(empty($_POST['iTipo']) && empty($_POST['iIdEje']) && empty($_POST['vIntervencion']) && empty($_POST['iIdOrganismo'])){
 			$datos['intpro'] = $this->M_IntervencionPropuesta->filterIntervencion(null, null, null, null);
 		}else{
-			$nombre = $_REQUEST['vIntervencion'];
-			$eje = $_REQUEST['iIdEje'];
-			$dependencia = $_REQUEST['iIdOrganismo'];
-			$tipo = $_REQUEST['iTipo'];
+			$nombre = $_POST['vIntervencion'];
+			$eje = $_POST['iIdEje'];
+			$dependencia = $_POST['iIdOrganismo'];
+			$tipo = $_POST['iTipo'];
 			$datos['intpro'] = $this->M_IntervencionPropuesta->filterIntervencion($nombre, $eje, $dependencia, $tipo);
 		}
 		
@@ -230,18 +230,18 @@ class C_IntervencionPropuesta extends CI_Controller {
 		$data['vEspecificar'] = $this->input->post("vEspecificar");
 		
 		//inicio de checks
-		$data['iDiagnostico'] = (isset($_REQUEST['iDiagnostico'])) ? 1 : 0;
-		$data['iArbolProblemas'] = (isset($_REQUEST["iArbolProblemas"])) ? 1 : 0;
-		$data['iArbolObjetivos'] = (isset($_REQUEST["iArbolObjetivos"])) ? 1 : 0;
-		$data['iMIR'] = (isset($_REQUEST["iMIR"])) ? 1 : 0;
-		$data['iIdentificacion'] = (isset($_REQUEST["iIdentificacion"])) ? 1 : 0;
-		$data['iCalculoCobertura'] = (isset($_REQUEST["iCalculoCobertura"])) ? 1 : 0;
-		$data['iCriteriosFocalizacion'] = (isset($_REQUEST["iCriteriosFocalizacion"])) ? 1 : 0;
-		$data['iDescripcionIntervencion'] = (isset($_REQUEST["iDescripcionIntervencion"])) ? 1 : 0;
-		$data['iInformeEstudio'] = (isset($_REQUEST["iInformeEstudio"])) ? 1 : 0;
-		$data['iManualProceso'] = (isset($_REQUEST["iManualProceso"])) ? 1 : 0;
-		$data['iReglasOperacion'] = (isset($_REQUEST["iReglasOperacion"])) ? 1 : 0;
-		$data['iPadronBeneficiarios'] = (isset($_REQUEST["iPadronBeneficiarios"])) ? 1 : 0;
+		$data['iDiagnostico'] = (isset($_POST['iDiagnostico'])) ? 1 : 0;
+		$data['iArbolProblemas'] = (isset($_POST["iArbolProblemas"])) ? 1 : 0;
+		$data['iArbolObjetivos'] = (isset($_POST["iArbolObjetivos"])) ? 1 : 0;
+		$data['iMIR'] = (isset($_POST["iMIR"])) ? 1 : 0;
+		$data['iIdentificacion'] = (isset($_POST["iIdentificacion"])) ? 1 : 0;
+		$data['iCalculoCobertura'] = (isset($_POST["iCalculoCobertura"])) ? 1 : 0;
+		$data['iCriteriosFocalizacion'] = (isset($_POST["iCriteriosFocalizacion"])) ? 1 : 0;
+		$data['iDescripcionIntervencion'] = (isset($_POST["iDescripcionIntervencion"])) ? 1 : 0;
+		$data['iInformeEstudio'] = (isset($_POST["iInformeEstudio"])) ? 1 : 0;
+		$data['iManualProceso'] = (isset($_POST["iManualProceso"])) ? 1 : 0;
+		$data['iReglasOperacion'] = (isset($_POST["iReglasOperacion"])) ? 1 : 0;
+		$data['iPadronBeneficiarios'] = (isset($_POST["iPadronBeneficiarios"])) ? 1 : 0;
 		//fin de checks
 
 		$data['iPreviamenteEvaluado'] = $this->input->post("iPreviamenteEvaluado");
@@ -253,8 +253,8 @@ class C_IntervencionPropuesta extends CI_Controller {
 		
 		$this->load->model('M_IntervencionPropuesta');
 
-		if(isset($_REQUEST['iIdIntervencionPropuesta'])){
-			$data['iIdIntervencionPropuesta'] = $_REQUEST['iIdIntervencionPropuesta'];
+		if(isset($_POST['iIdIntervencionPropuesta'])){
+			$data['iIdIntervencionPropuesta'] = $_POST['iIdIntervencionPropuesta'];
 			$insert = $this->M_IntervencionPropuesta->update($data);
 		}else{
 			$insert = $this->M_IntervencionPropuesta->save($data);
@@ -269,7 +269,7 @@ class C_IntervencionPropuesta extends CI_Controller {
 	public function delete(){
 		if(isset($_POST['id']) && !empty($_POST['id'])){
 			$this->load->model('M_IntervencionPropuesta');
-			echo $delete = $this->M_IntervencionPropuesta->delete($_REQUEST['id']);
+			echo $delete = $this->M_IntervencionPropuesta->delete($_POST['id']);
 		}else{
 			echo '0';
 		}
@@ -277,10 +277,10 @@ class C_IntervencionPropuesta extends CI_Controller {
 
 	public function AprobarIntervencion(){
 		$this->load->model('M_IntervencionPropuesta');
-		$r = $this->M_IntervencionPropuesta->GetRecord($_REQUEST['id']);
+		$r = $this->M_IntervencionPropuesta->GetRecord($_POST['id']);
 
 		$data['vIntervencion'] = $r->vIntervencion;
-		$data['vClave'] = $_REQUEST['clave'];
+		$data['vClave'] = $_POST['clave'];
 		$data['iAnio'] = (int)date('Y');
 		$data['iTipo'] = $r->iTipo;
 		$data['iIdIntervencionPropuesta'] = $r->iIdIntervencionPropuesta;
@@ -289,7 +289,7 @@ class C_IntervencionPropuesta extends CI_Controller {
 		$result = $this->M_Intervencion->save($data);
 
 		if($result > 0){
-			$delete = $this->M_IntervencionPropuesta->delete($_REQUEST['id']);
+			$delete = $this->M_IntervencionPropuesta->delete($_POST['id']);
 		}
 		echo $result;
 	}

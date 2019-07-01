@@ -65,3 +65,8 @@ $route['salir'] = 'C_seguridad/cerrar_sesion';
 $route['guardar'] = 'C_usuario/guardar';
 
 $route['ver'] = 'C_usuario/ver';
+
+
+//Evaluacion
+$route['ver/evaluacion'] = 'C_evaluacion/display';
+$route['ver/evaluacion/(:num)'] = 'C_evaluacion/updateView/$1';
