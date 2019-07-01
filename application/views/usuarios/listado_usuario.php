@@ -9,7 +9,7 @@
             <h4 class="panel-title">Filtros de búsqueda</h4>
         </div>
         <div class="panel-body">
-            <form id="frmbusqueda">
+            <form id="frmbusqueda" onsubmit="event.preventDefault()">
             <div class="col md-12">
             <div class="row">
                 <div class="col-md-2">
@@ -39,7 +39,8 @@
                         </div>
                 </div>
             </div>
-            <a class="btn btn-success col-md-2" type="button" name="guardar" id="guardar" onclick="cargar('<?=base_url(); ?>C_usuario/guardar/0/1','#contenido');"style="margin-top:25px; color: white;"><i class="fas fa-lg fa-fw m-r-10 fa-plus-circle" style="color: white"></i>Nuevo usuario</a>
+            <button class="btn btn-success col-md-2" type="button" onclick="cargar('<?=base_url(); ?>C_usuario/guardar/0/1','#contenido');" style="margin-top:25px;"><i class="fas fa-lg fa-fw m-r-10 fa-plus-circle"></i>Nuevo usuario</button>
+<!--             <a class="btn btn-success col-md-2" type="button" name="guardar" id="guardar" onclick="cargar('<?=base_url(); ?>C_usuario/guardar/0/1','#contenido');"style="margin-top:25px; color: white;"><i class="fas fa-lg fa-fw m-r-10 fa-plus-circle" style="color: white"></i>Nuevo usuario</a> -->
             </div>
             </div> 
             </form>
@@ -123,9 +124,9 @@
         </script>
 
         <script>
-        function filter(event){
+        function filter(){
 				$.ajax({
-                    event.preventDefault();
+                   //event.preventDefault();
     								// la URL para la petición
     								url : '<?=base_url()?>C_usuario/tabla',
 

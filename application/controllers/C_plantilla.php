@@ -50,6 +50,8 @@ class C_plantilla extends CI_Controller {
     } 
 
     public function guardar_plantilla($plantilla_id = null, $vista = null){
+        $_SESSION['intervencion'] = null;
+        $_SESSION['intervencionC'] = null;
         $vdata['anio'] = $this->mp->get_anio();
         $vdata['anio2'] = $this->mp->get_anio_intervencion();
         $vdata['eje'] = $this->mp->get_eje();
@@ -102,11 +104,13 @@ class C_plantilla extends CI_Controller {
             for ($i=0; $i < count($intervencion); $i++) { 
                 if($intervencion[$i]['iIdIntervencion'] == $iIdIntervencion){
                     $existe = true;
+                    $intervencion[$i]['activo'] = 1;
                     break;
                 }
 
                 $n = $i + 1;
             }
+            $_SESSION['intervencion'] = $intervencion;
             
             /*foreach($intervencionC as $r){
                 var_dump($r);
@@ -119,7 +123,7 @@ class C_plantilla extends CI_Controller {
         /*if($_POST['intervencionC'] == 'null'){
             $existe = true;
         }*/
-        if($existe == false){
+        if($existe == false || $intervencion[$n]['activo'] == 0){
             $query = $this->mp->getRecord($_POST['intervencion']);
             //$intervencionC = array();
             
@@ -157,7 +161,6 @@ class C_plantilla extends CI_Controller {
                     $existe = true;
                     break;
                 }
-
                 $n = $i + 1;
             }
             
@@ -172,7 +175,7 @@ class C_plantilla extends CI_Controller {
         /*if($_POST['intervencionC'] == 'null'){
             $existe = true;
         }*/
-        if($existe == false){
+        if($existe == false || $intervencion[$n]['activo'] == 0){
             $query = $this->mp->getRecord($_POST['intervencion']);
             //$intervencionC = array();
             
