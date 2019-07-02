@@ -48,7 +48,8 @@
                             </div>
                     </div> 
                 </div>
-                <a class="btn btn-success col-md-2" type="button" name="guardar" id="guardar" onclick="cargar('<?=base_url(); ?>C_plantilla/guardar_plantilla/0/1','#contenido');"style="margin-top:25px; color: white;"><i class="fas fa-lg fa-fw m-r-10 fa-plus-circle" style="color: white"></i>Nueva plantilla</a>
+                <button class="btn btn-success col-md-2" type="button" onclick="cargar('<?=base_url(); ?>C_plantilla/guardar_plantilla/0/1','#contenido');" style="margin-top:25px;"><i class="fas fa-lg fa-fw m-r-10 fa-plus-circle"></i>Nueva plantilla</button>
+               <!--  <a class="btn btn-success col-md-2" type="button" name="guardar" id="guardar" onclick="cargar('<?=base_url(); ?>C_plantilla/guardar_plantilla/0/1','#contenido');"style="margin-top:25px; color: white;"><i class="fas fa-lg fa-fw m-r-10 fa-plus-circle" style="color: white"></i>Nueva plantilla</a> -->
                 </div>
                 </div> 
                 </form>
@@ -87,7 +88,7 @@
             </script>
 
             <script>
-                        function deleteRow(id){
+            function deleteRow(id){
 				swal({
   					title: "¿Estás seguro?",
   					text: "Una vez eliminado, este registro no se puede recuperar",

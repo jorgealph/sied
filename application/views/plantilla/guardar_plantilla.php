@@ -1,6 +1,9 @@
 <link rel="stylesheet" href="<?=base_url()?>admin/assets/plugins/select2/dist/css/select2.min.css">
 <link rel="stylesheet" href="<?=base_url()?>admin/assets/plugins/select2/dist/select2-bootstrap4.css">
 
+        <a onclick="regresar();" class="btn btn-default pull-right">
+                <li class="fas fa-lg fa-fw m-r-10 fa-arrow-left"></li><span>Regresar</span>
+            </a>
         <h3 class="page-header">Información general</h3>
     <div class="panel panel-inverse">
         <div class="panel-heading">
@@ -18,7 +21,7 @@
                 </div> 
                 <div class="row">
                     <div class="container" >
-                        <textarea rows="3" cols="50" class="col-md-12" data-parsley-required="true" id="nombre" name="nombre"><?php if(isset($nombre)){echo $nombre;} ?></textarea> 
+                        <textarea class="form-control" rows="3" cols="50" class="col-md-12" data-parsley-required="true" id="nombre" name="nombre"><?php if(isset($nombre)){echo $nombre;} ?></textarea> 
                     </div>
                 </div>
                 
@@ -95,7 +98,7 @@
                     
                 <div class="col md-12"> <br>
                     <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                         <label>Tipo: </label>
                         <select class="form-control" id="tipo2" name="tipo2" onchange="getIntervencion()">
                         <option value="null">-Todos-</option>
@@ -104,15 +107,15 @@
                                 <option value="3">Programa de bienes o servicio</option>
                         </select>
                     </div>        
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <label>Nombre: </label>
                         <select class="form-control" id="intervencion" name="intervencion" data-parsley-required="true">
                             <option value="0">Seleccionar</option>
                         
                         </select>
                     </div>        
-                <button class="btn btn-success col-md-3" type="button" name="guardar" id="guardar" onclick="<?php echo (isset($iIdPlantilla)) ? 'setIntervencionCambio()': 'setIntervencion()'?>" style="margin-top:25px; color: white;"><i class="fas fa-lg fa-fw m-r-10 fa-plus-circle" style="color: white"></i>Agregar intervención pública</button>
-                <button type="button" class="btn btn-white col-md-2" onclick="regresar();" style="margin-top:25px;">Cancelar</button>
+                <button class="btn btn-success" type="button" onclick="<?php echo (isset($iIdPlantilla)) ? 'setIntervencionCambio()': 'setIntervencion()'?>" style="margin-top:25px;"><i class="fas fa-lg fa-fw m-r-10 fa-plus-circle"></i>Agregar intervención pública</button>
+               <!--  <button class="btn btn-success col-md-4" type="button" name="guardar" id="guardar" onclick="<?php echo (isset($iIdPlantilla)) ? 'setIntervencionCambio()': 'setIntervencion()'?>" style="margin-top:25px; color: white;"><i class="fas fa-lg fa-fw m-r-10 fa-plus-circle" style="color: white"></i>Agregar intervención pública</button> -->
             </div>
         </div>
     </div> <br>
@@ -310,6 +313,7 @@
                                             if(data == 1){
                                                 $("#table").load('C_plantilla/GenerateTable');
                                             }else{
+                                                $("#table").load('C_plantilla/GenerateTable');
                                                 swal("Ya ha sido agregada", {
 									title: 'Error',
       								icon: "error",
@@ -338,7 +342,7 @@
                         }else{
                             var formData = new FormData();
                                     formData.append('intervencion', $("#intervencion").val());
-                                    var url = "C_plantilla/tempIntervencion";
+                                    var url = "C_plantilla/tempIntervencionCambio";
                                     $.ajax({
                                         url: url,
                                         type: 'POST',

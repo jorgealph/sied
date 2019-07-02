@@ -5,6 +5,14 @@
 </head>
 
 <body>
+<a onclick="regresar();" class="btn btn-default pull-right">
+                <li class="fas fa-lg fa-fw m-r-10 fa-arrow-left"></li><span>Regresar</span>
+            </a>
+<h3 class="page-header">Información general</h3>
+<div class="panel panel-inverse">
+<div class="panel-heading">
+            <h4 class="panel-title">Captura de datos</h4>
+            </div>
     <div class="card bg-light" name="capturar" id="capturar">
     <div class="container">
     <div class="col-md-12"> <br>
@@ -54,6 +62,10 @@
             ); ?>
             </div></div></div>
 
+            <script>
+                    $("#rol").val(<?php if(isset($tipo2)){echo $tipo2;}?>);
+                    $("#organismo").val(<?php if(isset($buscar)){echo $buscar;}?>);
+                </script>
 
             <div class="row">
             <div class="col-md-4">
@@ -205,10 +217,11 @@
 
             <center>
             <button type="submit" class='btn btn-primary'>Enviar</button>
-            <button type="button" class="btn btn-white" onclick="regresar();">Cancelar</button>
+
             </center>
             </form>
     </div> <br>
+    </div>
     </div>
     </div>
     <script>
