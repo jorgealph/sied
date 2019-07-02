@@ -17,13 +17,36 @@ class M_evaluacion extends CI_Model{
         return $query->result();
     }
 
-    public function displayjoin(){
+    public function displayjoin($data = null){
         $this->db->select('e.iIdEvaluacion, i.vIntervencion, i.iTipo, i.vIntervencion, p.iOrigenEvaluacion, tp.vTipoEvaluacion, o.vOrganismo');
         $this->db->from("$this->table as e");
         $this->db->join('intervencion as i', 'e.iIdIntervencion = i.iIdIntervencion', 'INNER');
         $this->db->join('plantilla as p', 'p.iIdPlantilla = e.iIdPlantilla', 'INNER');
         $this->db->join('tipoevaluacion as tp', 'p.iIdTipoEvaluacion = tp.iIdTipoEvaluacion', 'INNER');
         $this->db->join('organismo as o', 'i.iIdOrganismo = o.iIdOrganismo', 'INNER');
+        if(!is_null($data)){
+            if(isset($data['iAnioEvaluacion']) && !empty($data['iAnioEvaluacion'])){
+                $this->db->where('p.iAnioEvaluacion', $data['iAnioEvaluacion']);
+            }
+            if(isset($data['iOrigenEvaluacion']) && !empty($data['iOrigenEvaluacion'])){
+                $this->db->where('p.iOrigenEvaluacion', $data['iOrigenEvaluacion']);
+            }
+            if(isset($data['iIdTipoEvaluacion']) && !empty($data['iIdTipoEvaluacion'])){
+                $this->db->where('p.iIdTipoEvaluacion', $data['iIdTipoEvaluacion']);
+            }
+            if(isset($data['iIdEje']) && !empty($data['iIdEje'])){
+                $this->db->where('o.iIdEje', $data['iIdEje']);
+            }
+            if(isset($data['iIdOrganismo']) && !empty($data['iIdOrganismo'])){
+                $this->db->where('o.iIdOrganismo', $data['iIdOrganismo']);
+            }
+            if(isset($data['iTipo']) && !empty($data['iTipo'])){
+                $this->db->where('i.iTipo', $data['iTipo']);
+            }
+            if(isset($data['vIntervencion']) && !empty($data['vIntervencion'])){
+                $this->db->where('i.vIntervencion', $data['vIntervencion']);
+            }
+        }
         $query = $this->db->get();
         return $query->result();
     }

@@ -152,33 +152,26 @@
         <script>
             $( document ).ready(function() {
                 
-                $("#datetimepicker1").datepicker({
-                    weekStart: 1,
-                    daysOfWeekHighlighted: "6,0",
-                    autoclose: true,
-                    todayHighlight: true,
-                    language: 'es',
-                });
-                $("#datetimepicker2").datepicker({
-                    weekStart: 1,
-                    daysOfWeekHighlighted: "6,0",
-                    autoclose: true,
-                    todayHighlight: true,
-                    language: 'es',
-                });
-                $("#datetimepicker3").datepicker({
-                    weekStart: 1,
-                    daysOfWeekHighlighted: "6,0",
-                    autoclose: true,
-                    todayHighlight: true,
-                    language: 'es',
-                });
+                datetimeInit('datetimepicker1');
+                datetimeInit('datetimepicker2');
+                datetimeInit('datetimepicker3');
                 
-                
+                $("#table").load('C_evaluacion/drawColaborador');
                 $('select[id=evaluador]').val(<?=$eva->iIdUsuario?>);
                 search();
                 $(".selectpicker").selectpicker("render");
             });
+
+            function datetimeInit(dtp){
+                $("#"+dtp).datepicker({
+                    weekStart: 1,
+                    daysOfWeekHighlighted: "6,0",
+                    autoclose: true,
+                    todayHighlight: true,
+                    language: 'es',
+                });
+            }
+
             function search(){
                 var formData = new FormData();
                 formData.append('usuario', $("#evaluador").val());
@@ -199,8 +192,6 @@
                     processData: false
                 });
             }
-
-            $("#table").load('C_evaluacion/drawColaborador');
             
             function addColaborador(){
                 var frmData = new FormData();
@@ -259,52 +250,52 @@
             function updateEvaluacion(){
                 if (validateForm() == true){
                     var frmData = new FormData();
-                frmData.append('key', <?=$key?>);
-                frmData.append('vNombreEvaluacion', $('#nombre').val());
-                frmData.append('dFechaInicio', $('#finicio').val());
-                frmData.append('dFechaFin', $('#ffin').val());
-                frmData.append('vObjetivo', $('#objetivo').val());
-                frmData.append('vObjetivoEspecifico', $('#especifico').val());
-                frmData.append('iEnvioOficio', $('#oficio').val());
-                frmData.append('dFechaRecepcionOficio', $('#frecepcion').val());
-                frmData.append('iInformacionCompleta', $('#completa').val());
-                frmData.append('iIdUsuario', $('#evaluador').val());
-                var url = '<?=base_url()?>C_evaluacion/updateRecord';
-                $.ajax({
-                    url: url,
-                    type: 'POST',
-                    data: frmData,
-                    async: false,
-                    dataType: 'json',
-                    success: function(data){
-                        if(data['result'] == 1){
-                            notificacion('Datos guardados exitosamente','success');
-                        }else{
-                            notificacion('Ha ocurrido un error','error');
-                        }
+                    frmData.append('key', <?=$key?>);
+                    frmData.append('vNombreEvaluacion', $('#nombre').val());
+                    frmData.append('dFechaInicio', $('#finicio').val());
+                    frmData.append('dFechaFin', $('#ffin').val());
+                    frmData.append('vObjetivo', $('#objetivo').val());
+                    frmData.append('vObjetivoEspecifico', $('#especifico').val());
+                    frmData.append('iEnvioOficio', $('#oficio').val());
+                    frmData.append('dFechaRecepcionOficio', $('#frecepcion').val());
+                    frmData.append('iInformacionCompleta', $('#completa').val());
+                    frmData.append('iIdUsuario', $('#evaluador').val());
+                    var url = '<?=base_url()?>C_evaluacion/updateRecord';
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: frmData,
+                        async: false,
+                        dataType: 'json',
+                        success: function(data){
+                            if(data['result'] == 1){
+                                notificacion('Datos guardados exitosamente','success');
+                            }else{
+                                notificacion('Ha ocurrido un error','error');
+                            }
 
-                        var msg = data['msg'];
-                        $.each(msg,function(key, row) {
-                            notificacion('No se ha podido agregar a ' + row.usuario,'error');
-                        });
+                            var msg = data['msg'];
+                            $.each(msg,function(key, row) {
+                                notificacion('No se ha podido agregar a ' + row.usuario,'error');
+                            });
 
-                        var usr = data['usr'];
-                        $.each(usr,function(key, row) {
-                            notificacion('Se ha agregado a ' + row.usuario + ' como colaborador','success');
-                        });
+                            var usr = data['usr'];
+                            $.each(usr,function(key, row) {
+                                notificacion('Se ha agregado a ' + row.usuario + ' como colaborador','success');
+                            });
 
-                        var supr = data['supr'];
-                        $.each(supr,function(key, row) {
-                            notificacion(row.usuario + ' no es más un colaborador','success');
-                        });
-                    },
-                    error: function(){
-                        notificacion('Error en la petición', 'error');
-                    },
-                    cache:false,
-                    contentType: false,
-                    processData: false
-                })
+                            var supr = data['supr'];
+                            $.each(supr,function(key, row) {
+                                notificacion(row.usuario + ' no es más un colaborador','success');
+                            });
+                        },
+                        error: function(){
+                            notificacion('Error en la petición', 'error');
+                        },
+                        cache:false,
+                        contentType: false,
+                        processData: false
+                    })
                 }else{
                     notificacion('No debe haber campos vacios');
                 }

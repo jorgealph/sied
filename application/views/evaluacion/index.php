@@ -73,7 +73,7 @@
 							<input type="text" name="vIntervencion" id="vIntervencion" class="form-control" onkeypress="return pulsar(event)">
 						</div>
 						<div class="col-md-2">
-						<button class="btn btn-success form-control" onclick="" type="button" style="margin-top:25px;"> 
+						<button class="btn btn-success form-control" onclick="filter()" type="button" style="margin-top:25px;"> 
 							<li class="fas fa-lg fa-fw m-r-10 fa-search"></li>
 							<span>Buscar</span>
 						</button>
@@ -119,8 +119,7 @@
 		
 		<script>
 			
-				$("#table").load('<?=base_url()?>C_evaluacion/drawTable');
-
+			$("#table").load('<?=base_url()?>C_evaluacion/drawTable');
 			function filter(){
 				$.ajax({
     				// la URL para la petición
@@ -128,19 +127,15 @@
 					// la información a enviar
     				// (también es posible utilizar una cadena de datos)
     				data : $("#form").serialize(),
-
     				// especifica si será una petición POST o GET
     				type : 'POST',
-
     				// el tipo de información que se espera de respuesta
     				/*dataType : 'json',*/
-
     				// código a ejecutar si la petición es satisfactoria;
     				// la respuesta es pasada como argumento a la función
     				success : function(json) {
         				$("#table").html(json);
     				},
-					
 					/* código a ejecutar si la petición falla;
     				son pasados como argumentos a la función
     				el objeto de la petición en crudo y código de estatus de la petición*/
@@ -151,7 +146,6 @@
 							timer: 1500
 						});
     				},
-
     				// código a ejecutar sin importar si la petición falló o no
     				/*complete : function(xhr, status) {
         				alert('Petición realizada');

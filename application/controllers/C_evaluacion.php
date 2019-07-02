@@ -128,8 +128,40 @@ class C_evaluacion extends CI_Controller{
 
     public function drawTable(){
         $this->load->model('M_evaluacion', 'me');
-        $tb = $this->generateTable($this->me->displayjoin());
+
+        if(isset($_POST) && !empty($_POST)){
+            $data = $this->validatePostData($_POST);
+            $tb = $this->generateTable($this->me->displayjoin($data));
+        }else{
+            $tb = $this->generateTable($this->me->displayjoin());
+        }
         echo $tb; 
+    }
+
+    private function validatePostData($post){
+        $data = array();
+        if(isset($post['iAnioEvaluacion']) && !empty($post['iAnioEvaluacion'])){
+            $data['iAnioEvaluacion'] = $post['iAnioEvaluacion'];
+        }
+        if(isset($post['iOrigenEvaluacion']) && !empty($post['iOrigenEvaluacion'])){
+            $data['iOrigenEvaluacion'] = $post['iOrigenEvaluacion'];
+        }
+        if(isset($post['iIdTipoEvaluacion']) && !empty($post['iIdTipoEvaluacion'])){
+            $data['iIdTipoEvaluacion'] = $post['iIdTipoEvaluacion'];
+        }
+        if(isset($post['iIdEje']) && !empty($post['iIdEje'])){
+            $data['iIdEje'] = $post['iIdEje'];
+        }
+        if(isset($post['iIdOrganismo']) && !empty($post['iIdOrganismo'])){
+            $data['iIdOrganismo'] = $post['iIdOrganismo'];
+        }
+        if(isset($post['iTipo']) && !empty($post['iTipo'])){
+            $data['iTipo'] = $post['iTipo'];
+        }
+        if(isset($post['vIntervencion']) && !empty($post['vIntervencion'])){
+            $data['vIntervencion'] = $post['vIntervencion'];
+        }
+        return $data;
     }
 
     public function drawColaborador(){
