@@ -314,11 +314,11 @@ class C_evaluacion extends CI_Controller{
                 $tb .= '<td>'.$this->getOrigen($r->iOrigenEvaluacion).'</td>';
                 $tb .= '<td>'.$r->vTipoEvaluacion.'</td>';
                 $tb .= '<td>';
-                    $tb .= '<button onclick="cargar(\'ver/evaluacion/'.$r->iIdEvaluacion.'\', \'#contenido\')" class="btn btn-default btn-icon btn-sm"><i class="fas fa-edit fa-fw"></i></button>&nbsp;';
-                    $tb .= '<button onclick="" class="btn btn-default btn-icon btn-sm"><i class="fas fa-file fa-fw"></i></button>&nbsp;';
-                    $tb .= '<button onclick="" class="btn btn-primary btn-icon btn-sm"><i class="fas fa-comments fa-fw"></i></button>&nbsp;';
-                    $tb .= '<button onclick="" class="btn btn-primary btn-icon btn-sm"><i class="fas fa-copy fa-fw"></i></button>&nbsp;';
-                    $tb .= '<button onclick="" class="btn btn-default btn-icon btn-sm"><i class="fas fa-paperclip fa-fw"></i></button>';
+                    $tb .= '<button onclick="cargar(\'ver/evaluacion/'.$r->iIdEvaluacion.'\', \'#contenido\')" class="btn btn-default btn-icon btn-sm" data-toggle="tooltip" data-placement="top" title="Seguimiento de la evaluación"><i class="fas fa-edit fa-fw"></i></button>&nbsp;';
+                    $tb .= '<button onclick="" class="btn btn-default btn-icon btn-sm" data-toggle="tooltip" data-placement="top" title="Documento de evaluación"><i class="fas fa-file fa-fw"></i></button>&nbsp;';
+                    $tb .= '<button onclick="" class="btn btn-primary btn-icon btn-sm" data-toggle="tooltip" data-placement="top" title="Documento de opinión"><i class="fas fa-comments fa-fw"></i></button>&nbsp;';
+                    $tb .= '<button onclick="" class="btn btn-primary btn-icon btn-sm" data-toggle="tooltip" data-placement="top" title="Descargar el documento de opinión"><i class="fas fa-copy fa-fw"></i></button>&nbsp;';
+                    $tb .= '<button onclick="" class="btn btn-default btn-icon btn-sm" data-toggle="tooltip" data-placement="top" title="Bitácora digital"><i class="fas fa-paperclip fa-fw"></i></button>';
                 $tb .= '</td>';
             $tb .= '</tr>';
         }

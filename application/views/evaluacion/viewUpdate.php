@@ -125,18 +125,18 @@
                                     <span>Agregar</span>
                                 </button>
                             </div>
-                            <div class="col-md-6">
-                                <button class="btn btn-primary form-control" style="margin-top:25px;" onclick="updateEvaluacion()">
-                                    <li class="fa fa-lg fa-fw m-r-10 fa-save"></li>
-                                    <span>Guardar cambios</span>
-                                </button>
-                            </div>
                         </div>
                         <div class="row" style="padding-top:10px">
                             <div class="col-md-12">
                                 <div class="table-responsive" id="table">
                                     
                                 </div>
+                            </div>
+                            <div class="col-md-4 offset-md-4">
+                                <button class="btn btn-primary form-control" style="margin-top:25px;" onclick="updateEvaluacion()">
+                                    <li class="fa fa-lg fa-fw m-r-10 fa-save"></li>
+                                    <span>Guardar cambios</span>
+                                </button>
                             </div>
                         </div>
                     </div>
