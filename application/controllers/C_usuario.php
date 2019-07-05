@@ -89,7 +89,6 @@ class C_usuario extends CI_Controller {
             //echo "POST";
             $persona_id = $this->input->post('id_usuario');
             $data["vUsuario"] = $this->input->post("usuario");
-            $data["vPassword"] = sha1($this->input->post("contrasenia"));
             $data["vTitulo"] = $this->input->post("titulo");
             $data["vNombres"] = $this->input->post("nombre");
             $data["vApellidoPaterno"] = $this->input->post("paterno");
@@ -107,6 +106,7 @@ class C_usuario extends CI_Controller {
                    // $this->load->view('usuarios/editar_usuario', $vdata);
                     $this->mu->update($persona_id, $data);
                 }else{
+                    $data["vPassword"] = sha1($this->input->post("contrasenia"));
                     // $this->load->view('usuarios/capturar_usuario', $vdata);
                     $persona_id =  $this->mu->insert($data);
                 } 

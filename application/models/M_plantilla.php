@@ -27,9 +27,10 @@ class M_plantilla extends CI_Model {
     }
 
     public function findAll(){
-        $this->db->select();
-        $this->db->from($this->table); 
-        $this->db->where('iActivo', 1);     
+        $this->db->select('p.iIdPlantilla, p.vPlantilla, p.iAnioEvaluacion, e.vTipoEvaluacion, p.iOrigenEvaluacion');
+        $this->db->from('plantilla p'); 
+        $this->db->join('tipoevaluacion e', 'p.iIdTipoEvaluacion = e.iIdTipoEvaluacion', 'INNER');
+        $this->db->where('p.iActivo', 1);
 
         $query=$this->db->get();
         
@@ -194,6 +195,15 @@ class M_plantilla extends CI_Model {
             $this->db->where('o.iIdEje', $id);
         }
 
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function findOrganismoCarrito(){
+        $this->db->distinct();
+        $this->db->select('vOrganismo, iIdOrganismo');
+        $this->db->from("organismo");
+        $this->db->where('iActivo', 1);
         $query = $this->db->get();
         return $query->result();
     }

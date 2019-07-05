@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="<?=base_url()?>admin/assets/plugins/select2/dist/css/select2.min.css">
+<link href="<?=base_url()?>admin/assets/plugins/select2/dist/css/select2.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="<?=base_url()?>admin/assets/plugins/select2/dist/select2-bootstrap4.css">
 
         <a onclick="regresar();" class="btn btn-default pull-right">
@@ -19,12 +19,11 @@
                     </div>
                 </div>
                 </div> 
-                <div class="row">
-                    <div class="container" >
-                        <textarea class="form-control" rows="3" cols="50" class="col-md-12" data-parsley-required="true" id="nombre" name="nombre"><?php if(isset($nombre)){echo $nombre;} ?></textarea> 
+                    <div class="row">
+                        <div class="col-md-12" >
+                            <textarea class="form-control" rows="3" cols="50" class="col-md-12" data-parsley-required="true" id="nombre" name="nombre"><?php if(isset($nombre)){echo $nombre;} ?></textarea> 
+                        </div>
                     </div>
-                </div>
-                
                 <div class="row">
                     <div class="col-md-4">
                     <label>Año de la evaluación: </label>
@@ -119,12 +118,13 @@
             </div>
         </div>
     </div> <br>
-        
+
     <div id="table"></div>
     <div id="bo"></div>
 
     <center>
         <button type="button" onclick="<?php echo (isset($iIdPlantilla)) ? 'update()': 'dataEntry()'; ?>" class='btn btn-primary'>Enviar</button>
+        <button id="obtenerDatos" type="button" name="button">Obtener datos del select</button>
     </center>
     
         <script src="<?=base_url()?>admin/assets/js/demo/table-manage-default.demo.min.js"></script>
@@ -133,30 +133,31 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.full.min.js"></script> 
+        
         <script>
-            $(document).ready(function() {
-                $('.simple-select2').select2({
-                    theme: 'bootstrap4',
-                    placeholder: "Select an option",
-                    allowClear: true
-                });
-
-                $('.simple-select2-sm').select2({
-                    theme: 'bootstrap4',
-                    containerCssClass: ':all:',
-                    placeholder: "Select an option",
-                    allowClear: true
-                });
-
-                TableManageDefault.init();
-
-                $("#table").load('C_plantilla/GenerateTable');
-                //$("#bo").load('C_plantilla/dropTable');
-            });
+            $("#obtenerDatos").click(function(id){
+            //console.log($("#multisearch").val())
+            var arrayValor = $("#select"+id).val()
+            var arrayNombres = []
+                console.log(id);
+            $("#select"+id).find("li").each(function(index){
+                
+                if($(this).text()!=""){
+                var valorAnterior = arrayValor[index]
+                arrayValor[index] = {
+                idi:valorAnterior,
+                valor:$(this).text().replace("×","")
+                }
+                }
+                
+            })
+            
+            console.log(arrayValor)
+            })
         
             //$("#table").load('<?=base_url()?>C_plantilla/tabla');
+            $("#table").load('C_plantilla/GenerateTable');
             
-
             function loadDependencia(){
             	var value = $("#eje").val();
             	$("#dependencia").load('C_intervencionpropuesta/dependenciaQuery/'+value);

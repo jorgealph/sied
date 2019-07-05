@@ -134,6 +134,7 @@ class C_plantilla extends CI_Controller {
             $intervencion[$n]['iTipo'] = $query->iTipo;
             $intervencion[$n]['iIdIntervencionPropuesta'] = $query->iIdIntervencionPropuesta;
             $intervencion[$n]['iIdOrganismo'] = $query->iIdOrganismo;
+            $intervencion[$n]['dependencia'] = '';
             $intervencion[$n]['activo'] = 1;
            
             $_SESSION['intervencion'] = $intervencion;
@@ -186,6 +187,7 @@ class C_plantilla extends CI_Controller {
             $intervencion[$n]['iTipo'] = $query->iTipo;
             $intervencion[$n]['iIdIntervencionPropuesta'] = $query->iIdIntervencionPropuesta;
             $intervencion[$n]['iIdOrganismo'] = $query->iIdOrganismo;
+            $intervencion[$n]['dependencia'] = '';
             $intervencion[$n]['activo'] = 1;
            
             $_SESSION['intervencion'] = $intervencion;
@@ -194,7 +196,13 @@ class C_plantilla extends CI_Controller {
         }else{
             echo 0;
         }
-        
+    }
+
+    public function AgregarDependencias(){
+        $intervencion = $_SESSION['intervencion'];
+        foreach ($intervencion as $n) {
+            $intervencion[$n]['dependencia'] = $select;
+        }
     }
 
     public function GenerateTable(){
@@ -215,7 +223,7 @@ class C_plantilla extends CI_Controller {
                 <th scope="col">Año</th>
                 <th scope="col">Tipo</th>
                 <th scope="col">Intervención Propuesta</th>
-                <th scope="col">Organismo</th>
+                <th scope="col">Dependencia Corresponsable</th>
                 <th scope="col">Eliminar</th>
             </tr>
         </thead>';
@@ -230,6 +238,7 @@ class C_plantilla extends CI_Controller {
     }
 
     private function GenerateTContent(){
+        $vdata = $this->mp->findOrganismoCarrito();
         $tcontent = '';
         $intervencion = $_SESSION['intervencion'];
         if($intervencion != null){
@@ -242,29 +251,29 @@ class C_plantilla extends CI_Controller {
                 $tcontent .=  '<td>'.$r['iAnio'].'</td>';
                 $tcontent .=  '<td>'.$r['iTipo'].'</td>';
                 $tcontent .=  '<td>'.$r['iIdIntervencionPropuesta'].'</td>';
-                $tcontent .=  '<td>'.$r['iIdOrganismo'].'</td>';
+                $tcontent .=  '<td>'.' <select id="select'.$r['iIdIntervencion'].'" class="multiple-select2 form-control" multiple="multiple">
+                <option value="0">Seleccionar</option>'.
+                            $this->Select($vdata) .'
+            </select>'.'</td>';
                 $tcontent .=  '<td>'.'<button type="button" class="btn btn-danger btn-icon btn-sm" onclick="deleteRowIntervencion('.$r['iIdIntervencion'].')" title="Eliminar"><i class="fas fa-trash-alt fa-fw"></i></button>'; 
                 $tcontent .= '</tr>';
                 }
             }
             $tcontent .= ' <script>
                 $(document).ready(function() {
-                    $(\'.simple-select2\').select2({
-                        theme: \'bootstrap4\',
-                        placeholder: "Seleccionar",
-                        allowClear: true
-                    });
-    
-                    $(\'.simple-select2-sm\').select2({
-                        theme: \'bootstrap4\',
-                        containerCssClass: \':all:\',
-                        placeholder: "Select an option",
-                        allowClear: true
-                    });
+                    $(".multiple-select2").select2({placeholder:"Selecciona una opción"})
                 });
             </script>';
         }
         return $tcontent;
+    }
+
+    private function Select($data){
+        $option = '';
+        foreach ($data as $row) {
+            $option .=  '<option value="'.$row->iIdOrganismo.'">'.$row->vOrganismo.'</option>';
+         }
+         return $option;
     }
 
     public function insertar_plantilla(){
