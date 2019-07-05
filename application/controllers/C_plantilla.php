@@ -241,7 +241,7 @@ class C_plantilla extends CI_Controller {
         $vdata = $this->mp->findOrganismoCarrito();
         $tcontent = '';
         $intervencion = $_SESSION['intervencion'];
-        var_dump($intervencion);
+        
         if($intervencion != null){
             foreach($intervencion as $r){
                 if($r['activo'] == 1){
@@ -300,14 +300,23 @@ class C_plantilla extends CI_Controller {
                 if($iIdPlantilla>0){
                     foreach($intervencion as $r){
                         $tmp['iIdPlantilla'] = $iIdPlantilla;
-                        $tmp['iIdIntervencion'] = $r->iIdIntervencion;
+                        $tmp['iIdIntervencion'] = $r['iIdIntervencion'];
                         $tmp['vNombreEvaluacion'] = '';
                         $tmp['vObjetivo'] = '';
                         $tmp['vObjetivoEspecifico'] = ''; 
                         $tmp['vEspecificarOtro'] = '';
                         $tmp['vRutaArchivo'] = '';
                         $tmp['vComentarioGeneral'] = '';
-                        echo $insert = $this->mp->insertIntercencion($tmp);
+                        $iIdEvaluacion = $this->mp->insertIntercencion($tmp);
+
+                        $corresponsables = explode(",",$r{'dependencia'});
+
+                        for ($i=0; $i < count($corresponsables) ; $i++) {
+                            $datos = array('iIdEvaluacion' => $iIdEvaluacion, 'iIdOrganismo' => $corresponsables[$i],'vRutaArchivo' => '');
+                            $this->mp->insertCorresponsables($datos);
+                        }
+
+                        echo $iIdEvaluacion;
                     }
                 }
             //}
@@ -355,7 +364,7 @@ class C_plantilla extends CI_Controller {
                     $tmp['iTipo'] = $query->iTipo;
                     $tmp['iIdIntervencionPropuesta'] = $query->iIdIntervencionPropuesta;
                     $tmp['iIdOrganismo'] = $query->iIdOrganismo;
-                    $tmp['dependencia'] = $query->iIdEvaluacion; //llenar con consulta
+                    $tmp['dependencia'] = $this->devuelveIdsCorresponsables($query->iIdEvaluacion);
                     $tmp['activo'] = 1;
                     $intervencion[] = $tmp;
                 }
@@ -381,8 +390,10 @@ class C_plantilla extends CI_Controller {
             $aux = $this->mp->update($iIdPlantilla, $data);
             if($iIdPlantilla>0){
                 foreach($intervencion as $r){
-                   // var_dump($r);
-                     if(isset($r['iIdIntervencion']) && $r['activo'] == 0){
+
+                    $corresponsables = explode(",",$r['dependencia']);
+                    
+                    if(isset($r['iIdIntervencion']) && $r['activo'] == 0){
                         echo $insert = $this->mp->deleteEvaluacion($iIdPlantilla, $r['iIdIntervencion']);
                     }
                     if(isset($r['iIdIntervencion']) && $r['activo'] == 1){
@@ -397,6 +408,12 @@ class C_plantilla extends CI_Controller {
                             $tmp['vRutaArchivo'] = '';
                             $tmp['vComentarioGeneral'] = '';
                             echo $insert = $this->mp->insertIntercencion($tmp);
+                        } else {
+                            /*$idEvaluacion = $this->mp->getIdEvaluacion($iIdPlantilla,$iIdIntervencion);
+
+                            for ($i=0; $i < count($corresponsables); $i++){ 
+                                
+                            }*/
                         }
                     }
                 }
@@ -406,6 +423,7 @@ class C_plantilla extends CI_Controller {
 
     function prueba(){
         $array = $this->input->post('corresponsables');
+        $iIdIntervencion = $this->input->post('idintervencion');
         $intervencion = $_SESSION['intervencion'];
         $array = explode(',', $array);
         foreach($intervencion as $r){
@@ -414,4 +432,32 @@ class C_plantilla extends CI_Controller {
         //var_dump($array);
         var_dump($r);
     }
+
+    function devuelveIdsCorresponsables($iIdEvaluacion){
+        $query = $this->mp->organismoCorresponsables($iIdEvaluacion);
+        $ids = '';
+        if($query){
+            $query = $query->result();
+
+            foreach ($query as $dato) {
+                if($ids != '') $ids.= ',';
+                $ids.= $dato->iIdOrganismo;
+            }
+        }
+
+        return $ids;
+    }
+
+    public function guardarCorresponsable(){
+        $idintervencion = $this->input->post('idintervencion');
+        $dependencia = $this->input->post('corresponsables');
+
+        for ($i=0; $i < count($_SESSION['intervencion']); $i++) { 
+            if($_SESSION['intervencion'][$i]['iIdIntervencion'] == $idintervencion) $_SESSION['intervencion'][$i]['dependencia'] = $dependencia;
+        }
+        
+        //echo '1';
+    }
+
+
 }   

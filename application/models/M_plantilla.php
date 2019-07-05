@@ -214,4 +214,22 @@ class M_plantilla extends CI_Model {
         $query = $this->db->get();
         return $query->result();
     }
+
+    public function organismoCorresponsables($idEvaluacion){
+        $sql = "SELECT ec.iIdOrganismo 
+                FROM evaluacion e
+                INNER JOIN evaluacioncorresponsable ec ON ec.iIdEvaluacion = e.iIdEvaluacion AND ec.iIdEvaluacion = $idEvaluacion";
+        return $this->db->query($sql);
+    }
+
+    public function getIdEvaluacion($iIdPlantilla,$iIdIntervencion){
+        $sql = "SELECT e.iIdEvaluacion 
+                FROM evaluacion e
+                WHERE e.iIdPlantilla = $iIdPlantilla  AND e.iIdIntervencion = $iIdIntervencion";
+        return $this->db->query($sql)->row()->iIdEvaluacion;
+    }
+
+    function insertCorresponsables($data){
+        return $this->db->insert('evaluacioncorresponsable', $data);
+    }
 }

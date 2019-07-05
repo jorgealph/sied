@@ -424,12 +424,11 @@
 			}
 
             function guardarCorresponsable(id){
-
-                //console.log(id);
+                
                 var corresponsables = $("#select"+id).val();
 
                 $.ajax({
-                    url: '<?=base_url()?>index.php/C_plantilla/prueba',
+                    url: '<?=base_url()?>index.php/C_plantilla/guardarCorresponsable',
                     type: 'POST',
                     data: 'idintervencion='+id+'&corresponsables='+corresponsables,
                     async: false,
