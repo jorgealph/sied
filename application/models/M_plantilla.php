@@ -37,19 +37,26 @@ class M_plantilla extends CI_Model {
         return $query->result();
     }
 
-    public function findEvaluacion($iIdPlantilla){
-/*         $this->db->select('*');
-        $this->db->from('evaluacion');
-        $this->db->where('iActivo', 1); 
-        $this->db->where('iIdPlantilla', $iIdPlantillas); */
+    public function EvaluacionCorresponsable($iIdIntervencion){
+        $this->db->select('p.iIdEvaluacion, p.iIdOrganismo');
+        $this->db->from('evaluacioncorresponsable p'); 
+        $this->db->join('evaluacion e', 'p.iIdTipoEvaluacion = e.iIdTipoEvaluacion', 'INNER');
+        $this->db->where('p.iIdIntervencion', $iIdIntervencion);
+        $this->db->where('p.iEstatusArchivo', 1);
 
+        $query=$this->db->get();
+        
+        return $query->result();
+    }
 
+    public function findEvaluacion($iIdPlantilla/* , $iIdEvaluacion */){
         $this->db->select('i.iIdIntervencion, i.vIntervencion, i.vClave, i.iAnio, i.iTipo, i.iIdIntervencionPropuesta, i.iIdOrganismo, e.iIdEvaluacion');
         $this->db->from('intervencion as i');
         $this->db->join('evaluacion e', 'i.iIdIntervencion = e.iIdIntervencion', 'INNER');
+       // $this->db->join('evaluacioncorresponsable p', 'p.iIdEvaluacion = e.iIdEvaluacion', 'INNER');
         $this->db->where('e.iIdPlantilla', $iIdPlantilla);
+       // $this->db->where('e.iIdEvaluacion', $iIdEvaluacion);
         $this->db->where('e.iActivo', 1);
-       // $this->db->join('Eje e', 'e.iIdEje = o.iIdEje', 'INNER');
 
         $query = $this->db->get();
         return $query->result();

@@ -241,22 +241,24 @@ class C_plantilla extends CI_Controller {
         $vdata = $this->mp->findOrganismoCarrito();
         $tcontent = '';
         $intervencion = $_SESSION['intervencion'];
+        var_dump($intervencion);
         if($intervencion != null){
             foreach($intervencion as $r){
                 if($r['activo'] == 1){
+                    $ids = explode(",", $r['dependencia']);
                     $tcontent .= '<tr>';
-                $tcontent .=  '<td>'.$r['iIdIntervencion'].'</td>';
-                $tcontent .=  '<td>'.$r['vIntervencion'].'</td>';
-                $tcontent .=  '<td>'.$r['vClave'].'</td>';
-                $tcontent .=  '<td>'.$r['iAnio'].'</td>';
-                $tcontent .=  '<td>'.$r['iTipo'].'</td>';
-                $tcontent .=  '<td>'.$r['iIdIntervencionPropuesta'].'</td>';
-                $tcontent .=  '<td>'.' <select id="select'.$r['iIdIntervencion'].'" class="multiple-select2 form-control" multiple="multiple" onchange="guardarCorresponsable('.$r['iIdIntervencion'].')">
-                <option value="0">Seleccionar</option>'.
-                            $this->Select($vdata) .'
-            </select>'.'</td>';
-                $tcontent .=  '<td>'.'<button type="button" class="btn btn-danger btn-icon btn-sm" onclick="deleteRowIntervencion('.$r['iIdIntervencion'].')" title="Eliminar"><i class="fas fa-trash-alt fa-fw"></i></button>'; 
-                $tcontent .= '</tr>';
+                    $tcontent .=  '<td>'.$r['iIdIntervencion'].'</td>';
+                    $tcontent .=  '<td>'.$r['vIntervencion'].'</td>';
+                    $tcontent .=  '<td>'.$r['vClave'].'</td>';
+                    $tcontent .=  '<td>'.$r['iAnio'].'</td>';
+                    $tcontent .=  '<td>'.$r['iTipo'].'</td>';
+                    $tcontent .=  '<td>'.$r['iIdIntervencionPropuesta'].'</td>';
+                    $tcontent .=  '<td>'.' <select id="select'.$r['iIdIntervencion'].'" class="multiple-select2 form-control" multiple="multiple" onchange="guardarCorresponsable('.$r['iIdIntervencion'].')">
+                    <option value="0">Seleccionar</option>'.
+                                $this->Select($vdata, $ids) .'
+                </select>'.'</td>';
+                    $tcontent .=  '<td>'.'<button type="button" class="btn btn-danger btn-icon btn-sm" onclick="deleteRowIntervencion('.$r['iIdIntervencion'].')" title="Eliminar"><i class="fas fa-trash-alt fa-fw"></i></button>'; 
+                    $tcontent .= '</tr>';
                 }
             }
             $tcontent .= ' <script>
@@ -268,10 +270,11 @@ class C_plantilla extends CI_Controller {
         return $tcontent;
     }
 
-    private function Select($data){
+    private function Select($data, $ids=''){
         $option = '';
         foreach ($data as $row) {
-            $option .=  '<option value="'.$row->iIdOrganismo.'">'.$row->vOrganismo.'</option>';
+            $selected = (in_array($row->iIdOrganismo, $ids)) ? 'selected' : '';
+            $option .=  '<option '.$selected.' value="'.$row->iIdOrganismo.'">'.$row->vOrganismo.'</option>';
          }
          return $option;
     }
@@ -341,8 +344,8 @@ class C_plantilla extends CI_Controller {
                 $data['iIdPlantilla'] = $plantilla->iIdPlantilla;
                 $data['eje'] = $this->mp->get_eje();
 
-                //$_SESSION['intervencion'] = $this->mp->findEvaluacion();
-                $resultado = $this->mp->findEvaluacion($iIdPlantilla);
+                $resultado = $this->mp->findEvaluacion($iIdPlantilla/* , $iIdEvaluacion */);
+                //$otroresultado = $this->mp->EvaluacionCorresponsable($iIdIntervencion);
                 $intervencion = null;
                 foreach($resultado as $query){
                     $tmp['iIdIntervencion'] = $query->iIdIntervencion;
@@ -352,6 +355,7 @@ class C_plantilla extends CI_Controller {
                     $tmp['iTipo'] = $query->iTipo;
                     $tmp['iIdIntervencionPropuesta'] = $query->iIdIntervencionPropuesta;
                     $tmp['iIdOrganismo'] = $query->iIdOrganismo;
+                    $tmp['dependencia'] = $query->iIdEvaluacion; //llenar con consulta
                     $tmp['activo'] = 1;
                     $intervencion[] = $tmp;
                 }
@@ -402,8 +406,12 @@ class C_plantilla extends CI_Controller {
 
     function prueba(){
         $array = $this->input->post('corresponsables');
-
+        $intervencion = $_SESSION['intervencion'];
         $array = explode(',', $array);
-        var_dump($array);
+        foreach($intervencion as $r){
+            $r['dependencia'] = $array;
+        }
+        //var_dump($array);
+        var_dump($r);
     }
 }   
