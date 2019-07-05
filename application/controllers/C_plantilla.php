@@ -251,7 +251,7 @@ class C_plantilla extends CI_Controller {
                 $tcontent .=  '<td>'.$r['iAnio'].'</td>';
                 $tcontent .=  '<td>'.$r['iTipo'].'</td>';
                 $tcontent .=  '<td>'.$r['iIdIntervencionPropuesta'].'</td>';
-                $tcontent .=  '<td>'.' <select id="select'.$r['iIdIntervencion'].'" class="multiple-select2 form-control" multiple="multiple">
+                $tcontent .=  '<td>'.' <select id="select'.$r['iIdIntervencion'].'" class="multiple-select2 form-control" multiple="multiple" onchange="guardarCorresponsable('.$r['iIdIntervencion'].')">
                 <option value="0">Seleccionar</option>'.
                             $this->Select($vdata) .'
             </select>'.'</td>';
@@ -398,5 +398,12 @@ class C_plantilla extends CI_Controller {
                 }
             }
         }
+    }
+
+    function prueba(){
+        $array = $this->input->post('corresponsables');
+
+        $array = explode(',', $array);
+        var_dump($array);
     }
 }   

@@ -422,4 +422,20 @@
   					}
 				});
 			}
-                </script>
+
+            function guardarCorresponsable(id){
+
+                //console.log(id);
+                var corresponsables = $("#select"+id).val();
+
+                $.ajax({
+                    url: '<?=base_url()?>index.php/C_plantilla/prueba',
+                    type: 'POST',
+                    data: 'idintervencion='+id+'&corresponsables='+corresponsables,
+                    async: false,
+                    success: function(data){
+                        
+                    }
+                });
+            }
+        </script>
