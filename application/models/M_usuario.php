@@ -107,6 +107,22 @@ class M_usuario extends CI_Model {
         $this->db->update($this->table, $data);
         return $this->db->affected_rows();
     }
+
+    function get_rol(){
+        $this->db->select('iIdRol');
+        $this->db->from($this->table);
+        $this->db->where('iActivo', 1); 
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    function get_organismo(){
+        $this->db->select('iIdOrganismo');
+        $this->db->from($this->table);
+        $this->db->where('iActivo', 1); 
+        $query = $this->db->get();
+        return $query->result();
+    }
 }
 
 ?>

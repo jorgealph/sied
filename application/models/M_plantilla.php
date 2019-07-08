@@ -27,28 +27,36 @@ class M_plantilla extends CI_Model {
     }
 
     public function findAll(){
-        $this->db->select();
-        $this->db->from($this->table); 
-        $this->db->where('iActivo', 1);     
+        $this->db->select('p.iIdPlantilla, p.vPlantilla, p.iAnioEvaluacion, e.vTipoEvaluacion, p.iOrigenEvaluacion');
+        $this->db->from('plantilla p'); 
+        $this->db->join('tipoevaluacion e', 'p.iIdTipoEvaluacion = e.iIdTipoEvaluacion', 'INNER');
+        $this->db->where('p.iActivo', 1);
 
         $query=$this->db->get();
         
         return $query->result();
     }
 
-    public function findEvaluacion($iIdPlantilla){
-/*         $this->db->select('*');
-        $this->db->from('evaluacion');
-        $this->db->where('iActivo', 1); 
-        $this->db->where('iIdPlantilla', $iIdPlantillas); */
+    public function EvaluacionCorresponsable($iIdIntervencion){
+        $this->db->select('p.iIdEvaluacion, p.iIdOrganismo');
+        $this->db->from('evaluacioncorresponsable p'); 
+        $this->db->join('evaluacion e', 'p.iIdTipoEvaluacion = e.iIdTipoEvaluacion', 'INNER');
+        $this->db->where('p.iIdIntervencion', $iIdIntervencion);
+        $this->db->where('p.iEstatusArchivo', 1);
 
+        $query=$this->db->get();
+        
+        return $query->result();
+    }
 
+    public function findEvaluacion($iIdPlantilla/* , $iIdEvaluacion */){
         $this->db->select('i.iIdIntervencion, i.vIntervencion, i.vClave, i.iAnio, i.iTipo, i.iIdIntervencionPropuesta, i.iIdOrganismo, e.iIdEvaluacion');
         $this->db->from('intervencion as i');
         $this->db->join('evaluacion e', 'i.iIdIntervencion = e.iIdIntervencion', 'INNER');
+       // $this->db->join('evaluacioncorresponsable p', 'p.iIdEvaluacion = e.iIdEvaluacion', 'INNER');
         $this->db->where('e.iIdPlantilla', $iIdPlantilla);
+       // $this->db->where('e.iIdEvaluacion', $iIdEvaluacion);
         $this->db->where('e.iActivo', 1);
-       // $this->db->join('Eje e', 'e.iIdEje = o.iIdEje', 'INNER');
 
         $query = $this->db->get();
         return $query->result();
@@ -168,6 +176,7 @@ class M_plantilla extends CI_Model {
     }
 
     function get_origen(){
+        $this->db->distinct();
         $this->db->select('iOrigenEvaluacion');
         $this->db->where('iActivo', 1); 
         $this->db->from($this->table);
@@ -197,4 +206,54 @@ class M_plantilla extends CI_Model {
         $query = $this->db->get();
         return $query->result();
     }
+
+    public function findOrganismoCarrito(){
+        $this->db->distinct();
+        $this->db->select('vOrganismo, iIdOrganismo');
+        $this->db->from("organismo");
+        $this->db->where('iActivo', 1);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function organismoCorresponsables($idEvaluacion){
+        $sql = "SELECT ec.iIdOrganismo 
+                FROM evaluacion e
+                INNER JOIN evaluacioncorresponsable ec ON ec.iIdEvaluacion = e.iIdEvaluacion AND ec.iIdEvaluacion = $idEvaluacion";
+        return $this->db->query($sql);
+    }
+
+    public function getIdEvaluacion($iIdPlantilla,$iIdIntervencion){
+        $sql = "SELECT e.iIdEvaluacion 
+                FROM evaluacion e
+                WHERE e.iIdPlantilla = $iIdPlantilla  AND e.iIdIntervencion = $iIdIntervencion";
+        return $this->db->query($sql)->row()->iIdEvaluacion;
+    }
+
+    function insertCorresponsables($data){
+        return $this->db->insert('evaluacioncorresponsable', $data);
+    }
+
+    public function filtro($anio, $origen, $tipo, $nombre){
+        $this->db->select('p.iIdPlantilla, p.vPlantilla, p.iAnioEvaluacion, t.vTipoEvaluacion, p.iOrigenEvaluacion');
+		$this->db->from('plantilla p');
+        $this->db->join('tipoevaluacion t','p.iIdTipoEvaluacion = t.iIdTipoEvaluacion AND t.iActivo = 1','INNER');
+        $this->db->where('p.iActivo',1);
+
+        if(!empty($anio) && $anio != null){
+            $this->db->where('p.iAnioEvaluacion', $anio);
+        }
+        if(!empty($origen) && $origen != null){
+            $this->db->where('p.iOrigenEvaluacion', $origen);
+        }
+        if(!empty($tipo) && $tipo != null){
+            $this->db->where('t.iIdTipoEvaluacion', $tipo);
+        }
+        if(!empty($nombre) && $nombre != null){
+            $this->db->like('p.vPlantilla', $nombre);
+        }
+        
+        $query = $this->db->get();
+        return $query->result();
+   }
 }

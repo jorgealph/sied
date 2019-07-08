@@ -1,0 +1,18 @@
+ALTER TABLE `sied`.`evaluacion`   
+  CHANGE `iEnvioOficio` `iEnvioOficio` TINYINT(1) UNSIGNED DEFAULT 1  NOT NULL  COMMENT '1:Sí, 0:No'  AFTER `iActivo`,
+  CHANGE `dFechaRecepcionOficio` `dRecepcionOficio` DATE DEFAULT '1900-01-01'   NOT NULL  AFTER `iEnvioOficio`,
+  CHANGE `iInformacionCompleta` `iInformacionCompleta` TINYINT(1) UNSIGNED DEFAULT 1  NOT NULL  COMMENT '1:Sí, 0:No'  AFTER `dRecepcionOficio`,
+  ADD COLUMN `dEntregaInformacion` DATE DEFAULT '1900-01-01'   NOT NULL AFTER `iInformacionCompleta`,
+  ADD COLUMN `dReunionPresentacion` DATE DEFAULT '1900-01-01'   NOT NULL AFTER `dEntregaInformacion`,
+  ADD COLUMN `dInicioRealizacion` DATE DEFAULT '1900-01-01'   NOT NULL AFTER `dReunionPresentacion`,
+  ADD COLUMN `dEntregaBorrador` DATE DEFAULT '1900-01-01'   NOT NULL AFTER `dInicioRealizacion`,
+  ADD COLUMN `dPresentacionBorrador` DATE DEFAULT '1900-01-01'   NOT NULL AFTER `dEntregaBorrador`,
+  ADD COLUMN `dPresentacionFinal` DATE DEFAULT '1900-01-01'   NOT NULL AFTER `dPresentacionBorrador`,
+  ADD COLUMN `dEnvioVersionFinalDig` DATE DEFAULT '1900-01-01'   NOT NULL AFTER `dPresentacionFinal`,
+  ADD COLUMN `dEntregaVersionImp` DATE DEFAULT '1900-01-01'   NOT NULL AFTER `dEnvioVersionFinalDig`,
+  ADD COLUMN `dFinEvaluadores` DATE DEFAULT '1900-01-01'   NOT NULL AFTER `dEntregaVersionImp`,
+  ADD COLUMN `dEntregaInformeFinal` DATE DEFAULT '1900-01-01'   NOT NULL AFTER `dFinEvaluadores`,
+  ADD COLUMN `dPublicacion` DATE DEFAULT '1900-01-01'   NOT NULL AFTER `dEntregaInformeFinal`,
+  ADD COLUMN `dEntregaDocOpinion` DATE DEFAULT '1900-01-01'   NOT NULL AFTER `dPublicacion`,
+  ADD COLUMN `dEntregaDocTrabajo` DATE DEFAULT '1900-01-01'   NOT NULL AFTER `dEntregaDocOpinion`,
+  ADD COLUMN `dPublicacionDocOpininTrabajo` DATE DEFAULT '1900-01-01'   NOT NULL AFTER `dEntregaDocTrabajo`;

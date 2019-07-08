@@ -207,6 +207,11 @@
         echo form_input($input);
         ?>
     </div></div></div>
+
+    <script>
+        $("#rol").val(<?php if(isset($rol2)){echo $rol2;}?>);
+        $("#organismo").val(<?php if(isset($organismo2)){echo $organismo2;}?>);
+    </script>
     <?php echo form_close();?>
 
     <form class="form" onsubmit="guardar(this,event);" id="form-captura" name="form-captura">
