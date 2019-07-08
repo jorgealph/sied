@@ -79,8 +79,10 @@ class C_usuario extends CI_Controller {
                 $vdata["telefono"] = $persona->vTelefono;
                 $vdata["cargo"] = $persona->vCargo;
                 $vdata["celular"] = $persona->vCelular; // iIdOrganismo  iIdRol
-                $vdata["organismo"] = $persona->iIdOrganismo;
-                $vdata["rol"] = $persona->iIdRol;
+                $vdata['organismo'] = $this->mu->get_organismo();
+                $vdata["organismo2"] = $persona->iIdOrganismo;
+                $vdata["rol"] = $this->mu->get_rol();
+                $vdata["rol2"] = $persona->iIdRol;
             }
         }
       

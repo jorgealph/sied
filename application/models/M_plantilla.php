@@ -176,6 +176,7 @@ class M_plantilla extends CI_Model {
     }
 
     function get_origen(){
+        $this->db->distinct();
         $this->db->select('iOrigenEvaluacion');
         $this->db->where('iActivo', 1); 
         $this->db->from($this->table);
@@ -232,4 +233,27 @@ class M_plantilla extends CI_Model {
     function insertCorresponsables($data){
         return $this->db->insert('evaluacioncorresponsable', $data);
     }
+
+    public function filtro($anio, $origen, $tipo, $nombre){
+        $this->db->select('p.iIdPlantilla, p.vPlantilla, p.iAnioEvaluacion, t.vTipoEvaluacion, p.iOrigenEvaluacion');
+		$this->db->from('plantilla p');
+        $this->db->join('tipoevaluacion t','p.iIdTipoEvaluacion = t.iIdTipoEvaluacion AND t.iActivo = 1','INNER');
+        $this->db->where('p.iActivo',1);
+
+        if(!empty($anio) && $anio != null){
+            $this->db->where('p.iAnioEvaluacion', $anio);
+        }
+        if(!empty($origen) && $origen != null){
+            $this->db->where('p.iOrigenEvaluacion', $origen);
+        }
+        if(!empty($tipo) && $tipo != null){
+            $this->db->where('t.iIdTipoEvaluacion', $tipo);
+        }
+        if(!empty($nombre) && $nombre != null){
+            $this->db->like('p.vPlantilla', $nombre);
+        }
+        
+        $query = $this->db->get();
+        return $query->result();
+   }
 }

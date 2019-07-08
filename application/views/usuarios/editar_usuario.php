@@ -49,22 +49,16 @@
 
             <div class="col-md-4">
             <div class="form-group">
-            <?php
-            echo form_label('Rol', 'rol'); echo "<br>";
-            $options = array(
-            '1' => 'Administrador',
-            '2' => 'Evaluador'
-            );
-            echo form_dropdown('rol', 
-            $options, 
-            'Administrador', 
-            'class="form-control"'
-            ); ?>
+            <label for="">Rol: </label>
+            <select class="form-control" id="rol" name="rol" data-parsley-required="true">
+                <option <?php if(isset($iIdRol) && $iIdRol == 1) echo 'selected'; ?> value="1">Administrador</option>
+                <option <?php if(isset($iIdRol) && $iIdRol == 2) echo 'selected'; ?> value="2">Evaluador</option>
+            </select>
             </div></div></div>
 
             <script>
-                    $("#rol").val(<?php if(isset($tipo2)){echo $tipo2;}?>);
-                    $("#organismo").val(<?php if(isset($buscar)){echo $buscar;}?>);
+                    $("#rol").val(<?php if(isset($rol2)){echo $rol2;}?>);
+                    $("#organismo").val(<?php if(isset($organismo2)){echo $organismo2;}?>);
                 </script>
 
             <div class="row">
