@@ -16,36 +16,34 @@ class C_plantilla extends CI_Controller {
     }
 
     public function index(){
+         if(empty($_REQUEST['anio']) && empty($_REQUEST['origen']) && empty($_REQUEST['tipo']) && empty($_REQUEST['texto_busqueda'])){
+            $vdata["plantilla"] = $this->mp->findAll();
+        }else{
+            $anio = $_REQUEST['anio'];
+            $origen = $_REQUEST['origen'];
+            $tipo = $_REQUEST['tipo'];
+            $nombre = $_REQUEST['texto_busqueda'];
+            $vdata["plantilla"] = $this->mp->filtro($anio, $origen, $tipo, $nombre);
+        }
+        
         $vdata['anio'] = $this->mp->get_anio();
         $vdata['origen'] = $this->mp->get_origen();
         $vdata['tipo'] = $this->mp->get_tipo();
         $vdata["plantilla"] = $this->mp->findAll();
-        $this->load->view('plantilla/index', $vdata);
-
- /*        if(empty($_REQUEST['eje']) && empty($_REQUEST['organismo']) && empty($_REQUEST['texto_busqueda'])){
-            $vdata["personas"] = $this->mp->findAll();
-        }else{
-            $eje = $_REQUEST['eje'];
-            $organismo = $_REQUEST['organismo'];
-            $siglas = $_REQUEST['texto_busqueda'];
-            $vdata["personas"] = $this->mp->filtro($organismo, $eje, $siglas);
-        }
-        
-        $vdata['eje'] = $this->mp->get_eje();
-        $vdata['organismo'] = $this->mp->get_dependencia();
-        $this->load->view('plantilla/index', $vdata); */
+        $this->load->view('plantilla/index', $vdata); 
     }
 
     public function tabla(){
-      /*   if(empty($_REQUEST['eje']) && empty($_REQUEST['organismo']) && empty($_REQUEST['texto_busqueda'])){
-            $vdata["personas"] = $this->mp->findAll();
+         if(empty($_REQUEST['anio']) && empty($_REQUEST['origen']) && empty($_REQUEST['tipo']) && empty($_REQUEST['texto_busqueda'])){
+            $vdata["plantilla"] = $this->mp->findAll();
         }else{
-            $eje = $_REQUEST['eje'];
-            $organismo = $_REQUEST['organismo'];
-            $siglas = $_REQUEST['texto_busqueda'];
-            $vdata["personas"] = $this->mp->filtro($organismo, $eje, $siglas);
-        } */
-        $vdata["plantilla"] = $this->mp->findAll();
+            $anio = $_REQUEST['anio'];
+            $origen = $_REQUEST['origen'];
+            $tipo = $_REQUEST['tipo'];
+            $nombre = $_REQUEST['texto_busqueda'];
+            $vdata["plantilla"] = $this->mp->filtro($anio, $origen, $tipo, $nombre);
+        } 
+        //$vdata["plantilla"] = $this->mp->findAll();
         $this->load->view('plantilla/tabla', $vdata);
     } 
 

@@ -17,7 +17,7 @@
                     <select class="form-control" id="anio" name="anio">
                         <option value="">Seleccionar</option>
                     <?php foreach ($anio as $row) {?>
-                        <option value="<?=$row->iIdPlantilla;?>"><?=$row->iAnioEvaluacion;?></option>
+                        <option value="<?=$row->iAnioEvaluacion;?>"><?=$row->iAnioEvaluacion;?></option>
                     <?php } ?>
                     </select>
                     </div>
@@ -26,7 +26,7 @@
                 <select class="form-control" id="origen" name="origen">
                     <option value="">Seleccionar</option>
                     <?php foreach ($origen as $row) {?>
-                        <option value="<?=$row->iIdPlantilla;?>"><?=$row->iOrigenEvaluacion;?></option>
+                        <option value="<?=$row->iOrigenEvaluacion;?>"><?=$row->iOrigenEvaluacion == 1 ? "Interna" : "Externa"?></option>
                     <?php } ?>
                 </select>
                 </div>
@@ -49,7 +49,6 @@
                     </div> 
                 </div>
                 <button class="btn btn-success col-md-2" type="button" onclick="cargar('<?=base_url(); ?>C_plantilla/guardar_plantilla/0/1','#contenido');" style="margin-top:25px;"><i class="fas fa-lg fa-fw m-r-10 fa-plus-circle"></i>Nueva plantilla</button>
-               <!--  <a class="btn btn-success col-md-2" type="button" name="guardar" id="guardar" onclick="cargar('<?=base_url(); ?>C_plantilla/guardar_plantilla/0/1','#contenido');"style="margin-top:25px; color: white;"><i class="fas fa-lg fa-fw m-r-10 fa-plus-circle" style="color: white"></i>Nueva plantilla</a> -->
                 </div>
                 </div> 
                 </form>
@@ -121,6 +120,46 @@
 						});
   					}
 				});
+			}
+
+            function filter(){
+				$.ajax({
+                   //event.preventDefault();
+    								// la URL para la petición
+    								url : '<?=base_url()?>C_plantilla/tabla',
+
+    								// la información a enviar
+    								// (también es posible utilizar una cadena de datos)
+    								data : $("#frmbusqueda").serialize(),
+
+    								// especifica si será una petición POST o GET
+    								type : 'POST',
+
+    								// el tipo de información que se espera de respuesta
+    								/*dataType : 'json',*/
+
+    								// código a ejecutar si la petición es satisfactoria;
+    								// la respuesta es pasada como argumento a la función
+    								success : function(json) {
+        								$("#table").html(json);
+    								},
+
+    								/* código a ejecutar si la petición falla;
+    								son pasados como argumentos a la función
+    								el objeto de la petición en crudo y código de estatus de la petición*/
+    								error : function(xhr, status) {
+        								swal(`La operación no pudo concluirse`, 'Intente nuevamente', 'error',
+										{
+											buttons: false,
+											timer: 1500
+										});
+    								},
+
+    								// código a ejecutar sin importar si la petición falló o no
+    								/*complete : function(xhr, status) {
+        								alert('Petición realizada');
+									}*/
+								});
 			}
             </script>
 
