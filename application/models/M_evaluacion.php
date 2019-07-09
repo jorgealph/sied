@@ -52,9 +52,10 @@ class M_evaluacion extends CI_Model{
     }
 
     public function getUsuario($key = null){
-        $this->db->select('iIdUsuario, vNombres, vApellidoPaterno, vApellidoMaterno, vCargo');
-        $this->db->from('usuario');
-        $this->db->where('iActivo', 1);
+        $this->db->select('u.iIdUsuario, u.vNombres, u.vApellidoPaterno, u.vApellidoMaterno, u.vCargo, u.vCorreo1, u.vTelefono, o.vOrganismo');
+        $this->db->from('usuario as u');
+        $this->db->join('organismo as o', 'u.iIdOrganismo = o.iIdOrganismo', 'INNER');
+        $this->db->where('u.iActivo', 1);
         if ($key != null && !empty($key)){
             $this->db->where('iIdUsuario', $key);
         }
@@ -62,15 +63,16 @@ class M_evaluacion extends CI_Model{
         return $query->result();
     }
     public function getCargo($key){
-        $this->db->select('vCargo');
-        $this->db->from('usuario');
-        $this->db->where('iIdUsuario', $key);
-        $this->db->where('iActivo', 1);
+        $this->db->select('u.vCargo, u.vCorreo1, u.vTelefono, o.vOrganismo');
+        $this->db->from('usuario as u');
+        $this->db->join('organismo as o', 'u.iIdOrganismo = o.iIdOrganismo', 'INNER');
+        $this->db->where('u.iIdUsuario', $key);
+        $this->db->where('u.iActivo', 1);
         $query = $this->db->get();
         return $query->result();
     }
     public function findEvaluacion($key){
-        $this->db->select('vNombreEvaluacion, dFechaInicio, dFechaFin, vObjetivo, vObjetivoEspecifico, iEnvioOficio, dFechaRecepcionOficio, iInformacionCompleta, iIdUsuario');
+        $this->db->select('vNombreEvaluacion, dFechaInicio, dFechaFin, vObjetivo, vObjetivoEspecifico, iEnvioOficio, dRecepcionOficio, iInformacionCompleta, iIdUsuario, vEspecificarContratacion, nCostoEvaluacion, iIdTipoContratacion, iIdResponsableContratacion, iIdFinanciamiento');
         $this->db->from("$this->table");
         $this->db->where("$this->table_id", $key);
         $query = $this->db->get();
@@ -106,5 +108,37 @@ class M_evaluacion extends CI_Model{
         $this->db->where('iIdEvaluacion', $key);
         $this->db->delete('evaluacioncolaborador');
         return $this->db->affected_rows();
+    }
+
+    public function getInstrumento(){
+        $this->db->select('iIdInstrumento as id, vInstrumento as valor');
+        $this->db->from('instrumento');
+        $this->db->where('iActivo', 1);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function getOrganismo(){
+        $this->db->select('iIdOrganismo as id, vOrganismo as valor');
+        $this->db->from('organismo');
+        $this->db->where('iActivo', 1);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function getTipoContratacion(){
+        $this->db->select('iIdTipoContratacion as id, vTipoContratacion as valor');
+        $this->db->from('tipocontratacion');
+        $this->db->where('iActivo', 1);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function getFinanciamiento(){
+        $this->db->select('iIdFinanciamiento as id, vFinanciamiento as valor');
+        $this->db->from('financiamiento');
+        $this->db->where('iActivo', 1);
+        $query = $this->db->get();
+        return $query->result();
     }
 }
