@@ -30,21 +30,70 @@ class C_evaluacion extends CI_Controller{
             $this->load->model('M_evaluacion', 'me');
             $query = $this->me->getCargo($key);
             if(isset($query[0])){
-                $cargo = $query[0]->vCargo;
+                $cargo = $query[0];
             }
         }
-        echo $cargo;
+        echo json_encode($cargo);
     }
 
     public function updateView($key){
         $this->load->model('M_evaluacion', 'me');
         $_SESSION['colaborador'] = null;
-        $_SESSION['delete'] = null;
+        $_SESSION['delete'] = array();
         $data['key'] = $key;
         $data['option'] = $this->getUsuario();
         $data['eva'] = $this->me->findEvaluacion($key)[0];
+        $data['instrumento'] = $this->generateOption($this->me->getInstrumento());
+        $data['organismo'] = $this->generateOption($this->me->getOrganismo());
+        $data['contratacion'] = $this->generateOption($this->me->getTipoContratacion());
+        $data['financiamiento'] = $this->generateOption($this->me->getFinanciamiento());
         $this->findColaborador($key);
-        $this->load->view('evaluacion/viewUpdate', $data);
+        
+        $this->load->view('evaluacion/viewTabs', $data);
+        //$this->load->view('evaluacion/viewUpdate', $data);
+    }
+
+    public function updateContratacion(){
+        $this->load->model('M_evaluacion', 'me');
+        $key = $_POST['key'];
+        $response = array();
+        if(!is_null($key)){
+            $data['iIdTipoContratacion'] = $_POST['contratacion'];
+            $data['vEspecificarContratacion'] = $_POST['esp'];
+            $data['iIdResponsableContratacion'] = $_POST['responsable'];
+            $data['nCostoEvaluacion'] = $_POST['costo'];
+            $data['iIdFinanciamiento'] = $_POST['financiamiento'];
+            $result = $this->me->update($data, $key);
+        }
+        echo json_encode($result);
+    }
+
+    public function updateCoordinador(){
+        $key = $_POST['key'];
+        $response = array();
+
+        if(!is_null($key)){
+            $data['iIdUsuario'] = $_POST['evaluador'];
+            $this->load->model('M_evaluacion', 'me');
+            $result = $this->me->update($data, $key);
+            $response['result'] = $result;
+        }
+
+        $vdata = $_SESSION['colaborador'];
+
+        if (!empty($vdata)){
+            $tmp = $this->saveColaborador($key);
+            if(isset($tmp['usr'])){
+                $response['usr'] = $tmp['usr'];
+            }
+            if(isset($tmp['msg'])){
+                $response['msg'] = $tmp['msg'];
+            }
+        }
+
+        $response['supr'] = $this->delete($key);
+
+        echo json_encode($response);
     }
 
     public function updateRecord(){
@@ -168,9 +217,22 @@ class C_evaluacion extends CI_Controller{
         echo $this->tableColaborador();
     }
 
+    public function drawInstrumento(){
+        echo $this->tableInstrumento();
+    }
+
     private function generateTable($data){
-        $tb = '';
-        $tb = '<table id="data-table-default" class="table table-hover table-bordered">
+        $tb = '<!-- begin panel -->
+                <div class="panel panel-inverse">
+                    <div class="panel-heading">
+                        <div class="panel-heading-btn">
+                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                        </div>
+                        <h4 class="panel-title">Resultados de la búsqueda</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">';
+        $tb .= '<table id="data-table-default" class="table table-hover table-bordered">
             <thead>
                 <tr>
                     <th>Tipo de intervención pública</th>
@@ -185,12 +247,24 @@ class C_evaluacion extends CI_Controller{
                 '.$this->generateTableContent($data).'
             </tbody>
         </table>';
+        $tb .= '		</div>
+                    </div>
+                </div>
+                <!-- end panel -->';
         $document = '<script>
             $(document).ready(function() {
                 TableManageDefault.init();
             });
         </script>';
         return $tb.$document;   
+    }
+
+    private function generateOption($data){
+        $option = '';
+        foreach ($data as $r){
+            $option .= "<option value='$r->id'>$r->valor</option>";
+        }
+        return $option;
     }
 
     public function addColaborador(){
@@ -261,7 +335,7 @@ class C_evaluacion extends CI_Controller{
         $result = array();
         $data = $_SESSION['delete'];
         $vdata = $_SESSION['colaborador'];
-        foreach($data as $r){
+        foreach($data as $r){ 
             foreach ($vdata as $vr){
                 if ($r->iIdUsuario == $vr->iIdUsuario){
                     $founded = true;
@@ -303,6 +377,28 @@ class C_evaluacion extends CI_Controller{
         }
         return $option;
     }
+
+    private function tableInstrumento(){
+        $tb = '';
+        $tb = '<table id="data-table-default" class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th>Instrumento</th>
+                    <th>Otro específica</th>
+                    <th width="120px">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                '.$this->generateInstrumentoContent().'
+            </tbody>
+        </table>';
+        $document = '<script>
+            $(document).ready(function() {
+                TableManageDefault.init();
+            });
+        </script>';
+        return $tb;  
+    }
     
     private function generateTableContent($data){
         $tb = '';
@@ -314,11 +410,11 @@ class C_evaluacion extends CI_Controller{
                 $tb .= '<td>'.$this->getOrigen($r->iOrigenEvaluacion).'</td>';
                 $tb .= '<td>'.$r->vTipoEvaluacion.'</td>';
                 $tb .= '<td>';
-                    $tb .= '<button onclick="cargar(\'ver/evaluacion/'.$r->iIdEvaluacion.'\', \'#contenido\')" class="btn btn-default btn-icon btn-sm"><i class="fas fa-edit fa-fw"></i></button>&nbsp;';
-                    $tb .= '<button onclick="" class="btn btn-default btn-icon btn-sm"><i class="fas fa-file fa-fw"></i></button>&nbsp;';
-                    $tb .= '<button onclick="" class="btn btn-primary btn-icon btn-sm"><i class="fas fa-comments fa-fw"></i></button>&nbsp;';
-                    $tb .= '<button onclick="" class="btn btn-primary btn-icon btn-sm"><i class="fas fa-copy fa-fw"></i></button>&nbsp;';
-                    $tb .= '<button onclick="" class="btn btn-default btn-icon btn-sm"><i class="fas fa-paperclip fa-fw"></i></button>';
+                    $tb .= '<button onclick="cargar(\'ver/evaluacion/'.$r->iIdEvaluacion.'\', \'#contenido\')" class="btn btn-default btn-icon btn-sm" data-toggle="tooltip" data-placement="top" title="Seguimiento de la evaluación"><i class="fas fa-edit fa-fw"></i></button>&nbsp;';
+                    $tb .= '<button onclick="" class="btn btn-default btn-icon btn-sm" data-toggle="tooltip" data-placement="top" title="Documento de evaluación"><i class="fas fa-file fa-fw"></i></button>&nbsp;';
+                    $tb .= '<button onclick="" class="btn btn-primary btn-icon btn-sm" data-toggle="tooltip" data-placement="top" title="Documento de opinión"><i class="fas fa-comments fa-fw"></i></button>&nbsp;';
+                    $tb .= '<button onclick="" class="btn btn-primary btn-icon btn-sm" data-toggle="tooltip" data-placement="top" title="Descargar el documento de opinión"><i class="fas fa-copy fa-fw"></i></button>&nbsp;';
+                    $tb .= '<button onclick="" class="btn btn-default btn-icon btn-sm" data-toggle="tooltip" data-placement="top" title="Bitácora digital"><i class="fas fa-paperclip fa-fw"></i></button>';
                 $tb .= '</td>';
             $tb .= '</tr>';
         }
@@ -361,6 +457,9 @@ class C_evaluacion extends CI_Controller{
                 <tr>
                     <th>Nombre completo</th>
                     <th>Cargo</th>
+                    <th>Organismo</th>
+                    <th>Correo</th>
+                    <th>Telefono</th>
                     <th width="120px">Acciones</th>
                 </tr>
             </thead>
@@ -373,7 +472,7 @@ class C_evaluacion extends CI_Controller{
                 TableManageDefault.init();
             });
         </script>';
-        return $tb.$document;  
+        return $tb;  
     }
 
     private function findColaborador($key){
@@ -395,16 +494,44 @@ class C_evaluacion extends CI_Controller{
         
         if (isset($_SESSION['colaborador']) && !empty($_SESSION['colaborador'])){
             $data = $_SESSION['colaborador'];
+            foreach ($data as $r){
+                $tb .= '<tr>';
+                    $tb .= '<td>'.$r->vNombres.' '.$r->vApellidoPaterno.' '.$r->vApellidoMaterno.'</td>';
+                    $tb .= '<td>'.$r->vCargo.'</td>';
+                    $tb .= '<td>'.$r->vOrganismo.'</td>';
+                    $tb .= '<td>'.$r->vCorreo1.'</td>';
+                    $tb .= '<td>'.$r->vTelefono.'</td>';
+                    $tb .= '<td>';
+                        $tb .= '<button onclick="removeColaborador(\''.$r->iIdUsuario.'\')" class="btn btn-danger btn-icon btn-sm" type="button"><i class="fas fa-trash fa-fw"></i></button>';
+                    $tb .= '</td>';
+                $tb .= '</tr>';
+            }
+        }else{
+            $tb .= "<tr><td valign='top' colspan='6' class='dataTables_empty'>No se encontron registros</td></tr>";
         }
-        foreach ($data as $r){
-            $tb .= '<tr>';
-                $tb .= '<td>'.$r->vNombres.' '.$r->vApellidoPaterno.' '.$r->vApellidoMaterno.'</td>';
-                $tb .= '<td>'.$r->vCargo.'</td>';
-                $tb .= '<td>';
-                    $tb .= '<button onclick="removeColaborador(\''.$r->iIdUsuario.'\')" class="btn btn-danger btn-icon btn-sm"><i class="fas fa-trash fa-fw"></i></button>';
-                $tb .= '</td>';
-            $tb .= '</tr>';
+        
+        return $tb;
+    }
+
+    private function generateInstrumentoContent(){
+        $tb = '';
+        $data = array();
+        
+        if (isset($_SESSION['instrumento']) && !empty($_SESSION['instrumento'])){
+            $data = $_SESSION['instrumento'];
+            foreach ($data as $r){
+                $tb .= '<tr>';
+                    $tb .= '<td>'.$r->vInstrumento.'</td>';
+                    $tb .= '<td>'.$r->vOtro.'</td>';
+                    $tb .= '<td>';
+                        $tb .= '<button onclick="removeColaborador(\''.$r->iIdIstrumento.'\')" class="btn btn-danger btn-icon btn-sm"><i class="fas fa-trash fa-fw"></i></button>';
+                    $tb .= '</td>';
+                $tb .= '</tr>';
+            }
+        }else{
+            $tb .= "<tr><td valign='top' colspan='6' class='dataTables_empty'>No se encontron registros</td></tr>";
         }
+        
         return $tb;
     }
 
@@ -422,6 +549,5 @@ class C_evaluacion extends CI_Controller{
             }
         }
         return $result;
-        //print_r($result);
     }
 }

@@ -73,33 +73,18 @@
 							<input type="text" name="vIntervencion" id="vIntervencion" class="form-control" onkeypress="return pulsar(event)">
 						</div>
 						<div class="col-md-2">
-						<button class="btn btn-success form-control" onclick="filter()" type="button" style="margin-top:25px;"> 
-							<li class="fas fa-lg fa-fw m-r-10 fa-search"></li>
-							<span>Buscar</span>
-						</button>
+							<button class="btn btn-success form-control" onclick="filter()" type="button" style="margin-top:25px;"> 
+								<li class="fas fa-lg fa-fw m-r-10 fa-search"></li>
+								<span>Buscar</span>
+							</button>
 						</div>
 					</div>
 					</form>
 				</div>
-				
 			</div>
+			<div id="panel">
 
-			<!-- begin panel -->
-			<div class="panel panel-inverse">
-				<div class="panel-heading">
-					<div class="panel-heading-btn">
-						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-					</div>
-					<h4 class="panel-title">Resultados de la búsqueda</h4>
-				</div>
-				<div class="panel-body">
-					<div class="table-responsive" id="table">
-							<!--<?=$tb?>-->
-					</div>
-				</div>
-				
 			</div>
-			<!-- end panel -->
 		</div>
         <!-- end #content -->
 		<script>
@@ -108,7 +93,7 @@
         $.post("<?=base_url();?>C_intervencionpropuesta/delete",{id:id},function(resultado,status){
         	if(resultado == "1"){                		
         	 	notificacion('El registro ha sido eliminado','success');
-        	 	$("#table").load('<?=base_url()?>C_IntervencionPropuesta/drawTable');
+        	 	$("#panel").load('<?=base_url()?>C_IntervencionPropuesta/drawTable');
         	}
     		else notificacion('El registro no pudo ser eliminado','error');					
     	});
@@ -119,7 +104,8 @@
 		
 		<script>
 			
-			$("#table").load('<?=base_url()?>C_evaluacion/drawTable');
+			$("#panel").load('<?=base_url()?>C_evaluacion/drawTable');
+
 			function filter(){
 				$.ajax({
     				// la URL para la petición
@@ -134,7 +120,7 @@
     				// código a ejecutar si la petición es satisfactoria;
     				// la respuesta es pasada como argumento a la función
     				success : function(json) {
-        				$("#table").html(json);
+        				$("#panel").html(json);
     				},
 					/* código a ejecutar si la petición falla;
     				son pasados como argumentos a la función

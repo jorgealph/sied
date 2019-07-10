@@ -3,7 +3,7 @@
             <link href="<?=base_url()?>admin/assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.css" rel="stylesheet" />
             <link href="<?=base_url()?>admin/assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
             <!-- begin breadcrumb -->
-			<a onclick="cargar('<?=base_url();?>ver/evaluacion', '#contenido');" class="btn btn-default pull-right">
+			<a onclick="filter()" class="btn btn-default pull-right">
                 <li class="fas fa-lg fa-fw m-r-10 fa-arrow-left"></li><span>Regresar</span>
             </a>
 			<!-- end breadcrumb -->
@@ -125,18 +125,18 @@
                                     <span>Agregar</span>
                                 </button>
                             </div>
-                            <div class="col-md-6">
+                        </div>
+                        <div class="row" style="padding-top:10px">
+                            <div class="col-md-12">
+                                <div class="table-responsive" id="tabla">
+                                    
+                                </div>
+                            </div>
+                            <div class="col-md-4 offset-md-4">
                                 <button class="btn btn-primary form-control" style="margin-top:25px;" onclick="updateEvaluacion()">
                                     <li class="fa fa-lg fa-fw m-r-10 fa-save"></li>
                                     <span>Guardar cambios</span>
                                 </button>
-                            </div>
-                        </div>
-                        <div class="row" style="padding-top:10px">
-                            <div class="col-md-12">
-                                <div class="table-responsive" id="table">
-                                    
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -144,7 +144,6 @@
 			</div>
 			<!-- end panel -->
 		</div>
-        <div id="test"></div>
         <!-- end #content -->
         <script src="<?=base_url()?>admin/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
         <script src="<?=base_url()?>admin/assets/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.es.min.js"></script>
@@ -156,7 +155,8 @@
                 datetimeInit('datetimepicker2');
                 datetimeInit('datetimepicker3');
                 
-                $("#table").load('C_evaluacion/drawColaborador');
+                $("#tabla").load('C_evaluacion/drawColaborador');
+
                 $('select[id=evaluador]').val(<?=$eva->iIdUsuario?>);
                 search();
                 $(".selectpicker").selectpicker("render");
@@ -205,7 +205,7 @@
                     async: false,
                     success: function(data){
                         if(data == 1){
-                            $("#table").load('C_evaluacion/drawColaborador');
+                            $("#tabla").load('C_evaluacion/drawColaborador');
                             notificacion('Colaborador agregado','success');
                         }else{
                             notificacion('El colaborador ya ha sido agregado','error');
@@ -231,13 +231,11 @@
                     async: false,
                     success: function(data){
                         if(data == 1){
-                            $("#table").load('<?=base_url()?>C_evaluacion/drawColaborador');
+                            $("#tabla").load('<?=base_url()?>C_evaluacion/drawColaborador');
                             notificacion('Colaborador eliminado con exito','success');
                         }else{
                             notificacion('El colaborador ya ha sido eliminado','error');
                         }
-                        //alert(data);
-                        //$("#test").load('<?=base_url()?>C_evaluacion/delete');
                     },
                     error: function(){
                         notificacion('Error', 'error');
