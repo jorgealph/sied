@@ -115,6 +115,7 @@
     				data : $("#form").serialize(),
     				// especifica si será una petición POST o GET
     				type : 'POST',
+					async: false,
     				// el tipo de información que se espera de respuesta
     				/*dataType : 'json',*/
     				// código a ejecutar si la petición es satisfactoria;

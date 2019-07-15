@@ -44,7 +44,7 @@ class M_evaluacion extends CI_Model{
                 $this->db->where('i.iTipo', $data['iTipo']);
             }
             if(isset($data['vIntervencion']) && !empty($data['vIntervencion'])){
-                $this->db->where('i.vIntervencion', $data['vIntervencion']);
+                $this->db->like('i.vIntervencion', $data['vIntervencion']);
             }
         }
         $query = $this->db->get();
@@ -72,7 +72,7 @@ class M_evaluacion extends CI_Model{
         return $query->result();
     }
     public function findEvaluacion($key){
-        $this->db->select('vNombreEvaluacion, dFechaInicio, dFechaFin, vObjetivo, vObjetivoEspecifico, iEnvioOficio, dRecepcionOficio, iInformacionCompleta, iIdUsuario, vEspecificarContratacion, nCostoEvaluacion, iIdTipoContratacion, iIdResponsableContratacion, iIdFinanciamiento');
+        $this->db->select('vNombreEvaluacion, dFechaInicio, dFechaFin, vObjetivo, vObjetivoEspecifico, iEnvioOficio,  iInformacionCompleta, iIdUsuario, vEspecificarContratacion, nCostoEvaluacion, iIdTipoContratacion, iIdResponsableContratacion, iIdFinanciamiento, iIdResponsableSeguimiento, dEntregaInformacion, dReunionPresentacion, dInicioRealizacion, dRecepcionOficio, dEntregaBorrador, dPresentacionBorrador, dPresentacionFinal, dEntregaVersionImp, dEnvioVersionFinalDig, dFinEvaluadores, dEntregaInformeFinal, dPublicacion, dEntregaDocOpinion, dEntregaDocTrabajo, dPublicacionDocOpininTrabajo');
         $this->db->from("$this->table");
         $this->db->where("$this->table_id", $key);
         $query = $this->db->get();

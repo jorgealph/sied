@@ -55,12 +55,12 @@
                                     <div class="row">
                                         <div class="col-md-8">
                                             <label for="nombre"> <span class="text-danger">*</span> Nombre de la evaluacion:</label>
-                                            <input type="text" name="nombre" id="nombre" class="form-control" value="<?=$eva->vNombreEvaluacion?>">
+                                            <input type="text" name="nombre" id="nombre" class="form-control" value="<?=$eva->vNombreEvaluacion?>" data-parsley-required>
                                         </div>
                                         <div class="col-md-2">
                                             <label for="finicio"> <span class="text-danger">*</span> Inicio de la evaluacion:</label>
                                             <!--data-date-start-date="Date.default"-->
-                                            <div class="input-group date" id="dt1" >
+                                            <div class="input-group  date" id="dt1" >
                                                 <input type="text" class="form-control" id="finicio" value="<?=date('d/m/Y', strtotime($eva->dFechaInicio));?>">
                                                 <div class="input-group-addon">
                                                     <i class="fa fa-calendar"></i>
@@ -69,7 +69,7 @@
                                         </div>
                                         <div class="col-md-2">
                                             <label for="ffin"> <span class="text-danger">*</span> Fin de la evaluacion:</label>
-                                            <div class="input-group date" id="dt2">
+                                            <div class="input-group  date" id="dt2">
                                                 <input type="text" class="form-control" id="ffin" value="<?=date('d/m/Y', strtotime($eva->dFechaFin));?>">
                                                 <div class="input-group-addon">
                                                     <i class="fa fa-calendar"></i>
@@ -80,7 +80,7 @@
                                     <div class="row" style="padding-top:10px;">
                                         <div class="col-md-4">
                                             <label for="responsable">Responsable del seguimiento</label>
-                                            <select class="form-control selectpicker" data-size="10" data-live-search="true" data-style="btn-white" id="responsable" onchange="">
+                                            <select class="form-control selectpicker" data-size="10" data-live-search="true" data-style="btn-white" id="responsable" onchange="searchProcedencia()" data-parsley-required>
                                                 <option value="">-Seleccione una opción-</option>
                                                 <?=$option?>
                                             </select>
@@ -121,20 +121,20 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <label for="instrumento">Instrumento de recolección de la información</label>
-                                            <select class="form-control selectpicker" data-size="10" data-live-search="true" data-style="btn-white" id="instrumento" onchange="">
+                                            <select class="form-control" id="instrumento" name="instrumento" onchange="instrumentoEspecificar()">
                                                 <option value="">-Seleccione una opción-</option>
                                                 <?=$instrumento?>
                                             </select>
                                         </div>
                                         <div class="col-md-4">
                                             <label for="especificar">En caso de otro especificar:</label>
-                                            <input type="text" class="form-control" id="especificar">
+                                            <input type="text" class="form-control" id="especificar" name="especificar" disabled>
                                         </div>
                                         <div class="col-md-2">
                                             <button class="btn btn-default form-control" onclick="console.log('hola mundo')" type="button" style="margin-top:25px;">Agregar</button>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <div class="row" style="padding-top:10px;">
                                         <div class="col-md-12">
                                             <div class="table-responsive" id="tabla-instrumento"></div>
                                         </div>
@@ -142,7 +142,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <label for="descripcion">Descripción de las técnicas y modelos:</label>
-                                            <textarea name="descripcion" id="descripcion" cols="30" rows="3" class="form-control"></textarea>
+                                            <textarea name="descripcion" id="descripcion" cols="30" rows="3" class="form-control" data-parsley-required></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -168,7 +168,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <label for="evaluador">Nombre del coordinador de la evaluación</label>
-                                                <select class="form-control selectpicker" data-size="10" data-live-search="true" data-style="btn-white" name="evaluador" id="evaluador" onchange="search()">
+                                                <select class="form-control selectpicker" data-size="10" data-live-search="true" data-style="btn-white" name="evaluador" id="evaluador" onchange="search()" data-parsley-required="true">
                                                     <option value="">-Seleccione una opción-</option>
                                                     <?=$option?>
                                                 </select>
@@ -261,14 +261,14 @@
                                         <div class="row" style="padding-top:10px">
                                             <div class="col-md-6">
                                                 <label for="contratacion">Tipo de contratación:</label>
-                                                <select class="form-control" id="contratacion" name="contratacion" data-parsley-required="true">
+                                                <select class="form-control" id="contratacion" name="contratacion" data-parsley-required="true" onchange="contratacionEspecificar()">
                                                     <option value="">-Seleccione una opción-</option>
                                                     <?=$contratacion?>
                                                 </select>
                                             </div>
                                             <div class="col-md-6">
                                                 <label for="esp">Especificar:</label>
-                                                <input type="text" id="esp" value="<?=$eva->vEspecificarContratacion?>" name="esp" class="form-control">
+                                                <input type="text" id="esp" value="<?=$eva->vEspecificarContratacion?>" name="esp" class="form-control" disabled>
                                             </div>
                                         </div>
                                         <div class="row" style="padding-top:10px">
@@ -282,7 +282,7 @@
                                         </div>
                                         <div class="row" style="padding-top:10px">
                                             <div class="col-md-6">
-                                                <label for="costo" data-parsley-required="true">Costo total de la evaluación:</label>
+                                                <label for="costo">Costo total de la evaluación:</label>
                                                 <input type="text" class="form-control" id="costo" value="<?=$eva->nCostoEvaluacion?>" name="costo" data-parsley-required="true" data-parsley-type="number"/>
                                                 <!-- <div class="input-group">
                                                     
@@ -309,6 +309,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div id="response"></div>
                             </form>
                         </div>
                         <!-- end panel -->
@@ -326,193 +327,204 @@
                                 <h4 class="panel-title">Datos de seguimiento</h4>
                             </div>
                             <div class="panel-body">
-                                <div class="container">
-                                    <div class="row" style="padding-top:10px;">
-                                        <div class="col-md-6">
-                                            <label for="oficio">¿Envió oficio con la información sólicitada?</label>
-                                            <select name="oficio" id="oficio" class="form-control">
-                                                <option value="">-Seleccione una opción-</option>
-                                                <option value="1" <?=($eva->iEnvioOficio == 1) ? 'selected' : ''; ?>>Si</option>
-                                                <option value="0" <?=($eva->iEnvioOficio == 0) ? 'selected' : ''; ?>>No</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="frecepcion">Fecha de recepción del oficio</label>
-                                            <div class="input-group date" id="dt3">
-                                                <input type="text" class="form-control" id='frecepcion' value="<?=date('d/m/Y', strtotime($eva->dRecepcionOficio));?>">
-                                                <div class="input-group-addon">
-                                                    <i class="fa fa-calendar"></i>
+                                <form onsubmit="datosSeguimiento(this,event);" id="form-seguimiento" name="seguimiento" data-parsley-validate="">
+                                    <div class="container">
+                                        <div class="row" style="padding-top:10px;">
+                                            <div class="col-md-6">
+                                                <label for="iEnvioOficio">¿Envió oficio con la información sólicitada?</label>
+                                                <select name="iEnvioOficio" data-parsley-required id="iEnvioOficio" class="form-control">
+                                                    <option value="">-Seleccione una opción-</option>
+                                                    <option value="1" <?=($eva->iEnvioOficio == 1) ? 'selected' : ''; ?>>Si</option>
+                                                    <option value="0" <?=($eva->iEnvioOficio == 0) ? 'selected' : ''; ?>>No</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="dRecepcionOficio">Fecha de recepción del oficio</label>
+                                                <div class="input-group  date" id="dt3">
+                                                    <input type="text" class="form-control" data-parsley-errors-messages-disabled data-parsley-required name="dRecepcionOficio" id='dRecepcionOficio'  value="<?=date('d/m/Y', strtotime($eva->dRecepcionOficio));?>">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row" style="padding-top:10px;">
-                                        <div class="col-md-6">
-                                            <label for="frecepcion">Fecha de entrega de la información</label>
-                                            <div class="input-group date" id="dt4">
-                                                <input type="text" class="form-control" id='frecepcion' value="<?=date('d/m/Y', strtotime($eva->dRecepcionOficio));?>">
-                                                <div class="input-group-addon">
-                                                    <i class="fa fa-calendar"></i>
+                                        <div class="row" style="padding-top:10px;">
+                                            <div class="col-md-6">
+                                                <label for="dEntregaInformacion">Fecha de entrega de la información</label>
+                                                <div class="input-group  date" id="dt4">
+                                                    <input type="text" class="form-control" data-parsley-errors-messages-disabled data-parsley-required name="dEntregaInformacion" id='dEntregaInformacion' value="<?=date('d/m/Y', strtotime($eva->dEntregaInformacion));?>">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="iInformacionCompleta">¿La información estaba completa?</label>
+                                                <select name="iInformacionCompleta" id="iInformacionCompleta" class="form-control" data-parsley-required>
+                                                    <option value="">-Seleccione una opción-</option>
+                                                    <option value="1" <?=($eva->iInformacionCompleta == 1) ? 'selected' : ''; ?>>Si</option>
+                                                    <option value="0" <?=($eva->iInformacionCompleta == 0) ? 'selected' : ''; ?>>No</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="padding-top:10px;">
+                                            <div class="col-md-6">
+                                                <label for="dReunionPresentacion">Fecha de la reunión inicio de la evaluación y presentación de la solicitud empleada</label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="input-group  date" id="dt5">
+                                                    <input type="text" class="form-control" data-parsley-errors-messages-disabled data-parsley-required name="dReunionPresentacion" id='dReunionPresentacion' value="<?=date('d/m/Y', strtotime($eva->dReunionPresentacion));?>">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <label for="completa">¿La información estaba completa?</label>
-                                            <select name="completa" id="completa" class="form-control">
-                                                <option value="">-Seleccione una opción-</option>
-                                                <option value="1" <?=($eva->iInformacionCompleta == 1) ? 'selected' : ''; ?>>Si</option>
-                                                <option value="0" <?=($eva->iInformacionCompleta == 0) ? 'selected' : ''; ?>>No</option>
-                                            </select>
+                                        <div class="row" style="padding-top:10px;">
+                                            <div class="col-md-6">
+                                                <label for="dInicioRealizacion">Inicio de la realización de la evaluación por los evaluadores</label>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="row" style="padding-top:10px;">
-                                        <div class="col-md-6">
-                                            <label for="frecepcion">Fecha de la reunión inicio de la evaluación y presentación de la solicitud empleada</label>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="input-group date" id="dt5">
-                                                <input type="text" class="form-control" id='frecepcion' value="<?=date('d/m/Y', strtotime($eva->dRecepcionOficio));?>">
-                                                <div class="input-group-addon">
-                                                    <i class="fa fa-calendar"></i>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="input-group  date" id="dt6">
+                                                    <input type="text" data-parsley-errors-messages-disabled data-parsley-required name="dInicioRealizacion" class="form-control" id='dInicioRealizacion' value="<?=date('d/m/Y', strtotime($eva->dInicioRealizacion));?>">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row" style="padding-top:10px;">
-                                        <div class="col-md-6">
-                                            <label for="frecepcion">Inicio de la realización de la evaluación por los evaluadores</label>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="input-group date" id="dt6">
-                                                <input type="text" class="form-control" id='frecepcion' value="<?=date('d/m/Y', strtotime($eva->dRecepcionOficio));?>">
-                                                <div class="input-group-addon">
-                                                    <i class="fa fa-calendar"></i>
+                                        <div class="row" style="padding-top:10px;">
+                                            <div class="col-md-6">
+                                                <label for="dEntregaBorrador">Fecha de entrega del primer borrador</label>
+                                                <div class="input-group  date" id="dt7">
+                                                    <input type="text" class="form-control" data-parsley-errors-messages-disabled data-parsley-required name="dEntregaBorrador" id='dEntregaBorrador' value="<?=date('d/m/Y', strtotime($eva->dEntregaBorrador));?>">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="dPresentacionBorrador">Presentación del borrador y solicitud de información adicional</label>
+                                                <div class="input-group  date" id="dt8">
+                                                    <input type="text" class="form-control" data-parsley-errors-messages-disabled data-parsley-required name="dPresentacionBorrador" id='dPresentacionBorrador' value="<?=date('d/m/Y', strtotime($eva->dPresentacionBorrador));?>">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row" style="padding-top:10px;">
-                                        <div class="col-md-6">
-                                            <label for="frecepcion">Fecha de entrega del primer borrador</label>
-                                            <div class="input-group date" id="dt7">
-                                                <input type="text" class="form-control" id='frecepcion' value="<?=date('d/m/Y', strtotime($eva->dRecepcionOficio));?>">
-                                                <div class="input-group-addon">
-                                                    <i class="fa fa-calendar"></i>
+                                        <div class="row" style="padding-top:10px;">
+                                            <div class="col-md-6">
+                                                <label for="dPresentacionFinal">Fecha de la presentación final de la evaluación</label>
+                                                <div class="input-group  date" id="dt9">
+                                                    <input type="text" class="form-control" data-parsley-errors-messages-disabled data-parsley-required name="dPresentacionFinal" id='dPresentacionFinal' value="<?=date('d/m/Y', strtotime($eva->dPresentacionFinal));?>">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="dEnvioVersionFinalDig">Fecha de envio de la versión final digital</label>
+                                                <div class="input-group  date" id="dt10">
+                                                    <input type="text" class="form-control" data-parsley-errors-messages-disabled data-parsley-required name="dEnvioVersionFinalDig" id='dEnvioVersionFinalDig' value="<?=date('d/m/Y', strtotime($eva->dEnvioVersionFinalDig));?>">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <label for="frecepcion">Presentación del borrador y solicitud de información adicional</label>
-                                            <div class="input-group date" id="dt8">
-                                                <input type="text" class="form-control" id='frecepcion' value="<?=date('d/m/Y', strtotime($eva->dRecepcionOficio));?>">
-                                                <div class="input-group-addon">
-                                                    <i class="fa fa-calendar"></i>
+                                        <div class="row" style="padding-top:10px;">
+                                            <div class="col-md-6">
+                                                <label for="dEntregaVersionImp">Fecha de entrega de la versión impresa</label>
+                                                <div class="input-group  date" id="dt11">
+                                                    <input type="text" class="form-control" data-parsley-errors-messages-disabled data-parsley-required name="dEntregaVersionImp" id='dEntregaVersionImp' value="<?=date('d/m/Y', strtotime($eva->dEntregaVersionImp));?>">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row" style="padding-top:10px;">
-                                        <div class="col-md-6">
-                                            <label for="frecepcion">Fecha de la presentación final de la evaluación</label>
-                                            <div class="input-group date" id="dt9">
-                                                <input type="text" class="form-control" id='frecepcion' value="<?=date('d/m/Y', strtotime($eva->dRecepcionOficio));?>">
-                                                <div class="input-group-addon">
-                                                    <i class="fa fa-calendar"></i>
+                                        <div class="row" style="padding-top:10px;">
+                                            <div class="col-md-6">
+                                                <label for="dFinEvaluadores">Fin de la evaluación por parte de los evaluadores</label>
+                                                <div class="input-group  date" id="dt12">
+                                                    <input type="text" class="form-control" data-parsley-errors-messages-disabled data-parsley-required name="dFinEvaluadores" id='dFinEvaluadores' value="<?=date('d/m/Y', strtotime($eva->dFinEvaluadores));?>">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <label for="frecepcion">Fecha de envio de la versión final digital</label>
-                                            <div class="input-group date" id="dt10">
-                                                <input type="text" class="form-control" id='frecepcion' value="<?=date('d/m/Y', strtotime($eva->dRecepcionOficio));?>">
-                                                <div class="input-group-addon">
-                                                    <i class="fa fa-calendar"></i>
+                                        <div class="row" style="padding-top:10px;">
+                                            <div class="col-md-6">
+                                                <label for="dEntregaInformeFinal">Entrega del informe final de la evaluación</label>
+                                                <div class="input-group  date" id="dt13">
+                                                    <input type="text" class="form-control" data-parsley-errors-messages-disabled data-parsley-required name="dEntregaInformeFinal" id='dEntregaInformeFinal' value="<?=date('d/m/Y', strtotime($eva->dEntregaInformeFinal));?>">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row" style="padding-top:10px;">
-                                        <div class="col-md-6">
-                                            <label for="frecepcion">Fecha de entrega de la versión impresa</label>
-                                            <div class="input-group date" id="dt11">
-                                                <input type="text" class="form-control" id='frecepcion' value="<?=date('d/m/Y', strtotime($eva->dRecepcionOficio));?>">
-                                                <div class="input-group-addon">
-                                                    <i class="fa fa-calendar"></i>
+                                        <div class="row" style="padding-top:10px;">
+                                            <div class="col-md-6">
+                                                <label for="dPublicacion">Publicación de la evaluación</label>
+                                                <div class="input-group  date" id="dt14">
+                                                    <input type="text" class="form-control" data-parsley-errors-messages-disabled data-parsley-required name="dPublicacion" id='dPublicacion' value="<?=date('d/m/Y', strtotime($eva->dPublicacion));?>">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row" style="padding-top:10px;">
-                                        <div class="col-md-6">
-                                            <label for="frecepcion">Fin de la evaluación por parte de los evaluadores</label>
-                                            <div class="input-group date" id="dt12">
-                                                <input type="text" class="form-control" id='frecepcion' value="<?=date('d/m/Y', strtotime($eva->dRecepcionOficio));?>">
-                                                <div class="input-group-addon">
-                                                    <i class="fa fa-calendar"></i>
+                                        <div class="row" style="padding-top:10px;">
+                                            <div class="col-md-6">
+                                                <label for="dEntregaDocOpinion">Entrega de documentos de opinión por parte de las dependencias</label>
+                                                <div class="input-group  date" id="dt15">
+                                                    <input type="text" class="form-control" data-parsley-errors-messages-disabled data-parsley-required name="dEntregaDocOpinion" id='dEntregaDocOpinion' value="<?=date('d/m/Y', strtotime($eva->dEntregaDocOpinion));?>">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row" style="padding-top:10px;">
-                                        <div class="col-md-6">
-                                            <label for="frecepcion">Entrega del informe final de la evaluación</label>
-                                            <div class="input-group date" id="dt13">
-                                                <input type="text" class="form-control" id='frecepcion' value="<?=date('d/m/Y', strtotime($eva->dRecepcionOficio));?>">
-                                                <div class="input-group-addon">
-                                                    <i class="fa fa-calendar"></i>
+                                        <div class="row" style="padding-top:10px;">
+                                            <div class="col-md-6">
+                                                <label for="dEntregaDocTrabajo">Entrega de los documentos 
+                                                de trabajo por parte de las dependencias</label>
+                                                <div class="input-group  date" id="dt16">
+                                                    <input type="text" class="form-control" data-parsley-errors-messages-disabled data-parsley-required name="dEntregaDocTrabajo" id='dEntregaDocTrabajo' value="<?=date('d/m/Y', strtotime($eva->dEntregaDocTrabajo));?>">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row" style="padding-top:10px;">
-                                        <div class="col-md-6">
-                                            <label for="frecepcion">Publicación de la evaluación</label>
-                                            <div class="input-group date" id="dt14">
-                                                <input type="text" class="form-control" id='frecepcion' value="<?=date('d/m/Y', strtotime($eva->dRecepcionOficio));?>">
-                                                <div class="input-group-addon">
-                                                    <i class="fa fa-calendar"></i>
+                                        <div class="row" style="padding-top:10px;">
+                                            <div class="col-md-6">
+                                                <label for="dPublicacionDocOpininTrabajo">Publicación de los documentos de opinion y de trabajo</label>
+                                                <div class="input-group  date" id="dt17">
+                                                    <input type="text" class="form-control" data-parsley-errors-messages-disabled data-parsley-required name="dPublicacionDocOpininTrabajo" id='dPublicacionDocOpininTrabajo' value="<?=date('d/m/Y', strtotime($eva->dPublicacionDocOpininTrabajo));?>">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row" style="padding-top:10px;">
-                                        <div class="col-md-6">
-                                            <label for="frecepcion">Entrega de documentos de opinión por parte de las dependencias</label>
-                                            <div class="input-group date" id="dt15">
-                                                <input type="text" class="form-control" id='frecepcion' value="<?=date('d/m/Y', strtotime($eva->dRecepcionOficio));?>">
-                                                <div class="input-group-addon">
-                                                    <i class="fa fa-calendar"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row" style="padding-top:10px;">
-                                        <div class="col-md-6">
-                                            <label for="frecepcion">Publicación de los documentos de opinión y de trabajo</label>
-                                            <div class="input-group date" id="dt16">
-                                                <input type="text" class="form-control" id='frecepcion' value="<?=date('d/m/Y', strtotime($eva->dRecepcionOficio));?>">
-                                                <div class="input-group-addon">
-                                                    <i class="fa fa-calendar"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row" style="padding-top:10px;">
-                                        <div class="col-md-6">
-                                            <label for="frecepcion">Fecha de recepción del oficio</label>
-                                            <div class="input-group date" id="dt17">
-                                                <input type="text" class="form-control" id='frecepcion' value="<?=date('d/m/Y', strtotime($eva->dRecepcionOficio));?>">
-                                                <div class="input-group-addon">
-                                                    <i class="fa fa-calendar"></i>
-                                                </div>
+                                        <div class="row" style="padding-top:10px;">
+                                            <div class="col-md-4 offset-md-4">
+                                                <button class="btn btn-primary form-control" style="margin-top:25px;" type="submit">
+                                                    <li class="fa fa-lg fa-fw m-r-10 fa-save"></li>
+                                                    <span>Guardar cambios</span>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </form>
                             </div>
                         </div>
                         <!-- end panel -->
@@ -569,6 +581,8 @@
 
                 $('select[id=evaluador]').val(<?=$eva->iIdUsuario?>);
                 search();
+                $('select[id=responsable]').val(<?=$eva->iIdResponsableSeguimiento?>);
+                searchProcedencia();
                 $(".selectpicker").selectpicker("render");
                 $("#contratacion").val(<?=$eva->iIdTipoContratacion?>);
                 $("#dependencia").val(<?=$eva->iIdResponsableContratacion?>);
@@ -583,6 +597,36 @@
                     language: 'es',
                 });
             }
+
+            function searchProcedencia(){
+                var usuario = $("#responsable").val();
+                if(usuario != null && usuario != ''){
+                    var formData = new FormData();
+                    formData.append('usuario', usuario);
+                    var url = 'C_evaluacion/getCargo';
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: formData,
+                        async: false,
+                        dataType: 'json',
+                        success: function(data){
+                            if(data != null){
+                                $("#org").val(data['vOrganismo']);
+                            }
+                        },
+                        error: function(){
+                            notificacion('Error', 'error');
+                        },
+                        cache:false,
+                        contentType: false,
+                        processData: false
+                    });
+                }else{
+                    $("#org").val(null);
+                }
+            }
+
             function search(){
                 var usuario = $("#evaluador").val();
                 if(usuario != null && usuario != ''){
@@ -622,6 +666,7 @@
                 var fileName = $(this).val().split("\\").pop();
                 $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
             });
+
             function addColaborador(){
                 var frmData = new FormData();
                 var key = $("#colaborador").val();
@@ -691,6 +736,36 @@
                             }else{
                                 notificacion('Ha ocurrido un error','error');
                             }
+                            $("#response").html('<pre>'+JSON.stringify(data)+'</pre>');
+                        },
+                        error: function(){
+                            notificacion('Error', 'error');
+                        },
+                        cache:false,
+                        //contentType: 'application/json',
+                        processData: false
+                    })
+                }
+            }
+            
+            function datosSeguimiento(form, event){
+		        event.preventDefault();
+                if(validarFormulario(form)){
+                    var datos = $(form).serialize(); // convert form to array
+                    datos += '&key=<?=$key?>';
+                    
+                    $.ajax({
+                        url: '<?=base_url()?>C_evaluacion/updateSeguimiento',
+                        type: 'POST',
+                        data: datos,
+                        async: false,
+                        dataType: 'json',
+                        success: function(data){
+                            if(data == 1){
+                                notificacion('Datos actualizados','success');
+                            }else{
+                                notificacion('Ha ocurrido un error','error');
+                            }
                         },
                         error: function(){
                             notificacion('Error', 'error');
@@ -713,7 +788,7 @@
                         type: 'POST',
                         data: datos,
                         async: false,
-                        //dataType: 'json',
+                        dataType: 'json',
                         success: function(data){
                             if(data['result'] == 1){
                                 notificacion('Se ha actualizado el coordinador de la evaluacion','success');
@@ -743,6 +818,23 @@
                         //contentType: 'application/json',
                         processData: false
                     })
+                }
+            }
+            function instrumentoEspecificar(){
+                var instrumento = $("#instrumento").val();
+                if(instrumento != 4){
+                    $("#especificar").prop('disabled', true);
+                }else{
+                    $("#especificar").prop('disabled', false);
+                }
+            }
+
+            function contratacionEspecificar(){
+                var contratacion = $("#contratacion").val();
+                if(contratacion != 5){
+                    $("#esp").prop('disabled', true);
+                }else{
+                    $("#esp").prop('disabled', false);
                 }
             }
 	    </script>
