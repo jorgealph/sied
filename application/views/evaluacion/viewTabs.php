@@ -6,14 +6,41 @@
             <link href="<?=base_url()?>admin/assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker.css" rel="stylesheet" />
             <link href="<?=base_url()?>admin/assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.css" rel="stylesheet" />
             <link href="<?=base_url()?>admin/assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
+            
             <!-- begin breadcrumb -->
-			<a onclick="cargar('ver/evaluacion', '#contenido')" class="btn btn-default pull-right">
+            <a onclick="cargar('ver/evaluacion', '#contenido')" class="btn btn-default pull-right">
                 <li class="fas fa-lg fa-fw m-r-10 fa-arrow-left"></li><span>Regresar</span>
             </a>
-			<!-- end breadcrumb -->
-			<!-- begin page-header -->
-			<h1 class="page-header">Edición <!--<small>header small text goes here...</small>--></h1>
+            <!-- end breadcrumb -->
+            <!-- begin page-header -->
+            <h1 class="page-header">Edición</h1>
             <!-- end page-header -->
+
+            <div class="panel panel-inverse">
+				<div class="panel-heading">
+					<h4 class="panel-title">Datos de la evaluación</h4>
+				</div>
+				<div class="panel-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h2 class="page-header">Nombre de la intervención</h2>
+                            </div>
+                            <div class="col-md-6">
+                                <h2 class="page-header">Organismo responsable</h2>
+                            </div>
+                        </div>
+                        <div class="row" style="padding-top:10px">
+                            <div class="col-md-6">
+                                <h2 class="page-header">Ambito</h2>
+                            </div>
+                            <div class="col-md-6">
+                                <h2 class="page-header">Poder</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+			</div>
             
             <!-- begin panel -->
 			<div class="panel panel-inverse panel-with-tabs" data-sortable-id="ui-unlimited-tabs-1">
@@ -41,114 +68,124 @@
                 <div class="tab-content">
                     <!-- begin tab-pane -->
                     <div class="tab-pane fade active show" id="tab-1">
-                        <!-- begin panel -->
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <div class="panel-heading-btn">
-                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
-                                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                        <form onsubmit="updateDescripcion(this,event);" id="form-descripcion" name="descripcion">
+                            <!-- begin panel -->
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="panel-heading-btn">
+                                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                                    </div>
+                                    <h4 class="panel-title">Descripción de la evaluación</h4>
                                 </div>
-                                <h4 class="panel-title">Descripción de la evaluación</h4>
-                            </div>
-                            <div class="panel-body">
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col-md-8">
-                                            <label for="nombre"> <span class="text-danger">*</span> Nombre de la evaluacion:</label>
-                                            <input type="text" name="nombre" id="nombre" class="form-control" value="<?=$eva->vNombreEvaluacion?>" data-parsley-required>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <label for="finicio"> <span class="text-danger">*</span> Inicio de la evaluacion:</label>
-                                            <!--data-date-start-date="Date.default"-->
-                                            <div class="input-group  date" id="dt1" >
-                                                <input type="text" class="form-control" id="finicio" value="<?=date('d/m/Y', strtotime($eva->dFechaInicio));?>">
-                                                <div class="input-group-addon">
-                                                    <i class="fa fa-calendar"></i>
+                                <div class="panel-body">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <label for="nombre"> <span class="text-danger">*</span> Nombre de la evaluacion:</label>
+                                                <input type="text" name="nombre" id="nombre" class="form-control" value="<?=$eva->vNombreEvaluacion?>" data-parsley-required>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="finicio"> <span class="text-danger">*</span> Inicio de la evaluacion:</label>
+                                                <!--data-date-start-date="Date.default"-->
+                                                <div class="input-group  date" id="dt1" >
+                                                    <input type="text" class="form-control" data-parsley-required data-parsley-errors-messages-disabled id="dInicio" name="dinicio" value="<?=date('d/m/Y', strtotime($eva->dFechaInicio));?>">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="ffin"> <span class="text-danger">*</span> Fin de la evaluacion:</label>
+                                                <div class="input-group  date" id="dt2">
+                                                    <input type="text" class="form-control" data-parsley-required data-parsley-errors-messages-disabled id="dfin" name="dfin" value="<?=date('d/m/Y', strtotime($eva->dFechaFin));?>">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-2">
-                                            <label for="ffin"> <span class="text-danger">*</span> Fin de la evaluacion:</label>
-                                            <div class="input-group  date" id="dt2">
-                                                <input type="text" class="form-control" id="ffin" value="<?=date('d/m/Y', strtotime($eva->dFechaFin));?>">
-                                                <div class="input-group-addon">
-                                                    <i class="fa fa-calendar"></i>
-                                                </div>
+                                        <div class="row" style="padding-top:10px;">
+                                            <div class="col-md-4">
+                                                <label for="responsable">Responsable del seguimiento</label>
+                                                <select class="form-control selectpicker" data-size="10" data-live-search="true" data-style="btn-white" name="responsable" id="responsable" onchange="searchProcedencia()" data-parsley-errors-messages-disabled data-parsley-required>
+                                                    <option value="">-Seleccione una opción-</option>
+                                                    <?=$option?>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="org">Organismo de procedencia</label>
+                                                <input type="text" class="form-control" id="org" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="padding-top:10px;">
+                                            <div class="col-md-12">
+                                                <label for="objetivo">Objetivo general:</label>
+                                                <textarea name="objetivo" id="objetivo" cols="30" rows="3" class="form-control" data-parsley-required><?=$eva->vObjetivo?></textarea>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row" style="padding-top:10px;">
+                                            <div class="col-md-12">
+                                                <label for="especifico">Objetivos especifícos:</label>
+                                                <textarea name="especifico" id="especifico" data-parsley-required cols="30" rows="3" class="form-control"><?=$eva->vObjetivoEspecifico?></textarea>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row" style="padding-top:10px;">
-                                        <div class="col-md-4">
-                                            <label for="responsable">Responsable del seguimiento</label>
-                                            <select class="form-control selectpicker" data-size="10" data-live-search="true" data-style="btn-white" id="responsable" onchange="searchProcedencia()" data-parsley-required>
-                                                <option value="">-Seleccione una opción-</option>
-                                                <?=$option?>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="org">Organismo de procedencia</label>
-                                            <input type="text" class="form-control" id="org" disabled>
-                                        </div>
+                                </div>
+                            </div>
+                            <!-- end panel -->
+                            <!-- begin panel -->
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="panel-heading-btn">
+                                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
                                     </div>
-                                    <div class="row" style="padding-top:10px;">
-                                        <div class="col-md-12">
-                                            <label for="objetivo">Objetivo general:</label>
-                                            <textarea name="objetivo" id="objetivo" cols="30" rows="3" class="form-control"><?=$eva->vObjetivo?></textarea>
+                                    <h4 class="panel-title">Metodología utilizada</h4>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label for="instrumento">Instrumento de recolección de la información</label>
+                                                <select class="form-control" id="instrumento" onchange="instrumentoEspecificar()">
+                                                    <option value="">-Seleccione una opción-</option>
+                                                    <?=$instrumento?>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="especificar">En caso de otro especificar:</label>
+                                                <input type="text" class="form-control" id="especificar" disabled>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <button class="btn btn-default form-control" onclick="addInstrumento()" id="btnInstrumento" disabled type="button" style="margin-top:25px;">Agregar</button>
+                                            </div>
                                         </div>
-                                    </div>
-                                    
-                                    <div class="row" style="padding-top:10px;">
-                                        <div class="col-md-12">
-                                            <label for="especifico">Objetivos especifícos:</label>
-                                            <textarea name="especifico" id="especifico" cols="30" rows="3" class="form-control"><?=$eva->vObjetivoEspecifico?></textarea>
+                                        <div class="row" style="padding-top:10px;">
+                                            <div class="col-md-12">
+                                                <div class="table-responsive" id="tabla-instrumento"></div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <label for="descripcion">Descripción de las técnicas y modelos:</label>
+                                                <textarea name="descripcion" id="descripcion" cols="30" rows="3" class="form-control" data-parsley-required><?=$eva->vTecnicasModelos?></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="padding-top:10px">
+                                            <div class="col-md-4 offset-md-4">
+                                                <button class="btn btn-primary form-control" style="margin-top:25px;" type="submit">
+                                                    <li class="fa fa-lg fa-fw m-r-10 fa-save"></li>
+                                                    <span>Guardar cambios</span>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- end panel -->
-                        <!-- begin panel -->
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <div class="panel-heading-btn">
-                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
-                                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-                                </div>
-                                <h4 class="panel-title">Metodología utilizada</h4>
-                            </div>
-                            <div class="panel-body">
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label for="instrumento">Instrumento de recolección de la información</label>
-                                            <select class="form-control" id="instrumento" name="instrumento" onchange="instrumentoEspecificar()">
-                                                <option value="">-Seleccione una opción-</option>
-                                                <?=$instrumento?>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="especificar">En caso de otro especificar:</label>
-                                            <input type="text" class="form-control" id="especificar" name="especificar" disabled>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <button class="btn btn-default form-control" onclick="console.log('hola mundo')" type="button" style="margin-top:25px;">Agregar</button>
-                                        </div>
-                                    </div>
-                                    <div class="row" style="padding-top:10px;">
-                                        <div class="col-md-12">
-                                            <div class="table-responsive" id="tabla-instrumento"></div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <label for="descripcion">Descripción de las técnicas y modelos:</label>
-                                            <textarea name="descripcion" id="descripcion" cols="30" rows="3" class="form-control" data-parsley-required></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- end panel -->
+                            <!-- end panel -->
+                        </form>
                     </div>
                     <!-- end tab-pane -->
                     <!-- begin tab-pane -->
@@ -693,6 +730,46 @@
                     processData: false  
                 })
             }
+
+            function addInstrumento(){
+                var key = $("#instrumento").val();
+                var content = $("#especificar").val();
+                
+                if(key == 4 && content === ''){
+                    notificacion('Debe especificar el tipo de instrumento', 'error');
+                }else{
+                    var frmData = new FormData();
+                    frmData.append('key', key);
+                    frmData.append('content', content);
+                    var url = '<?=base_url()?>C_evaluacion/agregarInstrumento';
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: frmData,
+                        async: false,
+                        success: function(data){
+                            if(data == 1){
+                                $("#tabla-instrumento").load('C_evaluacion/drawInstrumento');
+                                notificacion('Instrumento agregado','success');
+                                $("#instrumento").val(null);
+                                $("#especificar").val(null);
+                                $("#especificar").prop('disabled', true);
+                                $("#btnInstrumento").prop('disabled', true);
+                            }else{
+                                notificacion('El instrumento ya existe en la tabla','error');
+                            }
+                        },
+                        error: function(){
+                            notificacion('Error', 'error');
+                        },
+                        cache:false,
+                        contentType: false,
+                        processData: false  
+                    })
+                }
+
+            }
+
             function removeColaborador(key){
                 var frmData = new FormData();
                 frmData.append('key', key);
@@ -718,6 +795,45 @@
                     processData: false  
                 })
             }
+
+            function updateDescripcion(form, event){
+		        event.preventDefault();
+                if(validarFormulario(form)){
+                    var datos = $(form).serialize(); // convert form to array
+                    datos += '&key=<?=$key?>';
+                    
+                    $.ajax({
+                        url: '<?=base_url()?>C_evaluacion/updateDescripcion',
+                        type: 'POST',
+                        data: datos,
+                        async: false,
+                        dataType: 'json',
+                        success: function(data){
+                            if(data['descripcion'] == 1){
+                                notificacion('Datos actualizados','success');
+                            }else{
+                                notificacion('Ha ocurrido un error','error');
+                            }
+                            
+                            if (data['instrumento-agregado'] > 0){
+                                notificacion('Se han agregado ' + data['instrumento-agregado'] + ' instrumentos','success');
+                            }
+
+                            if (data['eliminados'] > 0){
+                                notificacion('Se han eliminado ' + data['eliminados'] + ' instrumentos','success');
+                            }
+
+                        },
+                        error: function(){
+                            notificacion('Error', 'error');
+                        },
+                        cache:false,
+                        //contentType: 'application/json',
+                        processData: false
+                    })
+                }
+            }
+
             function datosContratacion(form, event){
 		        event.preventDefault();
                 if(validarFormulario(form)){
@@ -736,7 +852,6 @@
                             }else{
                                 notificacion('Ha ocurrido un error','error');
                             }
-                            $("#response").html('<pre>'+JSON.stringify(data)+'</pre>');
                         },
                         error: function(){
                             notificacion('Error', 'error');
@@ -822,19 +937,53 @@
             }
             function instrumentoEspecificar(){
                 var instrumento = $("#instrumento").val();
-                if(instrumento != 4){
-                    $("#especificar").prop('disabled', true);
+                if (instrumento > 0){
+                    $("#btnInstrumento").prop('disabled', false);
+                    if(instrumento != 4){
+                        $("#especificar").prop('disabled', true);
+                        $("#especificar").val(null);
+                    }else{
+                        $("#especificar").prop('disabled', false);
+                    }
                 }else{
-                    $("#especificar").prop('disabled', false);
-                }
+                    $("#btnInstrumento").prop('disabled', true);
+                }   
             }
 
             function contratacionEspecificar(){
                 var contratacion = $("#contratacion").val();
                 if(contratacion != 5){
                     $("#esp").prop('disabled', true);
+                    $("#esp").val(null);
                 }else{
                     $("#esp").prop('disabled', false);
                 }
             }
+
+            function revoveInstrumento(key){
+                var frmData = new FormData();
+                frmData.append('key', key);
+                var url = '<?=base_url()?>C_evaluacion/removeInstrumento';
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: frmData,
+                    async: false,
+                    success: function(data){
+                        if(data == 1){
+                            $("#tabla-instrumento").load('C_evaluacion/drawInstrumento');
+                            notificacion('Instrumento eliminado con exito','success');
+                        }else{
+                            notificacion('Ha ocurrido un error','error');
+                        }
+                    },
+                    error: function(){
+                        notificacion('Error', 'error');
+                    },
+                    cache:false,
+                    contentType: false,
+                    processData: false  
+                })
+            }
+
 	    </script>

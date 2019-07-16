@@ -40,7 +40,7 @@ class C_evaluacion extends CI_Controller{
         $this->load->model('M_evaluacion', 'me');
         $_SESSION['colaborador'] = null;
         $_SESSION['delete'] = array();
-        $_SESSION['instrumento'] = null;
+        $_SESSION['instrumento'] = $this->loadInstrumentos($key);
         $data['key'] = $key;
         $data['option'] = $this->getUsuario();
         $data['eva'] = $this->me->findEvaluacion($key)[0];
@@ -52,6 +52,14 @@ class C_evaluacion extends CI_Controller{
         
         $this->load->view('evaluacion/viewTabs', $data);
         //$this->load->view('evaluacion/viewUpdate', $data);
+    }
+
+    private function loadInstrumentos($key){
+        $data = $this->me->allInstrumentos($key);
+        foreach ($data as $r){
+            $r->iActivo = 1;
+        }
+        return $data;
     }
 
     public function updateContratacion(){
@@ -72,31 +80,195 @@ class C_evaluacion extends CI_Controller{
     }
 
     public function updateSeguimiento(){
-        $this->load->model('M_evaluacion', 'me');
         $key = $_POST['key'];
-        $response = 0;
-
-        if(!is_null($key)){
+        $result = 0;
+        if(!is_null($key) && $this->validatePostDate($_POST) == true){
+            $this->load->model('M_evaluacion', 'me');
             $data['iEnvioOficio'] = $_POST['iEnvioOficio'];
             $data['iInformacionCompleta'] = $_POST['iInformacionCompleta'];
             $data['dRecepcionOficio'] = $this->formatDate($_POST['dRecepcionOficio']);
-            $data['dEntregaInformacion'] = $this->formatDate($_POST['dEntregaInformacion']);;
-            $data['dReunionPresentacion'] = $this->formatDate($_POST['dReunionPresentacion']);;
-            $data['dInicioRealizacion'] = $this->formatDate($_POST['dInicioRealizacion']);;
-            $data['dEntregaBorrador'] = $this->formatDate($_POST['dEntregaBorrador']);;
-            $data['dPresentacionBorrador'] = $this->formatDate($_POST['dPresentacionBorrador']);;
-            $data['dPresentacionFinal'] = $this->formatDate($_POST['dPresentacionFinal']);;
-            $data['dEnvioVersionFinalDig'] = $this->formatDate($_POST['dEnvioVersionFinalDig']);;
-            $data['dEntregaVersionImp'] = $this->formatDate($_POST['dEntregaVersionImp']);;
-            $data['dFinEvaluadores'] = $this->formatDate($_POST['dFinEvaluadores']);;
-            $data['dEntregaInformeFinal'] = $this->formatDate($_POST['dEntregaInformeFinal']);;
-            $data['dPublicacion'] = $this->formatDate($_POST['dPublicacion']);;
-            $data['dEntregaDocOpinion'] = $this->formatDate($_POST['dEntregaDocOpinion']);;
-            $data['dEntregaDocTrabajo'] = $this->formatDate($_POST['dEntregaDocTrabajo']);;
-            $data['dPublicacionDocOpininTrabajo'] = $this->formatDate($_POST['dPublicacionDocOpininTrabajo']);;
+            $data['dEntregaInformacion'] = $this->formatDate($_POST['dEntregaInformacion']);
+            $data['dReunionPresentacion'] = $this->formatDate($_POST['dReunionPresentacion']);
+            $data['dInicioRealizacion'] = $this->formatDate($_POST['dInicioRealizacion']);
+            $data['dEntregaBorrador'] = $this->formatDate($_POST['dEntregaBorrador']);
+            $data['dPresentacionBorrador'] = $this->formatDate($_POST['dPresentacionBorrador']);
+            $data['dPresentacionFinal'] = $this->formatDate($_POST['dPresentacionFinal']);
+            $data['dEnvioVersionFinalDig'] = $this->formatDate($_POST['dEnvioVersionFinalDig']);
+            $data['dEntregaVersionImp'] = $this->formatDate($_POST['dEntregaVersionImp']);
+            $data['dFinEvaluadores'] = $this->formatDate($_POST['dFinEvaluadores']);
+            $data['dEntregaInformeFinal'] = $this->formatDate($_POST['dEntregaInformeFinal']);
+            $data['dPublicacion'] = $this->formatDate($_POST['dPublicacion']);
+            $data['dEntregaDocOpinion'] = $this->formatDate($_POST['dEntregaDocOpinion']);
+            $data['dEntregaDocTrabajo'] = $this->formatDate($_POST['dEntregaDocTrabajo']);
+            $data['dPublicacionDocOpininTrabajo'] = $this->formatDate($_POST['dPublicacionDocOpininTrabajo']);
             $result = $this->me->update($data, $key);
         }
         echo json_encode($result);
+    }
+
+    private function validatePostDate($data){
+        if ($this->validateDate($data['dRecepcionOficio']) === false){
+            return false;
+        }
+        if ($this->validateDate($data['dEntregaInformacion']) === false){
+            return false;
+        }
+        if ($this->validateDate($data['dReunionPresentacion']) === false){
+            return false;
+        }
+        if ($this->validateDate($data['dInicioRealizacion']) === false){
+            return false;
+        }
+        if ($this->validateDate($data['dEntregaBorrador']) === false){
+            return false;
+        }
+        if ($this->validateDate($data['dPresentacionBorrador']) === false){
+            return false;
+        }
+        if ($this->validateDate($data['dPresentacionFinal']) === false){
+            return false;
+        }
+        if ($this->validateDate($data['dEnvioVersionFinalDig']) === false){
+            return false;
+        }
+        if($this->validateDate($data['dEntregaVersionImp']) === false){
+            return false;
+        }
+        if ($this->validateDate($data['dFinEvaluadores']) === false){
+            return false;
+        }
+        if ($this->validateDate($data['dEntregaInformeFinal']) === false){
+            return false;
+        }
+        if ($this->validateDate($data['dPublicacion']) === false){
+            return false;
+        }
+        if ($this->validateDate($data['dEntregaDocOpinion']) === false){
+            return false;
+        }
+        if ($this->validateDate($data['dEntregaDocTrabajo']) === false){
+            return false;
+        }
+        if ($this->validateDate($data['dPublicacionDocOpininTrabajo']) === false){
+            return false;
+        }
+        return true;
+    }
+
+    public function updateDescripcion(){
+        $this->load->model('M_evaluacion', 'me');
+        $key = $_POST['key'];
+        $result = [];
+        if(!is_null($key) && $this->validateDate($_POST['dinicio']) === true &&  $this->validateDate($_POST['dfin']) === true){
+            $data['vNombreEvaluacion'] = $_POST['nombre'];
+            $data['iIdUsuario'] = $_POST['responsable'];
+            $data['dFechaInicio'] = $this->formatDate($_POST['dinicio']);
+            $data['dFechaFin'] = $this->formatDate($_POST['dfin']);
+            $data['vObjetivo'] = $_POST['objetivo'];
+            $data['vObjetivoEspecifico'] = $_POST['especifico'];
+            $data['vTecnicasModelos'] = $_POST['descripcion'];
+            $result['descripcion'] = $this->me->update($data, $key);
+            $data = [];
+            if (!is_null($_SESSION['instrumento'])){
+                $vdata = $_SESSION['instrumento'];
+                $_count = 0;
+                $count = 0;
+
+                foreach ($vdata as $r){
+                    if ($r->iActivo === 1){
+                        $data['iIdEvaluacion'] = $key;
+                        $data['iIdInstrumento'] = $r->iIdInstrumento;
+                        $data['vOtro'] = $r->vOtro;
+                        $_count += $this->me->addInstrumento($data);
+                        $result['instrumento-agregado'] = $_count;
+                    }else{
+                        $count += $this->me->deleteIntrumento($r->iIdInstrumento, $key);
+                        $result['eliminados'] = $count;
+                    }
+                }
+            }
+        }else{
+            $result['descripcion'] = 0;
+        }
+
+        echo json_encode($result);
+    }
+
+    public function agregarInstrumento(){
+        $data = array();
+        $result = 0;
+        $existe = false;
+        $key = $_POST['key'];
+        if (!is_null($_SESSION['instrumento'])){
+            $data = $_SESSION['instrumento'];
+        }
+        if (isset($_POST['key'])){
+            foreach ($data as $r){
+                if ($r->iIdInstrumento == $key){
+                    $existe = true;
+                    if ($r->iActivo == 1){
+                        $result = 0;
+                        break;
+                    }else{
+                        $r->iActivo = 1;
+                        $result = 1;
+                        break;
+                    }
+                }
+            }
+            if ($existe === false){
+                $this->load->model('M_evaluacion', 'me');
+                $instrumento = $this->me->filterInstrumento($key);
+                if(isset($instrumento[0])){
+                    $instrumento = $instrumento[0];
+                    if(isset($_POST['content'])){
+                        $instrumento->vOtro = $_POST['content'];
+                    }else{
+                        $instrumento->vOtro = null;
+                    }
+                    $instrumento->iActivo = 1;
+                    $data[] = $instrumento;
+                    $result = 1;
+                }
+            }
+        }
+        echo json_encode($result);
+        $_SESSION['instrumento'] = $data;
+    }
+    
+    public function addColaborador(){
+        $data = array();
+        //$_SESSION['colaborador'] = $data;
+        $key = null;
+        if (isset($_SESSION['colaborador']) && !empty($_SESSION['colaborador'])){
+            $data = $_SESSION['colaborador'];
+        }else{
+            $_SESSION['colaborador'] = $data;
+        }
+
+        if (isset($_POST['key']) && !empty($_POST['key'])){
+            $key = $_POST['key'];
+            $this->load->model('M_evaluacion', 'me');
+            if($this->findRecord($key) == false){
+                $data[] = $this->me->getUsuario($key)[0];
+                echo 1;
+            }else{
+                echo 0;
+            }
+        }
+        $_SESSION['colaborador'] = $data;
+    }
+
+    private function findRecord($key){
+        $data = $_SESSION['colaborador'];
+        $existe = false;
+        foreach($data as $r){
+            if($r->iIdUsuario == $key){
+                $existe = true;
+                break;
+            }
+        }
+        return $existe;
     }
 
     public function updateCoordinador(){
@@ -109,9 +281,7 @@ class C_evaluacion extends CI_Controller{
             $result = $this->me->update($data, $key);
             $response['result'] = $result;
         }
-        
         $vdata = $_SESSION['colaborador'];
-
         if (!empty($vdata)){
             $tmp = $this->saveColaborador($key);
             if(isset($tmp['usr'])){
@@ -127,6 +297,10 @@ class C_evaluacion extends CI_Controller{
         echo json_encode($response);
     }
 
+    private function validateDate($date, $format = 'd/m/Y'){
+        $d = DateTime::createFromFormat($format, $date);
+        return $d && $d->format($format) === $date;
+    }
 
     private function formatDate($date){
         $fecha = explode('/', $date);
@@ -226,52 +400,6 @@ class C_evaluacion extends CI_Controller{
         return $option;
     }
 
-    public function addColaborador(){
-        $data = array();
-        //$_SESSION['colaborador'] = $data;
-        $key = null;
-        if (isset($_SESSION['colaborador']) && !empty($_SESSION['colaborador'])){
-            $data = $_SESSION['colaborador'];
-        }else{
-            $_SESSION['colaborador'] = $data;
-        }
-
-        if (isset($_POST['key']) && !empty($_POST['key'])){
-            $key = $_POST['key'];
-            $this->load->model('M_evaluacion', 'me');
-            if($this->findRecord($key) == false){
-                $data[] = $this->me->getUsuario($key)[0];
-                echo 1;
-            }else{
-                echo 0;
-            }
-        }
-        $_SESSION['colaborador'] = $data;
-    }
-
-    public function addInstrumento(){
-        $data = array();
-        //$_SESSION['colaborador'] = $data;
-        $key = null;
-        if (isset($_SESSION['instrumento']) && !empty($_SESSION['instrumento'])){
-            $data = $_SESSION['instrumento'];
-        }else{
-            $_SESSION['instrumento'] = $data;
-        }
-
-        if (isset($_POST['key']) && !empty($_POST['key'])){
-            $key = $_POST['key'];
-            $this->load->model('M_evaluacion', 'me');
-            if($this->findRecord($key) == false){
-                $data[] = $this->me->getUsuario($key)[0];
-                echo 1;
-            }else{
-                echo 0;
-            }
-        }
-        $_SESSION['instrumento'] = $data;
-    }
-
     public function removeColaborador(){
         $data = $_SESSION['colaborador'];
         if (isset($_POST['key']) && !empty($_POST['key'])){
@@ -326,28 +454,14 @@ class C_evaluacion extends CI_Controller{
             }
             if($founded == false){
                 $response = $this->me->deleteColaborador($r->iIdUsuario, $key);
-
                 if($response > 0){
                     $result[] = array('usuario' => $r->vNombres.' '.$r->vApellidoPaterno.' '.$r->vApellidoMaterno);
                 }
-
             }else{
                 $founded = false;
             }
         }
         return $result;
-    }
-
-    private function findRecord($key){
-        $data = $_SESSION['colaborador'];
-        $existe = false;
-        foreach($data as $r){
-            if($r->iIdUsuario == $key){
-                $existe = true;
-                break;
-            }
-        }
-        return $existe;
     }
 
     private function getUsuario(){
@@ -473,7 +587,6 @@ class C_evaluacion extends CI_Controller{
     private function generateColaboradorContent(){
         $tb = '';
         $data = array();
-        
         if (isset($_SESSION['colaborador']) && !empty($_SESSION['colaborador'])){
             $data = $_SESSION['colaborador'];
             foreach ($data as $r){
@@ -491,29 +604,48 @@ class C_evaluacion extends CI_Controller{
         }else{
             $tb .= "<tr><td valign='top' colspan='6' class='dataTables_empty'>No se encontron registros</td></tr>";
         }
-        
         return $tb;
+    }
+
+    public function removeInstrumento(){
+        $data = array();
+        $result = 0;
+        $key = $_POST['key'];
+        if (isset($_SESSION['instrumento']) && !empty($_SESSION['instrumento'])){
+            $data = $_SESSION['instrumento'];
+            foreach ($data as $r){
+                if ($r->iIdInstrumento == $key){
+                    $r->iActivo = 0;
+                    $result = 1;
+                    break;
+                }
+            }
+        }
+        echo json_encode($result);
     }
 
     private function generateInstrumentoContent(){
         $tb = '';
+        $empty = true;
         $data = array();
-        
         if (isset($_SESSION['instrumento']) && !empty($_SESSION['instrumento'])){
             $data = $_SESSION['instrumento'];
             foreach ($data as $r){
-                $tb .= '<tr>';
-                    $tb .= '<td>'.$r->vInstrumento.'</td>';
-                    $tb .= '<td>'.$r->vOtro.'</td>';
-                    $tb .= '<td>';
-                        $tb .= '<button onclick="removeColaborador(\''.$r->iIdIstrumento.'\')" class="btn btn-danger btn-icon btn-sm"><i class="fas fa-trash fa-fw"></i></button>';
-                    $tb .= '</td>';
-                $tb .= '</tr>';
+                if($r->iActivo === 1){
+                    $tb .= '<tr>';
+                        $tb .= '<td>'.$r->vInstrumento.'</td>';
+                        $tb .= '<td>'.$r->vOtro.'</td>';
+                        $tb .= '<td>';
+                            $tb .= '<button onclick="revoveInstrumento(\''.$r->iIdInstrumento.'\')" type="button" class="btn btn-danger btn-icon btn-sm"><i class="fas fa-trash fa-fw"></i></button>';
+                        $tb .= '</td>';
+                    $tb .= '</tr>';
+                    $empty = false;
+                }
             }
-        }else{
+        }
+        if($empty == true){
             $tb .= "<tr><td valign='top' colspan='6' class='dataTables_empty'>No se encontron registros</td></tr>";
         }
-        
         return $tb;
     }
 

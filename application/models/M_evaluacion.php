@@ -72,8 +72,12 @@ class M_evaluacion extends CI_Model{
         return $query->result();
     }
     public function findEvaluacion($key){
-        $this->db->select('vNombreEvaluacion, dFechaInicio, dFechaFin, vObjetivo, vObjetivoEspecifico, iEnvioOficio,  iInformacionCompleta, iIdUsuario, vEspecificarContratacion, nCostoEvaluacion, iIdTipoContratacion, iIdResponsableContratacion, iIdFinanciamiento, iIdResponsableSeguimiento, dEntregaInformacion, dReunionPresentacion, dInicioRealizacion, dRecepcionOficio, dEntregaBorrador, dPresentacionBorrador, dPresentacionFinal, dEntregaVersionImp, dEnvioVersionFinalDig, dFinEvaluadores, dEntregaInformeFinal, dPublicacion, dEntregaDocOpinion, dEntregaDocTrabajo, dPublicacionDocOpininTrabajo');
-        $this->db->from("$this->table");
+        $this->db->select("e.*, IFNULL(o.vOrganismo, '') AS vOrganismo, IFNULL(a.vAmbito, '') AS vAmbito, IFNULL(p.vPoder, '') AS vPoder, i.`vIntervencion`");
+        $this->db->from("$this->table as e");
+        $this->db->join('organismo as o', 'e.`iIdResponsableSeguimiento` = o.`iIdOrganismo`', 'LEFT OUTER');
+        $this->db->join('ambito as a', 'o.`iIdAmbito` = a.`iIdAmbito`', 'LEFT OUTER');
+        $this->db->join('poder as p', 'o.`iIdPoder` = p.`iIdPoder`', 'LEFT OUTER');
+        $this->db->join('intervencion as i', 'i.`iIdIntervencion` = e.`iIdIntervencion`', 'INNER');
         $this->db->where("$this->table_id", $key);
         $query = $this->db->get();
         return $query->result();
@@ -90,14 +94,36 @@ class M_evaluacion extends CI_Model{
 
         $this->db->db_debug = FALSE;
         $this->db->insert('evaluacioncolaborador', $data);
-        
         //return $this->db->insert_id();
+        return $this->db->affected_rows();
+    }
+
+    public function addInstrumento($data){
+        $db_debug = $this->db->db_debug; //save setting
+        $this->db->db_debug = FALSE;
+        $this->db->insert('evaluacioninstrumento', $data);
+        return $this->db->affected_rows();
+    }
+
+    public function deleteIntrumento($instrumento, $key){
+        $this->db->where('iIdInstrumento', $instrumento);
+        $this->db->where('iIdEvaluacion', $key);
+        $this->db->delete('evaluacioninstrumento');
         return $this->db->affected_rows();
     }
 
     public function findColaborador($key){
         $this->db->select();
         $this->db->from('evaluacioncolaborador');
+        $this->db->where('iIdEvaluacion', $key);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function allInstrumentos($key){
+        $this->db->select('ei.*, i.vInstrumento');
+        $this->db->from('evaluacioninstrumento as ei');
+        $this->db->join('instrumento as i', 'i.iIdInstrumento = ei.iIdInstrumento', 'INNER');
         $this->db->where('iIdEvaluacion', $key);
         $query = $this->db->get();
         return $query->result();
@@ -141,4 +167,14 @@ class M_evaluacion extends CI_Model{
         $query = $this->db->get();
         return $query->result();
     }
+
+    public function filterInstrumento($key){
+        $this->db->select();
+        $this->db->from('instrumento');
+        $this->db->where('iIdInstrumento', $key);
+        $this->db->where('iActivo', 1);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
 }
