@@ -429,12 +429,12 @@ class C_plantilla extends CI_Controller {
             $apartado .= '<div class="panel panel-inverse" data-sortable-id="form-stuff-1">
             <div class="panel-heading ui-sortable-handle">
                 <div class="panel-heading-btn">
-                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" title="Agregar pregunta"  data-toggle="modal" data-target="#myModal3" onclick="modal3('.$r->iIdApartado.')"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" title="Agregar pregunta"  data-toggle="modal" data-target="#myModal3" onclick="modal3('.$r->iIdApartado.')"><i class="fas fa-question fa-lg"></i></a>
                     <div id="id'.$r->iIdApartado.'" style="display:none">'.$r->iIdApartado.'</div>
                     <div id="'.$r->iIdApartado.'" style="display:none">'.$r->vApartado.'</div>
-                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success"  title="Editar apartado"><i class="fa fa-redo" data-toggle="modal" data-target="#myModal2" onclick="modal2('.$r->iIdApartado.')" title="Editar"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success"  title="Editar apartado"><i class="fas fa-pencil-alt fa-fw" data-toggle="modal" data-target="#myModal2" onclick="modal2('.$r->iIdApartado.')" title="Editar"></i></a>
                     <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"  title="Colapsar"><i class="fa fa-minus"></i></a>
-                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger"  title="Eliminar apartado" onclick="deleteApartado('.$r->iIdApartado.')"><i class="fa fa-times"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger"  title="Eliminar apartado" onclick="deleteApartado('.$r->iIdApartado.')"><i class="fas fa-trash-alt fa-fw"></i></a>
                 </div>
                 <h4 class="panel-title">'.$r->vApartado.'</h4>
             </div>
@@ -480,7 +480,7 @@ class C_plantilla extends CI_Controller {
         
             foreach($vdata as $r){
                     $tcontent .= '<tr>';
-                    $tcontent .=  '<td><div id="id2'.$r->iIdPregunta.'" style="display:none">'.$r->iIdPregunta.'</div> <div id="'.$r->iIdPregunta.'">'.$r->vPregunta.'</div> <div id="tipo'.$r->iIdPregunta.'" style="display:none">'.$r->iIdTipoPregunta.'</div> </td>';
+                    $tcontent .=  '<td><div id="iddos'.$r->iIdPregunta.'" style="display:none">'.$r->iIdPregunta.'</div> <div id="Pregunta'.$r->iIdPregunta.'">'.$r->vPregunta.'</div> <div id="tipo'.$r->iIdPregunta.'" style="display:none">'.$r->iIdTipoPregunta.'</div> </td>';
                     $tcontent .=  '<td>'.'<button type="button" class="btn btn-primary btn-icon btn-sm" data-toggle="modal" data-target="#myModal" onclick="modal('.$r->iIdPregunta.')" title="Editar"><i class="fas fa-pencil-alt fa-fw"></i></button>
                     <button type="button" class="btn btn-danger btn-icon btn-sm" onclick="deletePregunta('.$r->iIdPregunta.')" title="Eliminar"><i class="fas fa-trash-alt fa-fw"></i></button></td>'; 
                     $tcontent .= '</tr>';

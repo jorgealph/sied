@@ -42,6 +42,7 @@
                 </div>
 
                 <div id="apartado"></div>
+
                 <form id="form-captura3">
                         <!-- The Modal -->
                         <div class="modal" id="myModal">
@@ -50,14 +51,16 @@
 
                             <!-- Modal Header -->
                             <div class="modal-header">
-                                <h4 class="modal-title">Modal Heading</h4>
+                                <h4 class="modal-title">Preguntas</h4>
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                             </div>
                             
                             <!-- Modal body -->
                             <div class="modal-body">
                             <input type="hidden" name="id2" id="id2">
+                            <label>Pregunta: </label>
                                 <textarea class="form-control" rows="3" cols="50" class="col-md-12" data-parsley-required="true" id="nombre" name="nombre"><?php if(isset($nombre)){echo $nombre;} ?></textarea>
+                                <label>Tipo de pregunta: </label>
                                 <select class="form-control" id="tipoP" name="tipoP" data-parsley-required="true">
                             <option value="">Seleccionar</option>
                             <?php foreach ($tipoP as $row) {?>
@@ -85,14 +88,16 @@
 
                             <!-- Modal Header -->
                             <div class="modal-header">
-                                <h4 class="modal-title">Modal Heading</h4>
+                                <h4 class="modal-title">Preguntas</h4>
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                             </div>
                             
                             <!-- Modal body -->
                             <div class="modal-body">
-                            <input type="text" name="id3" id="id3">
+                            <input type="hidden" name="id3" id="id3">
+                            <label>Pregunta: </label>
                                 <textarea class="form-control" rows="3" cols="50" class="col-md-12" data-parsley-required="true" id="nombreP" name="nombreP"></textarea>
+                                <label>Tipo de pregunta: </label>
                                 <select class="form-control" id="tipoPR" name="tipoPR" data-parsley-required="true">
                             <option value="">Seleccionar</option>
                             <?php foreach ($tipoP as $row) {?>
@@ -120,13 +125,14 @@
 
                         <!-- Modal Header -->
                         <div class="modal-header">
-                            <h4 class="modal-title">Modal Heading</h4>
+                            <h4 class="modal-title">Apartados</h4>
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
 
                         <!-- Modal body -->
                         <div class="modal-body">
                             <input type="hidden" name="id" id="id">
+                            <label>Nombre del apartado: </label>
                             <textarea class="form-control" rows="3" cols="50" class="col-md-12" data-parsley-required="true" id="nombre2" name="nombre2"></textarea>
                         </div>
 
@@ -143,8 +149,8 @@
             <script>
 
             function modal(id){
-                $("#id2").val($("#id2"+id).text());
-                $("#nombre").val($("#"+id).text());
+                $("#id2").val($("#iddos"+id).text());
+                $("#nombre").val($("#Pregunta"+id).text());
                 $("#tipoP").val($("#tipo"+id).text());
             }
 
@@ -231,36 +237,6 @@
                 }
             });
             }
-
-            /* function insertarPregunta(form, event){
-                event.preventDefault();
-                if(validarFormulario(form)){
-                    $.ajax({
-                        type: "POST",
-                        url: '<?=base_url()?>C_plantilla/insertar_pregunta',
-                        data: $("#form-captura4").serialize(),
-                        success: function(response){
-                            if(response > 0){
-                                $("#contenido").load('<?=base_url()?>C_plantilla/guardar_cuestionario');
-                                swal({
-                                    icon: 'success',
-                                    title: 'Exito',
-                                    text: 'El registro se ha guardado exitosamente',
-                                    button: false,
-                                    timer: 1500
-                                })
-                            }else{
-                                swal({
-                                    icon: 'error',
-                                    title: 'Algo salio mal',
-                                    text: 'El registro no se guardó',
-                                    button: false
-                                })
-                            }
-                        }
-                    });
-                }
-            } */
 
             function deletePregunta(id){
 				swal({
@@ -402,7 +378,7 @@
                                         button: false,
                                         timer: 1500
                                     })
-    				},
+                                    $("#apartado").load('C_plantilla/GenerarApartado/<?=$id_plantilla?>');},
 					
 					/* código a ejecutar si la petición falla;
     				son pasados como argumentos a la función
@@ -419,6 +395,7 @@
     				/*complete : function(xhr, status) {
         				alert('Petición realizada');
 					}*/
+                    
 				});
 			}
             </script>
