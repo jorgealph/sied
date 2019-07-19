@@ -66,7 +66,6 @@
                     <hr>
                 </div>
             </div>
-
                 
                     <div class="row">
                         <div class="col-md-4">
@@ -124,7 +123,6 @@
 
     <center>
         <button type="button" onclick="<?php echo (isset($iIdPlantilla)) ? 'update()': 'dataEntry()'; ?>" class='btn btn-primary'>Enviar</button>
-        <button id="obtenerDatos" type="button" name="button">Obtener datos del select</button>
     </center>
     
         <script src="<?=base_url()?>admin/assets/js/demo/table-manage-default.demo.min.js"></script>
@@ -134,27 +132,7 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.full.min.js"></script> 
         
-        <script>
-            $("#obtenerDatos").click(function(id){
-            //console.log($("#multisearch").val())
-            var arrayValor = $("#select"+id).val()
-            var arrayNombres = []
-                console.log(id);
-            $("#select"+id).find("li").each(function(index){
-                
-                if($(this).text()!=""){
-                var valorAnterior = arrayValor[index]
-                arrayValor[index] = {
-                idi:valorAnterior,
-                valor:$(this).text().replace("×","")
-                }
-                }
-                
-            })
-            
-            console.log(arrayValor)
-            })
-        
+        <script>        
             //$("#table").load('<?=base_url()?>C_plantilla/tabla');
             $("#table").load('C_plantilla/GenerateTable');
             
@@ -249,7 +227,13 @@
     				// código a ejecutar si la petición es satisfactoria;
     				// la respuesta es pasada como argumento a la función
     				success : function(data) {
-        				alert(data);
+        				swal({
+                                        icon: 'success',
+                                        title: 'Exito',
+                                        text: 'El registro se ha guardado exitosamente',
+                                        button: false,
+                                        timer: 1500
+                                    })|
     				},
 					
 					/* código a ejecutar si la petición falla;

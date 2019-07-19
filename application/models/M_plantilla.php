@@ -62,6 +62,26 @@ class M_plantilla extends CI_Model {
         return $query->result();
     }
 
+    public function findPreguntas($id){
+        $this->db->select('*');
+        $this->db->from('pregunta');
+        $this->db->where('iIdApartado', $id);
+        $this->db->where('iActivo', 1);
+
+        $query=$this->db->get();
+        return $query->result();
+    }
+
+    public function findApartado($id){
+        $this->db->select('*');
+        $this->db->from('apartado');
+        $this->db->where('iIdPlantilla', $id);
+        $this->db->where('iActivo', 1);
+
+        $query=$this->db->get();
+        return $query->result();
+    }
+
     public function ValidaExisteEvaluacion($iIdPlantilla, $iIdIntervencion){
         $this->db->select('iIdEvaluacion');
         $this->db->from('evaluacion');
@@ -81,10 +101,31 @@ class M_plantilla extends CI_Model {
         $this->db->insert('evaluacion', $data);
         return $this->db->insert_id();
     }
+
+    function insertApartado($data){
+        $this->db->insert('apartado', $data);
+        return $this->db->insert_id();
+    }
+
+    function insertPregunta($data){
+        $this->db->insert('pregunta', $data);
+        return $this->db->insert_id();
+    }
     
     function update($id, $data){
         $this->db->where($this->table_id, $id); 
         return $this->db->update($this->table, $data);        
+    }
+
+    function updatePregunta($id, $data){
+        $this->db->where('iIdPregunta', $id); 
+        return $this->db->update('pregunta', $data);        
+    }
+
+    function updateApartado($id, $data){
+        $this->db->where('iIdApartado', $id); 
+        $this->db->update('apartado', $data);
+        return $this->db->affected_rows();
     }
 
     public function delete($id){
@@ -99,6 +140,20 @@ class M_plantilla extends CI_Model {
         $this->db->where('iIdIntervencion', $iIdIntervencion);
         $data =  array('iActivo' => 0 );
         $this->db->update('evaluacion', $data);
+        return $this->db->affected_rows();
+    }
+
+    public function deletePregunta($iIdPregunta){
+        $this->db->where('iIdPregunta', $iIdPregunta);
+        $data =  array('iActivo' => 0 );
+        $this->db->update('pregunta', $data);
+        return $this->db->affected_rows();
+    }
+
+    public function deleteApartado($iIdApartado){
+        $this->db->where('iIdApartado', $iIdApartado);
+        $data =  array('iActivo' => 0 );
+        $this->db->update('apartado', $data);
         return $this->db->affected_rows();
     }
 
@@ -188,6 +243,14 @@ class M_plantilla extends CI_Model {
         $this->db->select('*');
         $this->db->where('iActivo', 1); 
         $this->db->from('tipoevaluacion');
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    function get_TipoPregunta(){
+        $this->db->select('*');
+        $this->db->where('iActivo', 1); 
+        $this->db->from('tipopregunta');
         $query = $this->db->get();
         return $query->result();
     }

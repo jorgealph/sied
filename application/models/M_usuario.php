@@ -20,7 +20,7 @@ class M_usuario extends CI_Model {
     public function findAll(){
         $this->db->select();
         $this->db->from($this->table); 
-        $this->db->where('iActivo', 1);     
+        $this->db->where('iActivo', 1);
 
         $query=$this->db->get();
         
