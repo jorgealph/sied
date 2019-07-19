@@ -333,7 +333,7 @@
                                         button: false,
                                         timer: 1500
                                     })
-    				},
+                                    $("#apartado").load('C_plantilla/GenerarApartado/<?=$id_plantilla?>');},
 					
 					/* código a ejecutar si la petición falla;
     				son pasados como argumentos a la función
