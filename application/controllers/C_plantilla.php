@@ -45,7 +45,7 @@ class C_plantilla extends CI_Controller {
         $this->load->view('plantilla/tabla', $vdata);
     } 
 
-    public function guardar_cuestionario($iIdPlantilla = null, $vista = null){
+    public function guardar_cuestionario($iIdPlantilla){
         $vdata['tipoP'] = $this->mp->get_TipoPregunta();
         $vdata['id_plantilla'] = $iIdPlantilla;
         $this->load->view('plantilla/guardar_cuestionario', $vdata);

@@ -187,7 +187,7 @@
                         data: $("#form-captura").serialize(),
                         success: function(response){
                             if(response > 0){
-                                $("#contenido").load('<?=base_url()?>C_plantilla/guardar_cuestionario');
+                                $("#contenido").load('<?=base_url()?>C_plantilla/guardar_cuestionario/<?=$id_plantilla?>');
                                 swal({
                                     icon: 'success',
                                     title: 'Exito',
