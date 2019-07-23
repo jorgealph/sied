@@ -35,11 +35,7 @@ class C_pregunta extends CI_Controller {
 							$msg = $result;
 						}
 						$intent += 1;
-						/*if($apartado == 3){
-							$apartado = 1;
-						}else{
-							$apartado += 1;
-						}*/
+						
 					}else{
 						break;
 					}
@@ -162,7 +158,7 @@ class C_pregunta extends CI_Controller {
 
 		// Saving the document as OOXML file...
 		$objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
-		$filename = "helloWorld.docx";
+		$filename = "Plantilla base del cuestionario.docx";
 		$objWriter->save($filename);
 
 		header('Content-Description: File Transfer');

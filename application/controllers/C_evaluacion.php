@@ -11,15 +11,13 @@ class C_evaluacion extends CI_Controller{
         $this->load->model('M_seguridad','ms');
     }
 
-    
     public function display(){
         $this->load->model('M_evaluacion', 'me');
         $this->load->model('M_plantilla', 'mp');
         $this->load->model('M_intervencionpropuesta', 'mi');
         $data['anio'] = $this->mp->get_anio();
         $data['tipo'] = $this->mp->get_tipo();
-        $data['eje'] = $this->mi->ejeQuery();
-        
+        $data['eje'] = $this->mi->ejeQuery(); 
         $this->load->view('evaluacion/index', $data);
     }
 
@@ -54,6 +52,228 @@ class C_evaluacion extends CI_Controller{
         //$this->load->view('evaluacion/viewUpdate', $data);
     }
 
+    public function repositorio($key){
+        $data['key'] = $key;
+        $this->load->model('M_evaluacion', 'me');
+        $data['eva'] = $this->me->findEvaluacion($key)[0];
+        if($_SESSION[PREFIJO.'_idrol'] == 3){
+            $organismo = $this->me->buscar_organismo($_SESSION[PREFIJO.'_idusuario']);
+            $org = $organismo[0]->iIdOrganismo;
+            if (isset($this->me->buscar_corresponsables($key, $org)[0])){
+                $vdata = $this->me->buscar_corresponsables($key, $org)[0];
+            }else{
+                $vdata = array();
+            }
+        }else{
+            $vdata = $data['eva'];
+        }
+        
+        $data['tb'] = $this->subir_documento($vdata);
+        $data['co'] = $this->documentos_corresponsables($this->me->corresponsables($key));
+        $this->load->view('evaluacion/repositorio', $data);
+    }
+
+    public function subir(){
+        $this->load->model('M_evaluacion', 'me');
+        //Ruta donde se guardan los ficheros
+        $key = $_POST['key'];
+        $estatus = $_POST['estatus'];
+        $colaborador = '';
+        if($_SESSION[PREFIJO.'_idrol'] == 3){
+            $colaborador = '_'.$_SESSION[PREFIJO.'_idusuario'];
+        }
+        $config['upload_path'] = './files/cuestionarios/'; 
+       //Tipos de ficheros permitidos
+        $config['allowed_types'] = 'docx';      
+        $config['file_name'] = "Cuestionario_".$key."_".date('YmdHis')."_".$estatus.$colaborador.".docx";      
+       //Se pueden configurar aun mas parámetros.
+       //Cargamos la librería de subida y le pasamos la configuración
+        $this->load->library('upload', $config);
+        if(!$this->upload->do_upload()){
+            /*Si al subirse hay algún error lo meto en un array para pasárselo a la vista*/
+                /*$error=array('error' => $this->upload->display_errors());
+                print_r($error);*/
+                //echo 0;
+                if ($estatus != 2){
+                    $data['iEstatusArchivo'] = $estatus;
+                    echo $this->me->update($data, $key);
+                }else{
+                    echo 0;
+                }
+        }else{
+            //Datos del fichero subido
+            //$datos["docx"] = $this->upload->data();
+            //Cargamos la vista y le pasamos los datos
+            $data['vRutaArchivo'] = $config['file_name'];
+            $data['dFechaSubida'] = date('Y-m-d H:i:s');
+            $data['iEstatusArchivo'] = $estatus;
+            
+            if($_SESSION[PREFIJO.'_idrol'] == 3){
+                $organismo = $this->me->buscar_organismo($_SESSION[PREFIJO.'_idusuario']);
+                $org = $organismo[0]->iIdOrganismo;
+                if (isset($this->me->buscar_corresponsables($key, $org)[0])){
+                    echo $this->me->actualizar_corresponsable($data, $key, $org);
+                }else{
+                    $data['iIdEvaluacion'] = $key;
+                    $data['iIdOrganismo'] = $org;
+                    echo $this->me->nuevo_corresponsable($data);
+                }
+            } else{
+                echo $this->me->update($data, $key);
+            }
+        }
+    }
+
+    public function obtener_documento(){
+
+    }
+
+    public function eliminar_documento(){
+        $key = $_POST['key'];
+        $this->load->model('M_evaluacion', 'me');
+        if($_SESSION[PREFIJO.'_idrol'] == 3){
+            $organismo = $this->me->buscar_organismo($_SESSION[PREFIJO.'_idusuario']);
+            $org = $organismo[0]->iIdOrganismo;
+            $eva = $this->me->buscar_corresponsables($key, $org)[0];
+            echo $this->me->borrar_corresponsable($key, $org);
+        }else{
+            $eva = $this->me->findEvaluacion($key)[0];
+            $data['vRutaArchivo'] = '';
+            $this->me->update($data, $key);
+        }
+        unlink('./files/cuestionarios/'.$eva->vRutaArchivo);
+    }
+
+    private function subir_documento($eva){
+        $tb = "<table class='table'>
+                <thead>
+                    <tr class='active'>
+                        <th>Nombre del documento</th>
+                        <th>Fecha de subida</th>
+                        <th>Estatus</th>
+                        <th width='120px'>Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        ".$this->datos_documento($eva)."
+                    </tr>
+                </tbody>
+            </table>";
+        return $tb;
+    }
+
+    private function datos_documento($eva){
+        $tb = '';
+        if (!empty($eva->vRutaArchivo)){
+            $tb = "<td>$eva->vRutaArchivo</td>
+            <td>$eva->dFechaSubida</td>
+            <td>".$this->crear_select($eva->iEstatusArchivo)."</td>
+            <td><button id='btn' class='btn btn-danger btn-icon btn-sm' onclick='borrar()'><i class='fas fa-trash fa-fw'></i></button></td>";
+        }else{
+            $tb = "<tr><td valign='top' colspan='4' class='dataTables_empty'>No se encontro documento</td></tr>";
+        }
+        return $tb;
+    }
+
+    private function crear_select($estatus){
+        $response = '';
+        $activo = 'selected';
+        switch ($_SESSION[PREFIJO.'_idrol']) {
+            case 1:
+                $response = '<select id="estatus" class="form-control">
+                                <option value="0"> Versión base </option>
+                                <option value="1"> Pendiente revisar organismo </option>
+                                <option value="3"> Pendiente atender observaciones </option>
+                                <option value="4">Validado para publicación </option>
+                                <option value="5">Finalizado </option>
+                            </select>';
+                break;
+            default:
+                    $response = $this->obtener_estatus($estatus);
+                break;
+        }
+        return $response;
+    }
+
+    private function obtener_estatus($estatus){
+        $name = '';
+        switch ($estatus) {
+            case 0:
+                $name = 'Versión base';
+                break;
+            case 1:
+                $name = 'Pendiente revisar organismo';
+                break;
+                
+            case 2:
+                $name = 'Pendiente revisar SEPLAN';
+                break;
+            case 3:
+                $name = 'Pendiente atender observaciones';
+                break;
+            case 4:
+                $name = 'Validado para publicación';
+                break;
+            case 5:
+                $name = 'Finalizado';
+                break;
+        }
+        return $name;
+    }
+
+    private function documentos_corresponsables($data){
+        $tb = '<table id="data-table-default" class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th>Organismo a cargo del programa</th>
+                    <th>Titular</th>
+                    <th>Correo</th>
+                    <th>Telefono</th>
+                    <th>Fecha de subida</th>
+                    <th width="100px">Documento</th>
+                </tr>
+            </thead>
+            <tbody>';
+            
+        foreach($data as $r){
+            $tb .= '<tr>
+                    <td>'.$r->vSiglas.'</td>
+                    <td>'.$r->vNombreTitular.'</td>
+                    <td>'.$r->vCorreoContacto.'</td>
+                    <td>'.$r->vTelefonoContacto.'</td>
+                    <td>'.$r->dFechaSubida.'</td>
+                    <td><a href="'.base_url().'files/cuestionarios/'.$r->vRutaArchivo.'" download="'.$r->vRutaArchivo.'">Descargar</a></td>
+            </tr>';
+        }   
+
+        $tb .=  '</tbody>
+        </table>';
+        return $tb;
+    }
+
+    private function prepareDelete($tmp){
+        $existe = false;
+        if(isset($_SESSION['delete']) && !empty($_SESSION['delete'])){
+            $data = $_SESSION['delete'];
+        }else{
+            $data = array();
+        }
+
+        foreach ($data as $r){
+            if($r->iIdUsuario == $tmp->iIdUsuario){
+                $existe = true;
+                break;
+            }
+        }
+
+        if($existe == false){
+            $data[] = $tmp;
+        }
+        
+        $_SESSION['delete'] = $data;
+    }
+
     private function loadInstrumentos($key){
         $data = $this->me->allInstrumentos($key);
         foreach ($data as $r){
@@ -65,7 +285,6 @@ class C_evaluacion extends CI_Controller{
     public function updateContratacion(){
         $this->load->model('M_evaluacion', 'me');
         $key = $_POST['key'];
-        $response = array();
         if(!is_null($key)){
             $data['iIdTipoContratacion'] = $_POST['contratacion'];
             if(isset($_POST['esp'])){
@@ -82,86 +301,71 @@ class C_evaluacion extends CI_Controller{
     public function updateSeguimiento(){
         $key = $_POST['key'];
         $result = 0;
-        if(!is_null($key) && $this->validatePostDate($_POST) == true){
+        if(!is_null($key)){
             $this->load->model('M_evaluacion', 'me');
             $data['iEnvioOficio'] = $_POST['iEnvioOficio'];
             $data['iInformacionCompleta'] = $_POST['iInformacionCompleta'];
-            $data['dRecepcionOficio'] = $this->formatDate($_POST['dRecepcionOficio']);
-            $data['dEntregaInformacion'] = $this->formatDate($_POST['dEntregaInformacion']);
-            $data['dReunionPresentacion'] = $this->formatDate($_POST['dReunionPresentacion']);
-            $data['dInicioRealizacion'] = $this->formatDate($_POST['dInicioRealizacion']);
-            $data['dEntregaBorrador'] = $this->formatDate($_POST['dEntregaBorrador']);
-            $data['dPresentacionBorrador'] = $this->formatDate($_POST['dPresentacionBorrador']);
-            $data['dPresentacionFinal'] = $this->formatDate($_POST['dPresentacionFinal']);
-            $data['dEnvioVersionFinalDig'] = $this->formatDate($_POST['dEnvioVersionFinalDig']);
-            $data['dEntregaVersionImp'] = $this->formatDate($_POST['dEntregaVersionImp']);
-            $data['dFinEvaluadores'] = $this->formatDate($_POST['dFinEvaluadores']);
-            $data['dEntregaInformeFinal'] = $this->formatDate($_POST['dEntregaInformeFinal']);
-            $data['dPublicacion'] = $this->formatDate($_POST['dPublicacion']);
-            $data['dEntregaDocOpinion'] = $this->formatDate($_POST['dEntregaDocOpinion']);
-            $data['dEntregaDocTrabajo'] = $this->formatDate($_POST['dEntregaDocTrabajo']);
-            $data['dPublicacionDocOpininTrabajo'] = $this->formatDate($_POST['dPublicacionDocOpininTrabajo']);
+            
+            if (!empty($_POST['dRecepcionOficio']) && !is_null($_POST['dRecepcionOficio']) && $this->validateDate($_POST['dRecepcionOficio']) == true){
+                $data['dRecepcionOficio'] = $this->formatDate($_POST['dRecepcionOficio']);
+            }
+            if (!empty($_POST['dEntregaInformacion']) && !is_null($_POST['dEntregaInformacion']) && $this->validateDate($_POST['dEntregaInformacion']) == true){
+                $data['dEntregaInformacion'] = $this->formatDate($_POST['dEntregaInformacion']);
+            }
+            if (!empty($_POST['dReunionPresentacion']) && !is_null($_POST['dReunionPresentacion']) && $this->validateDate($_POST['dReunionPresentacion']) == true){
+                $data['dReunionPresentacion'] = $this->formatDate($_POST['dReunionPresentacion']);
+            }
+            if (!empty($_POST['dInicioRealizacion']) && !is_null($_POST['dInicioRealizacion']) && $this->validateDate($_POST['dInicioRealizacion']) == true){
+                $data['dInicioRealizacion'] = $this->formatDate($_POST['dInicioRealizacion']);
+            }
+            if (!empty($_POST['dEntregaBorrador']) && !is_null($_POST['dEntregaBorrador']) && $this->validateDate($_POST['dEntregaBorrador']) == true){
+                $data['dEntregaBorrador'] = $this->formatDate($_POST['dEntregaBorrador']);
+            }
+            if (!empty($_POST['dPresentacionBorrador']) && !is_null($_POST['dPresentacionBorrador']) && $this->validateDate($_POST['dPresentacionBorrador']) == true){
+                $data['dPresentacionBorrador'] = $this->formatDate($_POST['dPresentacionBorrador']);
+            }
+            if (!empty($_POST['dPresentacionFinal']) && !is_null($_POST['dPresentacionFinal']) && $this->validateDate($_POST['dPresentacionFinal']) == true){
+                $data['dPresentacionFinal'] = $this->formatDate($_POST['dPresentacionFinal']);
+            }
+            if (!empty($_POST['dEnvioVersionFinalDig']) && !is_null($_POST['dEnvioVersionFinalDig']) && $this->validateDate($_POST['dEnvioVersionFinalDig']) == true){
+                $data['dEnvioVersionFinalDig'] = $this->formatDate($_POST['dEnvioVersionFinalDig']);
+            }            
+            if (!empty($_POST['dEntregaVersionImp']) && !is_null($_POST['dEntregaVersionImp']) && $this->validateDate($_POST['dEntregaVersionImp']) == true){
+                $data['dEntregaVersionImp'] = $this->formatDate($_POST['dEntregaVersionImp']);
+            }
+            if (!empty($_POST['dFinEvaluadores']) && !is_null($_POST['dFinEvaluadores']) && $this->validateDate($_POST['dFinEvaluadores']) == true){
+                $data['dFinEvaluadores'] = $this->formatDate($_POST['dFinEvaluadores']);
+            }
+            
+            if (!empty($_POST['dEntregaInformeFinal']) && !is_null($_POST['dEntregaInformeFinal']) && $this->validateDate($_POST['dEntregaInformeFinal']) == true){
+                $data['dEntregaInformeFinal'] = $this->formatDate($_POST['dEntregaInformeFinal']);
+            }
+            
+            if (!empty($_POST['dPublicacion']) && !is_null($_POST['dPublicacion']) && $this->validateDate($_POST['dPublicacion']) == true){
+                $data['dPublicacion'] = $this->formatDate($_POST['dPublicacion']);
+            }
+            if (!empty($_POST['dEntregaDocOpinion']) && !is_null($_POST['dEntregaDocOpinion']) && $this->validateDate($_POST['dEntregaDocOpinion']) == true){
+                $data['dEntregaDocOpinion'] = $this->formatDate($_POST['dEntregaDocOpinion']);
+            }
+            if (!empty($_POST['dEntregaDocTrabajo']) && !is_null($_POST['dEntregaDocTrabajo']) && $this->validateDate($_POST['dEntregaDocTrabajo']) == true){
+                $data['dEntregaDocTrabajo'] = $this->formatDate($_POST['dEntregaDocTrabajo']);
+            }
+            if (!empty($_POST['dPublicacionDocOpininTrabajo']) && !is_null($_POST['dPublicacionDocOpininTrabajo']) && $this->validateDate($_POST['dPublicacionDocOpininTrabajo']) == true){
+                $data['dPublicacionDocOpininTrabajo'] = $this->formatDate($_POST['dPublicacionDocOpininTrabajo']);
+            }
             $result = $this->me->update($data, $key);
         }
         echo json_encode($result);
     }
-
-    private function validatePostDate($data){
-        if ($this->validateDate($data['dRecepcionOficio']) === false){
-            return false;
-        }
-        if ($this->validateDate($data['dEntregaInformacion']) === false){
-            return false;
-        }
-        if ($this->validateDate($data['dReunionPresentacion']) === false){
-            return false;
-        }
-        if ($this->validateDate($data['dInicioRealizacion']) === false){
-            return false;
-        }
-        if ($this->validateDate($data['dEntregaBorrador']) === false){
-            return false;
-        }
-        if ($this->validateDate($data['dPresentacionBorrador']) === false){
-            return false;
-        }
-        if ($this->validateDate($data['dPresentacionFinal']) === false){
-            return false;
-        }
-        if ($this->validateDate($data['dEnvioVersionFinalDig']) === false){
-            return false;
-        }
-        if($this->validateDate($data['dEntregaVersionImp']) === false){
-            return false;
-        }
-        if ($this->validateDate($data['dFinEvaluadores']) === false){
-            return false;
-        }
-        if ($this->validateDate($data['dEntregaInformeFinal']) === false){
-            return false;
-        }
-        if ($this->validateDate($data['dPublicacion']) === false){
-            return false;
-        }
-        if ($this->validateDate($data['dEntregaDocOpinion']) === false){
-            return false;
-        }
-        if ($this->validateDate($data['dEntregaDocTrabajo']) === false){
-            return false;
-        }
-        if ($this->validateDate($data['dPublicacionDocOpininTrabajo']) === false){
-            return false;
-        }
-        return true;
-    }
-
     public function updateDescripcion(){
         $this->load->model('M_evaluacion', 'me');
         $key = $_POST['key'];
         $result = [];
+        $_count = 0;
+        $count = 0;
         if(!is_null($key) && $this->validateDate($_POST['dinicio']) === true &&  $this->validateDate($_POST['dfin']) === true){
             $data['vNombreEvaluacion'] = $_POST['nombre'];
-            $data['iIdUsuario'] = $_POST['responsable'];
+            $data['iIdResponsableSeguimiento'] = $_POST['responsable'];
             $data['dFechaInicio'] = $this->formatDate($_POST['dinicio']);
             $data['dFechaFin'] = $this->formatDate($_POST['dfin']);
             $data['vObjetivo'] = $_POST['objetivo'];
@@ -171,15 +375,15 @@ class C_evaluacion extends CI_Controller{
             $data = [];
             if (!is_null($_SESSION['instrumento'])){
                 $vdata = $_SESSION['instrumento'];
-                $_count = 0;
-                $count = 0;
-
                 foreach ($vdata as $r){
                     if ($r->iActivo === 1){
                         $data['iIdEvaluacion'] = $key;
                         $data['iIdInstrumento'] = $r->iIdInstrumento;
                         $data['vOtro'] = $r->vOtro;
-                        $_count += $this->me->addInstrumento($data);
+                        $add = $this->me->addInstrumento($data);
+                        if ($add > 0){
+                            $_count += 1;
+                        }
                         $result['instrumento-agregado'] = $_count;
                     }else{
                         $count += $this->me->deleteIntrumento($r->iIdInstrumento, $key);
@@ -212,6 +416,9 @@ class C_evaluacion extends CI_Controller{
                     }else{
                         $r->iActivo = 1;
                         $result = 1;
+                        if($r->iIdInstrumento == 4){
+                            $r->vOtro = $_POST['content'];
+                        }
                         break;
                     }
                 }
@@ -373,7 +580,7 @@ class C_evaluacion extends CI_Controller{
                     <th>Dependencia responsable</th>
                     <th>Origen de la evaluación</th>
                     <th>Tipo de evaluación</th>
-                    <th width="120px">Acciones</th>
+                    <th width="150px">Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -417,27 +624,7 @@ class C_evaluacion extends CI_Controller{
         $_SESSION['colaborador'] = $data;
     }
 
-    private function prepareDelete($tmp){
-        $existe = false;
-        if(isset($_SESSION['delete']) && !empty($_SESSION['delete'])){
-            $data = $_SESSION['delete'];
-        }else{
-            $data = array();
-        }
-
-        foreach ($data as $r){
-            if($r->iIdUsuario == $tmp->iIdUsuario){
-                $existe = true;
-                break;
-            }
-        }
-
-        if($existe == false){
-            $data[] = $tmp;
-        }
-        
-        $_SESSION['delete'] = $data;
-    }
+    
 
     private function delete($key){
         $this->load->model('M_evaluacion', 'me');
@@ -507,6 +694,7 @@ class C_evaluacion extends CI_Controller{
                 $tb .= '<td>'.$r->vTipoEvaluacion.'</td>';
                 $tb .= '<td>';
                     $tb .= '<button onclick="cargar(\'ver/evaluacion/'.$r->iIdEvaluacion.'\', \'#contenido\')" class="btn btn-default btn-icon btn-sm" data-toggle="tooltip" data-placement="top" title="Seguimiento de la evaluación"><i class="fas fa-edit fa-fw"></i></button>&nbsp;';
+                    $tb .= '<button onclick="cargar(\'ver/repositorio/'.$r->iIdEvaluacion.'\', \'#contenido\')" class="btn btn-default btn-icon btn-sm" data-toggle="tooltip" data-placement="top" title="Repositorio de documentos"><i class="fas fa-file-word fa-fw"></i></button>&nbsp;';
                     $tb .= '<button onclick="" class="btn btn-default btn-icon btn-sm" data-toggle="tooltip" data-placement="top" title="Documento de evaluación"><i class="fas fa-file fa-fw"></i></button>&nbsp;';
                     $tb .= '<button onclick="" class="btn btn-primary btn-icon btn-sm" data-toggle="tooltip" data-placement="top" title="Documento de opinión"><i class="fas fa-comments fa-fw"></i></button>&nbsp;';
                     $tb .= '<button onclick="" class="btn btn-primary btn-icon btn-sm" data-toggle="tooltip" data-placement="top" title="Descargar el documento de opinión"><i class="fas fa-copy fa-fw"></i></button>&nbsp;';

@@ -70,3 +70,4 @@ $route['ver'] = 'C_usuario/ver';
 //Evaluacion
 $route['ver/evaluacion'] = 'C_evaluacion/display';
 $route['ver/evaluacion/(:num)'] = 'C_evaluacion/updateView/$1';
+$route['ver/repositorio/(:num)'] = 'C_evaluacion/repositorio/$1';

@@ -1,8 +1,4 @@
-            <style>
-                .custom-file-label::after{
-                    content: "Subir";
-                }
-            </style>
+
             <link href="<?=base_url()?>admin/assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker.css" rel="stylesheet" />
             <link href="<?=base_url()?>admin/assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.css" rel="stylesheet" />
             <link href="<?=base_url()?>admin/assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
@@ -24,18 +20,18 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-md-6">
-                                <h2 class="page-header">Nombre de la intervención</h2>
+                                <h2 class="page-header"><?=$eva->vClave?> - <?=$eva->vIntervencion?></h2>
                             </div>
                             <div class="col-md-6">
-                                <h2 class="page-header">Organismo responsable</h2>
+                                <h2 class="page-header">Organismo responsable: <?=$eva->vSiglas?></h2>
                             </div>
                         </div>
                         <div class="row" style="padding-top:10px">
                             <div class="col-md-6">
-                                <h2 class="page-header">Ambito</h2>
+                                <h2 class="page-header">Ambito: <?=$eva->vAmbito?></h2>
                             </div>
                             <div class="col-md-6">
-                                <h2 class="page-header">Poder</h2>
+                                <h2 class="page-header">Poder: <?=$eva->vPoder?></h2>
                             </div>
                         </div>
                     </div>
@@ -57,7 +53,6 @@
                             <li class="nav-item"><a href="#tab-2" data-toggle="tab" class="nav-link">Pestaña 2</a></li>
                             <li class="nav-item"><a href="#tab-3" data-toggle="tab" class="nav-link">Pestaña 3</a></li>
                             <li class="nav-item"><a href="#tab-4" data-toggle="tab" class="nav-link">Pestaña 4</a></li>
-                            <li class="nav-item"><a href="#tab-5" data-toggle="tab" class="nav-link">Pestaña 5</a></li>
                             <li class="nav-item next-button"><a href="javascript:;" data-click="next-tab" class="nav-link text-success"><i class="fa fa-arrow-right"></i></a></li>
                         </ul>
                     </div>
@@ -83,7 +78,7 @@
                                         <div class="row">
                                             <div class="col-md-8">
                                                 <label for="nombre"> <span class="text-danger">*</span> Nombre de la evaluacion:</label>
-                                                <input type="text" name="nombre" id="nombre" class="form-control" value="<?=$eva->vNombreEvaluacion?>" data-parsley-required>
+                                                <input type="text" name="nombre" id="nombre" class="form-control" value="<?=$eva->vNombreEvaluacion?>" data-parsley-maxlength="150" data-parsley-required>
                                             </div>
                                             <div class="col-md-2">
                                                 <label for="finicio"> <span class="text-danger">*</span> Inicio de la evaluacion:</label>
@@ -121,14 +116,14 @@
                                         <div class="row" style="padding-top:10px;">
                                             <div class="col-md-12">
                                                 <label for="objetivo">Objetivo general:</label>
-                                                <textarea name="objetivo" id="objetivo" cols="30" rows="3" class="form-control" data-parsley-required><?=$eva->vObjetivo?></textarea>
+                                                <textarea name="objetivo" id="objetivo" cols="30" rows="3" class="form-control" data-parsley-maxlength="255" data-parsley-required><?=$eva->vObjetivo?></textarea>
                                             </div>
                                         </div>
                                         
                                         <div class="row" style="padding-top:10px;">
                                             <div class="col-md-12">
                                                 <label for="especifico">Objetivos especifícos:</label>
-                                                <textarea name="especifico" id="especifico" data-parsley-required cols="30" rows="3" class="form-control"><?=$eva->vObjetivoEspecifico?></textarea>
+                                                <textarea name="especifico" id="especifico" data-parsley-required cols="30" rows="3" data-parsley-maxlength="255" class="form-control"><?=$eva->vObjetivoEspecifico?></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -170,7 +165,7 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label for="descripcion">Descripción de las técnicas y modelos:</label>
-                                                <textarea name="descripcion" id="descripcion" cols="30" rows="3" class="form-control" data-parsley-required><?=$eva->vTecnicasModelos?></textarea>
+                                                <textarea name="descripcion" id="descripcion" cols="30" rows="3" class="form-control" data-parsley-maxlength="1000" data-parsley-required><?=$eva->vTecnicasModelos?></textarea>
                                             </div>
                                         </div>
                                         <div class="row" style="padding-top:10px">
@@ -369,16 +364,15 @@
                                         <div class="row" style="padding-top:10px;">
                                             <div class="col-md-6">
                                                 <label for="iEnvioOficio">¿Envió oficio con la información sólicitada?</label>
-                                                <select name="iEnvioOficio" data-parsley-required id="iEnvioOficio" class="form-control">
-                                                    <option value="">-Seleccione una opción-</option>
-                                                    <option value="1" <?=($eva->iEnvioOficio == 1) ? 'selected' : ''; ?>>Si</option>
+                                                <select name="iEnvioOficio" class="form-control">
                                                     <option value="0" <?=($eva->iEnvioOficio == 0) ? 'selected' : ''; ?>>No</option>
+                                                    <option value="1" <?=($eva->iEnvioOficio == 1) ? 'selected' : ''; ?>>Si</option>
                                                 </select>
                                             </div>
                                             <div class="col-md-6">
                                                 <label for="dRecepcionOficio">Fecha de recepción del oficio</label>
                                                 <div class="input-group  date" id="dt3">
-                                                    <input type="text" class="form-control" data-parsley-errors-messages-disabled data-parsley-required name="dRecepcionOficio" id='dRecepcionOficio'  value="<?=date('d/m/Y', strtotime($eva->dRecepcionOficio));?>">
+                                                    <input type="text" class="form-control" name="dRecepcionOficio" id='dRecepcionOficio' value="<?=($eva->dRecepcionOficio == '1900-01-01') ? '' : date('d/m/Y', strtotime($eva->dRecepcionOficio));?>">
                                                     <div class="input-group-addon">
                                                         <i class="fa fa-calendar"></i>
                                                     </div>
@@ -389,7 +383,7 @@
                                             <div class="col-md-6">
                                                 <label for="dEntregaInformacion">Fecha de entrega de la información</label>
                                                 <div class="input-group  date" id="dt4">
-                                                    <input type="text" class="form-control" data-parsley-errors-messages-disabled data-parsley-required name="dEntregaInformacion" id='dEntregaInformacion' value="<?=date('d/m/Y', strtotime($eva->dEntregaInformacion));?>">
+                                                    <input type="text" class="form-control" name="dEntregaInformacion" id='dEntregaInformacion' value="<?=($eva->dEntregaInformacion == '1900-01-01') ? '' : date('d/m/Y', strtotime($eva->dEntregaInformacion));?>">
                                                     <div class="input-group-addon">
                                                         <i class="fa fa-calendar"></i>
                                                     </div>
@@ -397,10 +391,9 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <label for="iInformacionCompleta">¿La información estaba completa?</label>
-                                                <select name="iInformacionCompleta" id="iInformacionCompleta" class="form-control" data-parsley-required>
-                                                    <option value="">-Seleccione una opción-</option>
-                                                    <option value="1" <?=($eva->iInformacionCompleta == 1) ? 'selected' : ''; ?>>Si</option>
+                                                <select name="iInformacionCompleta" id="iInformacionCompleta" class="form-control">
                                                     <option value="0" <?=($eva->iInformacionCompleta == 0) ? 'selected' : ''; ?>>No</option>
+                                                    <option value="1" <?=($eva->iInformacionCompleta == 1) ? 'selected' : ''; ?>>Si</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -412,7 +405,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="input-group  date" id="dt5">
-                                                    <input type="text" class="form-control" data-parsley-errors-messages-disabled data-parsley-required name="dReunionPresentacion" id='dReunionPresentacion' value="<?=date('d/m/Y', strtotime($eva->dReunionPresentacion));?>">
+                                                    <input type="text" class="form-control" name="dReunionPresentacion" id='dReunionPresentacion' value="<?=($eva->dReunionPresentacion == '1900-01-01') ? '' : date('d/m/Y', strtotime($eva->dReunionPresentacion));?>">
                                                     <div class="input-group-addon">
                                                         <i class="fa fa-calendar"></i>
                                                     </div>
@@ -427,7 +420,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="input-group  date" id="dt6">
-                                                    <input type="text" data-parsley-errors-messages-disabled data-parsley-required name="dInicioRealizacion" class="form-control" id='dInicioRealizacion' value="<?=date('d/m/Y', strtotime($eva->dInicioRealizacion));?>">
+                                                    <input type="text" name="dInicioRealizacion" class="form-control" id='dInicioRealizacion' value="<?=($eva->dInicioRealizacion == '1900-01-01') ? '' : date('d/m/Y', strtotime($eva->dInicioRealizacion));?>">
                                                     <div class="input-group-addon">
                                                         <i class="fa fa-calendar"></i>
                                                     </div>
@@ -438,7 +431,7 @@
                                             <div class="col-md-6">
                                                 <label for="dEntregaBorrador">Fecha de entrega del primer borrador</label>
                                                 <div class="input-group  date" id="dt7">
-                                                    <input type="text" class="form-control" data-parsley-errors-messages-disabled data-parsley-required name="dEntregaBorrador" id='dEntregaBorrador' value="<?=date('d/m/Y', strtotime($eva->dEntregaBorrador));?>">
+                                                    <input type="text" class="form-control" name="dEntregaBorrador" id='dEntregaBorrador' value="<?=($eva->dEntregaBorrador == '1900-01-01') ? '' : date('d/m/Y', strtotime($eva->dEntregaBorrador));?>">
                                                     <div class="input-group-addon">
                                                         <i class="fa fa-calendar"></i>
                                                     </div>
@@ -447,7 +440,7 @@
                                             <div class="col-md-6">
                                                 <label for="dPresentacionBorrador">Presentación del borrador y solicitud de información adicional</label>
                                                 <div class="input-group  date" id="dt8">
-                                                    <input type="text" class="form-control" data-parsley-errors-messages-disabled data-parsley-required name="dPresentacionBorrador" id='dPresentacionBorrador' value="<?=date('d/m/Y', strtotime($eva->dPresentacionBorrador));?>">
+                                                    <input type="text" class="form-control" name="dPresentacionBorrador" id='dPresentacionBorrador' value="<?=($eva->dPresentacionBorrador == '1900-01-01') ? '' : date('d/m/Y', strtotime($eva->dPresentacionBorrador));?>">
                                                     <div class="input-group-addon">
                                                         <i class="fa fa-calendar"></i>
                                                     </div>
@@ -458,7 +451,7 @@
                                             <div class="col-md-6">
                                                 <label for="dPresentacionFinal">Fecha de la presentación final de la evaluación</label>
                                                 <div class="input-group  date" id="dt9">
-                                                    <input type="text" class="form-control" data-parsley-errors-messages-disabled data-parsley-required name="dPresentacionFinal" id='dPresentacionFinal' value="<?=date('d/m/Y', strtotime($eva->dPresentacionFinal));?>">
+                                                    <input type="text" class="form-control" name="dPresentacionFinal" id='dPresentacionFinal' value="<?=($eva->dPresentacionFinal == '1900-01-01') ? '' : date('d/m/Y', strtotime($eva->dPresentacionFinal));?>">
                                                     <div class="input-group-addon">
                                                         <i class="fa fa-calendar"></i>
                                                     </div>
@@ -467,7 +460,7 @@
                                             <div class="col-md-6">
                                                 <label for="dEnvioVersionFinalDig">Fecha de envio de la versión final digital</label>
                                                 <div class="input-group  date" id="dt10">
-                                                    <input type="text" class="form-control" data-parsley-errors-messages-disabled data-parsley-required name="dEnvioVersionFinalDig" id='dEnvioVersionFinalDig' value="<?=date('d/m/Y', strtotime($eva->dEnvioVersionFinalDig));?>">
+                                                    <input type="text" class="form-control" name="dEnvioVersionFinalDig" id='dEnvioVersionFinalDig' value="<?=($eva->dEnvioVersionFinalDig == '1900-01-01') ? '' : date('d/m/Y', strtotime($eva->dEnvioVersionFinalDig));?>">
                                                     <div class="input-group-addon">
                                                         <i class="fa fa-calendar"></i>
                                                     </div>
@@ -478,7 +471,7 @@
                                             <div class="col-md-6">
                                                 <label for="dEntregaVersionImp">Fecha de entrega de la versión impresa</label>
                                                 <div class="input-group  date" id="dt11">
-                                                    <input type="text" class="form-control" data-parsley-errors-messages-disabled data-parsley-required name="dEntregaVersionImp" id='dEntregaVersionImp' value="<?=date('d/m/Y', strtotime($eva->dEntregaVersionImp));?>">
+                                                    <input type="text" class="form-control" name="dEntregaVersionImp" id='dEntregaVersionImp' value="<?=($eva->dEntregaVersionImp == '1900-01-01') ? '' : date('d/m/Y', strtotime($eva->dEntregaVersionImp));?>">
                                                     <div class="input-group-addon">
                                                         <i class="fa fa-calendar"></i>
                                                     </div>
@@ -489,7 +482,7 @@
                                             <div class="col-md-6">
                                                 <label for="dFinEvaluadores">Fin de la evaluación por parte de los evaluadores</label>
                                                 <div class="input-group  date" id="dt12">
-                                                    <input type="text" class="form-control" data-parsley-errors-messages-disabled data-parsley-required name="dFinEvaluadores" id='dFinEvaluadores' value="<?=date('d/m/Y', strtotime($eva->dFinEvaluadores));?>">
+                                                    <input type="text" class="form-control" name="dFinEvaluadores" id='dFinEvaluadores' value="<?=($eva->dFinEvaluadores == '1900-01-01') ? '' : date('d/m/Y', strtotime($eva->dFinEvaluadores));?>">
                                                     <div class="input-group-addon">
                                                         <i class="fa fa-calendar"></i>
                                                     </div>
@@ -500,7 +493,7 @@
                                             <div class="col-md-6">
                                                 <label for="dEntregaInformeFinal">Entrega del informe final de la evaluación</label>
                                                 <div class="input-group  date" id="dt13">
-                                                    <input type="text" class="form-control" data-parsley-errors-messages-disabled data-parsley-required name="dEntregaInformeFinal" id='dEntregaInformeFinal' value="<?=date('d/m/Y', strtotime($eva->dEntregaInformeFinal));?>">
+                                                    <input type="text" class="form-control" name="dEntregaInformeFinal" id='dEntregaInformeFinal' value="<?=($eva->dEntregaInformeFinal == '1900-01-01') ? '' : date('d/m/Y', strtotime($eva->dEntregaInformeFinal));?>">
                                                     <div class="input-group-addon">
                                                         <i class="fa fa-calendar"></i>
                                                     </div>
@@ -511,7 +504,7 @@
                                             <div class="col-md-6">
                                                 <label for="dPublicacion">Publicación de la evaluación</label>
                                                 <div class="input-group  date" id="dt14">
-                                                    <input type="text" class="form-control" data-parsley-errors-messages-disabled data-parsley-required name="dPublicacion" id='dPublicacion' value="<?=date('d/m/Y', strtotime($eva->dPublicacion));?>">
+                                                    <input type="text" class="form-control" name="dPublicacion" id='dPublicacion' value="<?=($eva->dPublicacion == '1900-01-01') ? '' : date('d/m/Y', strtotime($eva->dPublicacion));?>">
                                                     <div class="input-group-addon">
                                                         <i class="fa fa-calendar"></i>
                                                     </div>
@@ -522,7 +515,7 @@
                                             <div class="col-md-6">
                                                 <label for="dEntregaDocOpinion">Entrega de documentos de opinión por parte de las dependencias</label>
                                                 <div class="input-group  date" id="dt15">
-                                                    <input type="text" class="form-control" data-parsley-errors-messages-disabled data-parsley-required name="dEntregaDocOpinion" id='dEntregaDocOpinion' value="<?=date('d/m/Y', strtotime($eva->dEntregaDocOpinion));?>">
+                                                    <input type="text" class="form-control" name="dEntregaDocOpinion" id='dEntregaDocOpinion' value="<?=($eva->dEntregaDocOpinion == '1900-01-01') ? '' : date('d/m/Y', strtotime($eva->dEntregaDocOpinion));?>">
                                                     <div class="input-group-addon">
                                                         <i class="fa fa-calendar"></i>
                                                     </div>
@@ -534,7 +527,7 @@
                                                 <label for="dEntregaDocTrabajo">Entrega de los documentos 
                                                 de trabajo por parte de las dependencias</label>
                                                 <div class="input-group  date" id="dt16">
-                                                    <input type="text" class="form-control" data-parsley-errors-messages-disabled data-parsley-required name="dEntregaDocTrabajo" id='dEntregaDocTrabajo' value="<?=date('d/m/Y', strtotime($eva->dEntregaDocTrabajo));?>">
+                                                    <input type="text" class="form-control" name="dEntregaDocTrabajo" id='dEntregaDocTrabajo' value="<?=($eva->dEntregaDocTrabajo == '1900-01-01') ? '' : date('d/m/Y', strtotime($eva->dEntregaDocTrabajo));?>">
                                                     <div class="input-group-addon">
                                                         <i class="fa fa-calendar"></i>
                                                     </div>
@@ -545,7 +538,7 @@
                                             <div class="col-md-6">
                                                 <label for="dPublicacionDocOpininTrabajo">Publicación de los documentos de opinion y de trabajo</label>
                                                 <div class="input-group  date" id="dt17">
-                                                    <input type="text" class="form-control" data-parsley-errors-messages-disabled data-parsley-required name="dPublicacionDocOpininTrabajo" id='dPublicacionDocOpininTrabajo' value="<?=date('d/m/Y', strtotime($eva->dPublicacionDocOpininTrabajo));?>">
+                                                    <input type="text" class="form-control" name="dPublicacionDocOpininTrabajo" id='dPublicacionDocOpininTrabajo' value="<?=($eva->dPublicacionDocOpininTrabajo == '1900-01-01') ? '' : date('d/m/Y', strtotime($eva->dPublicacionDocOpininTrabajo));?>">
                                                     <div class="input-group-addon">
                                                         <i class="fa fa-calendar"></i>
                                                     </div>
@@ -562,31 +555,6 @@
                                         </div>
                                     </div>
                                 </form>
-                            </div>
-                        </div>
-                        <!-- end panel -->
-                    </div>
-                    <!-- end tab-pane -->
-                    <!-- begin tab-pane -->
-                    <div class="tab-pane" id="tab-5">
-                        <!-- begin panel -->
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <div class="panel-heading-btn">
-                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
-                                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-                                </div>
-                                <h4 class="panel-title">Cuestionario de evaluación</h4>
-                            </div>
-                            <div class="panel-body">
-                                <div class="container">
-                                    <div class="col-md-6 offset-md-3">
-                                        <div class="custom-file">
-                                            <input type="file" class="custom-file-input" id="customFile" lang="es">
-                                            <label class="custom-file-label" for="customFile">Seleccionar archivo</label>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                         <!-- end panel -->
@@ -698,12 +666,7 @@
                     $("#correo").val(null);
                 }
             }
-            // Add the following code if you want the name of the file appear on select
-            $(".custom-file-input").on("change", function() {
-                var fileName = $(this).val().split("\\").pop();
-                $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
-            });
-
+            
             function addColaborador(){
                 var frmData = new FormData();
                 var key = $("#colaborador").val();
@@ -738,34 +701,38 @@
                 if(key == 4 && content === ''){
                     notificacion('Debe especificar el tipo de instrumento', 'error');
                 }else{
-                    var frmData = new FormData();
-                    frmData.append('key', key);
-                    frmData.append('content', content);
-                    var url = '<?=base_url()?>C_evaluacion/agregarInstrumento';
-                    $.ajax({
-                        url: url,
-                        type: 'POST',
-                        data: frmData,
-                        async: false,
-                        success: function(data){
-                            if(data == 1){
-                                $("#tabla-instrumento").load('C_evaluacion/drawInstrumento');
-                                notificacion('Instrumento agregado','success');
-                                $("#instrumento").val(null);
-                                $("#especificar").val(null);
-                                $("#especificar").prop('disabled', true);
-                                $("#btnInstrumento").prop('disabled', true);
-                            }else{
-                                notificacion('El instrumento ya existe en la tabla','error');
-                            }
-                        },
-                        error: function(){
-                            notificacion('Error', 'error');
-                        },
-                        cache:false,
-                        contentType: false,
-                        processData: false  
-                    })
+                    if (content.length <= 255){
+                        var frmData = new FormData();
+                        frmData.append('key', key);
+                        frmData.append('content', content);
+                        var url = '<?=base_url()?>C_evaluacion/agregarInstrumento';
+                        $.ajax({
+                            url: url,
+                            type: 'POST',
+                            data: frmData,
+                            async: false,
+                            success: function(data){
+                                if(data == 1){
+                                    $("#tabla-instrumento").load('C_evaluacion/drawInstrumento');
+                                    notificacion('Instrumento agregado','success');
+                                    $("#instrumento").val(null);
+                                    $("#especificar").val(null);
+                                    $("#especificar").prop('disabled', true);
+                                    $("#btnInstrumento").prop('disabled', true);
+                                }else{
+                                    notificacion('El instrumento ya existe en la tabla','error');
+                                }
+                            },
+                            error: function(){
+                                notificacion('Error', 'error');
+                            },
+                            cache:false,
+                            contentType: false,
+                            processData: false  
+                        })
+                    }else{
+                        notificacion('Ha excedido el máximo de caracteres permitidos','error');
+                    }
                 }
 
             }

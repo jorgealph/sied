@@ -72,7 +72,7 @@ class M_evaluacion extends CI_Model{
         return $query->result();
     }
     public function findEvaluacion($key){
-        $this->db->select("e.*, IFNULL(o.vOrganismo, '') AS vOrganismo, IFNULL(a.vAmbito, '') AS vAmbito, IFNULL(p.vPoder, '') AS vPoder, i.`vIntervencion`");
+        $this->db->select("e.*, IFNULL(o.vSiglas, '') AS vSiglas, IFNULL(a.vAmbito, '') AS vAmbito, IFNULL(p.vPoder, '') AS vPoder, i.`vIntervencion`, i.`vClave`");
         $this->db->from("$this->table as e");
         $this->db->join('organismo as o', 'e.`iIdResponsableSeguimiento` = o.`iIdOrganismo`', 'LEFT OUTER');
         $this->db->join('ambito as a', 'o.`iIdAmbito` = a.`iIdAmbito`', 'LEFT OUTER');
@@ -83,15 +83,55 @@ class M_evaluacion extends CI_Model{
         return $query->result();
     }
 
+    public function corresponsables($key){
+        $this->db->select('e.dFechaSubida, o.vSiglas, o.vNombreTitular, o.vCorreoContacto, o.vTelefonoContacto, e.vRutaArchivo');
+        $this->db->from('evaluacioncorresponsable e');
+        $this->db->join('organismo as o', 'e.`iIdOrganismo` = o.`iIdOrganismo`', 'INNER');
+        $this->db->where('e.iIdEvaluacion', $key);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function buscar_corresponsables($eva, $org){
+        $this->db->select();
+        $this->db->from('evaluacioncorresponsable');
+        $this->db->where('iIdEvaluacion', $eva);
+        $this->db->where('iIdOrganismo', $org);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
     public function update($data, $key){
         $this->db->where($this->table_id, $key);
         $this->db->update($this->table, $data);
         return $this->db->affected_rows();
     }
 
+    public function nuevo_corresponsable($data){
+        $db_debug = $this->db->db_debug; //save setting
+        $this->db->db_debug = FALSE;
+        $this->db->insert('evaluacioncorresponsable', $data);
+        //return $this->db->insert_id();
+        return $this->db->affected_rows();
+    }
+
+    public function buscar_organismo($key){
+        $this->db->select('iIdOrganismo');
+        $this->db->from('usuario');
+        $this->db->where('iIdUsuario', $key);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function actualizar_corresponsable($data, $eva, $org){
+        $this->db->where('iIdEvaluacion', $eva);
+        $this->db->where('iIdOrganismo', $org);
+        $this->db->update('evaluacioncorresponsable', $data);
+        return $this->db->affected_rows();
+    }
+
     public function addColaborador($data){
         $db_debug = $this->db->db_debug; //save setting
-
         $this->db->db_debug = FALSE;
         $this->db->insert('evaluacioncolaborador', $data);
         //return $this->db->insert_id();
@@ -100,8 +140,10 @@ class M_evaluacion extends CI_Model{
 
     public function addInstrumento($data){
         $db_debug = $this->db->db_debug; //save setting
+
         $this->db->db_debug = FALSE;
         $this->db->insert('evaluacioninstrumento', $data);
+        //return $this->db->insert_id();
         return $this->db->affected_rows();
     }
 
@@ -109,6 +151,13 @@ class M_evaluacion extends CI_Model{
         $this->db->where('iIdInstrumento', $instrumento);
         $this->db->where('iIdEvaluacion', $key);
         $this->db->delete('evaluacioninstrumento');
+        return $this->db->affected_rows();
+    }
+
+    public function borrar_corresponsable($key, $org){
+        $this->db->where('iIdOrganismo', $org);
+        $this->db->where('iIdEvaluacion', $key);
+        $this->db->delete('evaluacioncorresponsable');
         return $this->db->affected_rows();
     }
 

@@ -494,19 +494,18 @@
         <script>
             
             function dataEntry(){
-                
                 $.ajax({
-                type: "POST",
-                url: '<?=base_url()?>C_IntervencionPropuesta/dataEntry',
-                data: $("#form").serialize(),
-                success: function(response){
-                    if(response > 0){
-                        $("#contenido").load('<?=base_url()?>C_IntervencionPropuesta/mostrar_vista');
-                        notificacion('Los datos han sido guardados','success');
-                    }else{
-                        notificacion(response,'error');
+                    type: "POST",
+                    url: '<?=base_url()?>C_IntervencionPropuesta/dataEntry',
+                    data: $("#form").serialize(),
+                    success: function(response){
+                        if(response > 0){
+                            $("#contenido").load('<?=base_url()?>C_IntervencionPropuesta/mostrar_vista');
+                            notificacion('Los datos han sido guardados','success');
+                        }else{
+                            notificacion(response,'error');
+                        }
                     }
-                }
-            });
+                });
             }
         </script>
