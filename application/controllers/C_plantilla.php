@@ -81,7 +81,7 @@ class C_plantilla extends CI_Controller {
         }
         echo $anio.$organismo.$tipo;
         $intervencion = $this->mp->get_intervencion($anio, $organismo, $tipo);
-        $option = '<option value="null">Seleccionar</option>';
+        $option = '<option value="0">Seleccionar</option>';
         foreach($intervencion as $r){
             $option .= "<option value='$r->iIdIntervencion'>$r->vIntervencion</option>";
         }
@@ -256,7 +256,7 @@ class C_plantilla extends CI_Controller {
                         $tmp['vNombreEvaluacion'] = '';
                         $tmp['vObjetivo'] = '';
                         $tmp['vObjetivoEspecifico'] = ''; 
-                        $tmp['vEspecificarOtro'] = '';
+                        //$tmp['vEspecificarOtro'] = '';
                         $tmp['vRutaArchivo'] = '';
                         $tmp['vComentarioGeneral'] = '';
                         $iIdEvaluacion = $this->mp->insertIntercencion($tmp);
@@ -372,7 +372,7 @@ class C_plantilla extends CI_Controller {
                             $tmp['vNombreEvaluacion'] = '';
                             $tmp['vObjetivo'] = '';
                             $tmp['vObjetivoEspecifico'] = ''; 
-                            $tmp['vEspecificarOtro'] = '';
+                            ///$tmp['vEspecificarOtro'] = '';
                             $tmp['vRutaArchivo'] = '';
                             $tmp['vComentarioGeneral'] = '';
                             echo $insert = $this->mp->insertIntercencion($tmp);

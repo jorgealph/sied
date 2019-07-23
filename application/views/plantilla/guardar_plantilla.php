@@ -71,7 +71,7 @@
                         <div class="col-md-4">
                             <label>Año: </label>
                             <select class="form-control" id="anio2" name="anio2" onchange="getIntervencion()">
-                                <option value="null">Seleccionar</option>
+                                <option value="0">Seleccionar</option>
                             <?php foreach ($anio2 as $row) {?>
                                 <option value="<?=$row->iAnio;?>"><?=$row->iAnio;?></option>
                             <?php } ?>
@@ -80,7 +80,7 @@
                     <div class="col-md-4">
                         <label>Eje: </label>
                         <select class="form-control" id="eje" name="eje" onchange="loadDependencia()">
-                            <option value="null">Seleccionar</option>
+                            <option value="0">Seleccionar</option>
                             <?php foreach ($eje as $row) {?>
                                 <option value="<?=$row->iIdEje;?>"><?=$row->vEje;?></option>
                             <?php } ?>
@@ -99,7 +99,7 @@
                         <div class="col-md-4">
                         <label>Tipo: </label>
                         <select class="form-control" id="tipo2" name="tipo2" onchange="getIntervencion()">
-                        <option value="null">-Todos-</option>
+                        <option value="0">-Todos-</option>
 								<option value="1">Programa presupuestario</option>
                                 <option value="2">Fondo</option>
                                 <option value="3">Programa de bienes o servicio</option>
@@ -233,7 +233,7 @@
                                         text: 'El registro se ha guardado exitosamente',
                                         button: false,
                                         timer: 1500
-                                    })|
+                                    })
     				},
 					
 					/* código a ejecutar si la petición falla;
