@@ -19,7 +19,7 @@
 				<div class="panel-body">
 					<div class="container" style="padding-top:15px;padding-bottom:15px;">
 						<div class="row">
-							<?=($_SESSION[PREFIJO.'_idrol'] == 1) ? '<div class="col-md-6"><label for="" style="padding-top:8px"> Plantilla base del cuestionario&nbsp; &nbsp; </label><button class="btn btn-info" onclick="descargarPlantilla('.$eva->iIdEvaluacion.')"> Descargar </button></div>' : '' ?>
+							<?=($_SESSION[PREFIJO.'_idrol'] == 1) ? '<div class="col-md-6"><label for="" style="padding-top:8px"> Plantilla base del cuestionario&nbsp; &nbsp; </label><button class="btn btn-info" onclick="descargarPlantilla('.$eva->iIdPlantilla.')"> Descargar </button></div>' : '' ?>
 							<div class="col-md-6">
 								<label for="" style="padding-top:8px"> Última versión del cuestionario: <?=$eva->dFechaSubida?>&nbsp; &nbsp; </label>
 								<?php

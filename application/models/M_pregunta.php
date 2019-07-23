@@ -17,11 +17,11 @@ class M_pregunta extends CI_Model{
     }
 
     public function findApartado($apartado){
-        $this->db->select('vApartado');        
+        $this->db->select('iIdApartado, vApartado');        
         $this->db->from('apartado');
-        $this->db->where('iIdApartado', $apartado);
+        $this->db->where('iIdPlantilla', $apartado);
         $query = $this->db->get();
-        return $query->result()[0];
+        return $query->result();
     }
 
     public function findPregunta($apartado){

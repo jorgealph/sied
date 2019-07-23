@@ -102,13 +102,11 @@ class C_pregunta extends CI_Controller {
 		return $datos;
 	}
 
-	public function Word($apartado = 1){
+	public function Word($key = ''){
 		$this->load->library('word');
 		$this->load->model('M_pregunta','mp');
 
-		$header = $this->mp->findApartado($apartado);
-
-		$pregunta = $this->mp->findPregunta($apartado);
+		$header = $this->mp->findApartado($key);
 
 		// Creating the new document...
 		$phpWord = new \PhpOffice\PhpWord\PhpWord();
@@ -127,14 +125,7 @@ class C_pregunta extends CI_Controller {
 		$paragraphStyle->setAlign('both');
 		$paragraphStyle->setlineHeight(1.5);
 		$paragraphStyle->setSpaceAfter(300);
-		$myTextElement = $section->addText($header->vApartado);
-		$myTextElement->setFontStyle($fontStyle);
-		$myTextElement->setParagraphStyle($paragraphStyle);
 
-		//Set Text
-		$text = '"The greatest accomplishment is not in never falling, '
-		. 'but in rising again after you fall." '
-		. '(Vince Lombardi)';
 		// Adding Text element with font customized using named font style...
 		$fontStyleName = 'fontStyle';
 		$phpWord->addFontStyle(
@@ -148,12 +139,18 @@ class C_pregunta extends CI_Controller {
 			array('align' => 'both', 'lineHeight' => 1.5, "spaceAfter" => 300)
 		);
 
-		foreach($pregunta as $r){
-			$section->addText(
-				$r->vPregunta, 
-				$fontStyleName, 
-				$paragraphStyleName
-			);
+		foreach($header as $r){
+			$myTextElement = $section->addText($r->vApartado);
+			$myTextElement->setFontStyle($fontStyle);
+			$myTextElement->setParagraphStyle($paragraphStyle);
+			$pregunta = $this->mp->findPregunta($key);
+			foreach($pregunta as $row){
+				$section->addText(
+					$row->vPregunta, 
+					$fontStyleName, 
+					$paragraphStyleName
+				);
+			}
 		}
 
 		// Saving the document as OOXML file...
