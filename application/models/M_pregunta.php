@@ -24,6 +24,21 @@ class M_pregunta extends CI_Model{
         return $query->result();
     }
 
+    public function buscar_apartado($key, $var){
+        $this->db->select('iIdApartado, vApartado');        
+        $this->db->from('apartado');
+        $this->db->where('iIdPlantilla', $key);
+        $this->db->where('vApartado', $var);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function addApartado($data){
+        $this->db->insert('apartado', $data);
+        //return $this->db->insert_id();
+        return $this->db->insert_id();
+    }
+
     public function findPregunta($apartado){
         $this->db->select('vPregunta');
         $this->db->from("$this->table");
@@ -38,7 +53,6 @@ class M_pregunta extends CI_Model{
 
         $this->db->db_debug = FALSE;
         $this->db->insert($this->table, $data);
-        
         //return $this->db->insert_id();
         return $this->db->affected_rows();
     }

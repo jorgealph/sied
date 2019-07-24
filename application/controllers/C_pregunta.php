@@ -16,42 +16,55 @@ class C_pregunta extends CI_Controller {
     public function csvtodb(){
 			$this->load->library('CSVReader');
 			$this->load->model('M_pregunta','mp');
-			$error = null;
-			$result = null;
-			if(isset($_POST['iIdApartado']) && !empty($_POST['iIdApartado'])){
-				$apartado = $_POST['iIdApartado'];
+			$result = array();
+			if(isset($_POST['iIdPlantilla']) && !empty($_POST['iIdPlantilla'])){
+				$key = $_POST['iIdPlantilla'];
+				$apartado = null;
 				$csvData = $this->csvreader->parse_file($_FILES['file']['tmp_name']);
 				$intent = 1;
-				$msg = 0;
 				foreach($csvData as $r){
-					if(isset($r['pregunta']) && isset($r['tipo_pregunta'])){
-						$tmp = array("iIdApartado" => $apartado, "vPregunta" => $this->cleanText($r['pregunta']), "iIdTipoPregunta" => $this->GetType($this->cleanText($r['tipo_pregunta'])));
-						//$data[] = $tmp;
-						$result = $this->mp->save($tmp);
-						if($result < 1 || empty($result)){
-							$row = array('Fila' => $intent);
-							$error[] = $row;
+					if(isset($r['apartado']) && isset($r['pregunta']) && isset($r['tipo_pregunta'])){
+						if(is_null($apartado) && !isset($apartado->idApartado)){
+							$apartado = $this->mp->buscar_apartado($key, $this->cleanText($r['apartado']));
+							if (!isset($apartado[0])){
+								$vdata['iIdPlantilla'] = $key;
+								$vdata['vApartado'] = $this->cleanText($r['apartado']);
+								$var = $this->mp->addApartado($vdata);
+								if ($var > 0){
+									$apartado = $this->mp->buscar_apartado($key, $this->cleanText($r['apartado']))[0];
+								}
+							}
 						}else{
-							$msg = $result;
+							if($apartado->vApartado != $this->cleanText($r['apartado'])){
+								$apartado = $this->mp->buscar_apartado($key, $this->cleanText($r['apartado']));
+								if (!isset($apartado[0])){
+									$vdata['iIdPlantilla'] = $key;
+									$vdata['vApartado'] = $this->cleanText($r['apartado']);
+									$var = $this->mp->addApartado($vdata);
+									if ($var > 0){
+										$apartado = $this->mp->buscar_apartado($key, $this->cleanText($r['apartado']))[0];
+									}
+								}else{
+									$apartado = $apartado[0];
+								}
+							}
+						}			
+						$tmp = array("iIdApartado" => $apartado->iIdApartado, "vPregunta" => $this->cleanText($r['pregunta']), "iIdTipoPregunta" => $this->GetType($this->cleanText($r['tipo_pregunta'])));
+						$exito = $this->mp->save($tmp);
+						if($exito < 1 || empty($exito)){
+							$row = array('Fila' => $intent);
+							$result['error'][] = $row;
+						}else{
+							$result['msg'][] = $exito;
 						}
 						$intent += 1;
-						
 					}else{
 						break;
 					}
-				}
-				if($result>0){
-					echo "exito.";
-				}else{
-					echo 'error.';
-				}
-				if ($error != null){
-					foreach($error as $e){
-						echo $e['Fila'].",";
-					}
-				}
+				} 
 			}
 			
+			echo json_encode($result);
 		}
 
 		private function GetType($pregunta){

@@ -1,29 +1,91 @@
-<a onclick="regresar();" class="btn btn-default pull-right">
+            <style>
+                .custom-file-label::after{
+                    content: "Seleccionar";
+                }
+			</style>
+            <a onclick="regresar();" class="btn btn-default pull-right">
                 <li class="fas fa-lg fa-fw m-r-10 fa-arrow-left"></li><span>Regresar</span>
             </a>
-        <h3 class="page-header">Información general</h3>
-    <div class="panel panel-inverse">
-        <div class="panel-heading">
-            <h4 class="panel-title">Captura de datos</h4>
-            </div>
+            <h3 class="page-header">Información general</h3>
+            
+            
+            
+			    	<!-- begin nav-tabs -->
+					<ul class="nav nav-tabs nav-tabs-inverse">
+						<li class="nav-items">
+							<a href="#default-tab-1" data-toggle="tab" class="nav-link active">
+								<span class="d-sm-none">Tab 1</span>
+								<span class="d-sm-block d-none">Capturar apartados</span>
+							</a>
+						</li>
+						<li class="nav-items">
+							<a href="#default-tab-2" data-toggle="tab" class="nav-link">
+								<span class="d-sm-none">Tab 2</span>
+								<span class="d-sm-block d-none">Importar cuestionario</span>
+							</a>
+						</li>
+					</ul>
+					<!-- end nav-tabs -->
+					<!-- begin tab-content -->
+					<div class="tab-content">
+						<!-- begin tab-pane -->
+						<div class="tab-pane fade" id="default-tab-2">
+                            <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <!-- <label> </label> -->
+                                    <button style="height:38px;" class="btn btn-info">Descargar plantilla</button>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="file" class="custom-file-input form-control" id="file" name="file" accept=".csv" lang="es">
+									<label class="custom-file-label" for="file">Seleccionar archivo</label>
+                                </div>
+                                <div class="col-md-2">
+                                    <button style="height:38px;" onclick="importar_cuestionario()" class="btn btn-info" type="button"><i class="ti-search"></i>&nbsp;Importar cuestionario</button>
+                                </div>
+                            </div>
+                        </div> 
+						</div>
+						<!-- end tab-pane -->
+						<!-- begin tab-pane -->
+						<div class="tab-pane fade active show" id="default-tab-1">
+                            <form class="form" id="form-captura" name="form-captura" onsubmit="dataEntry2(this, event)">
+                                <div class="col-md-12">
+                                    <input type="hidden" name="id_plantilla" value="<?php if(isset($id_plantilla)) echo $id_plantilla;?>">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Crear apartado: </label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" name="nombre_apartado" id="nombre_apartado" placeholder="" aria-label="" aria-describedby="basic-addon1" data-parsley-required="true"> 
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button class="btn btn-info" type="submit"><i class="ti-search"></i>&nbsp;Crear</button>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </form>
+						</div>
+						<!-- end tab-pane -->
+					</div>
+					<!-- end tab-content -->
+
+            <!--<div class="panel panel-inverse">
+                <div class="panel-heading">
+                    <h4 class="panel-title">Importación de cuestionario</h4>
+                </div>
                 <div class="panel-body">
-                <form class="form" id="form-captura" name="form-captura" onsubmit="dataEntry2(this, event)">
-                    <div class="col-md-12">
-                        <input type="hidden" name="id_plantilla" value="<?php if(isset($id_plantilla)) echo $id_plantilla;?>">
-                        <div class="row">
-                            <div class="col-md-2">
-                                <label>Crear apartado: </label>
-                            </div>
-                            <div class="col-md-8">
-                                <input type="text" class="form-control" name="nombre_apartado" id="nombre_apartado" placeholder="" aria-label="" aria-describedby="basic-addon1" data-parsley-required="true"> 
-                            </div>
-                            <div class="col-md-2">
-                                <button class="btn btn-info" type="submit"><i class="ti-search"></i>&nbsp;Crear</button>
-                            </div>
-                        </div>
-                    </div> 
-                </form>
-                </div></div>
+                        
+                </div>
+            </div>
+            <div class="panel panel-inverse">
+                <div class="panel-heading">
+                    <h4 class="panel-title">Captura de datos</h4>
+                </div>
+                <div class="panel-body">
+                    
+                </div>
+            </div>-->
 
                 <div class="col-md-12">
                     <div class="row">
@@ -147,6 +209,12 @@
                 </div>
                 </form>
             <script>
+            
+            // Add the following code if you want the name of the file appear on select
+            $(".custom-file-input").on("change", function() {
+                var fileName = $(this).val().split("\\").pop();
+                $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+            });
 
             function modal(id){
                 $("#id2").val($("#iddos"+id).text());
@@ -398,4 +466,28 @@
                     
 				});
 			}
+
+            function importar_cuestionario(){
+				//var myFile = $('#file').prop('files')[0];
+				//var myFile = $("#file").val().replace(/.*(\/|\\)/, '');
+				var formData = new FormData();
+				formData.append('file', $('input[type=file]')[0].files[0])
+				formData.append('iIdPlantilla', <?=$id_plantilla?>);
+				
+				$.ajax({
+        			url: '<?=base_url()?>C_pregunta/csvtodb',
+        			type: 'POST',
+        			data: formData,
+        			async: false,
+                    //dataType: 'json',
+        			success: function (data) {
+            			console.log(JSON.stringify(data));
+                        cargar('<?=base_url()?>C_plantilla/guardar_cuestionario/<?=$id_plantilla?>/1','#contenido');
+        			},
+        			cache: false,
+        			contentType: false,
+        			processData: false
+   				});
+			}
+
             </script>
