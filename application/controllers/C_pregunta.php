@@ -156,7 +156,7 @@ class C_pregunta extends CI_Controller {
 			$myTextElement = $section->addText($r->vApartado);
 			$myTextElement->setFontStyle($fontStyle);
 			$myTextElement->setParagraphStyle($paragraphStyle);
-			$pregunta = $this->mp->findPregunta($key);
+			$pregunta = $this->mp->findPregunta($r->iIdApartado);
 			foreach($pregunta as $row){
 				$section->addText(
 					$row->vPregunta, 
