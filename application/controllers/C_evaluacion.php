@@ -131,17 +131,18 @@ class C_evaluacion extends CI_Controller{
             $data['vRutaArchivo'] = '';
             $data['iEstatusArchivo'] = 0;
             $data['dFechaSubida'] = '1900-01-01 00:00:00';
+            $eva = $this->me->buscar_corresponsables($key, $org)[0];
+            unlink('./files/cuestionarios/'.$eva->vRutaArchivo);
             echo $this->me->actualizar_corresponsable($data, $key, $org);
-            /*$eva = $this->me->buscar_corresponsables($key, $org)[0];
-            echo $this->me->borrar_corresponsable($key, $org);*/
+            //echo $this->me->borrar_corresponsable($key, $org);*/
         }else{
             $eva = $this->me->findEvaluacion($key)[0];
             $data['vRutaArchivo'] = '';
             $data['iEstatusArchivo'] = 0;
             $data['dFechaSubida'] = '1900-01-01 00:00:00';
+            unlink('./files/cuestionarios/'.$eva->vRutaArchivo);
             echo $this->me->update($data, $key);
         }
-        unlink('./files/cuestionarios/'.$eva->vRutaArchivo);
     }
 
     private function subir_documento($eva){
