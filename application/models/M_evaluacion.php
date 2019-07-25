@@ -43,8 +43,15 @@ class M_evaluacion extends CI_Model{
             if(isset($data['iTipo']) && !empty($data['iTipo'])){
                 $this->db->where('i.iTipo', $data['iTipo']);
             }
+            if(isset($data['iIdUsuario']) && !empty($data['iIdUsuario'])){
+                $this->db->where('e.iIdUsuario', $data['iIdUsuario']);
+            }
             if(isset($data['vIntervencion']) && !empty($data['vIntervencion'])){
                 $this->db->like('i.vIntervencion', $data['vIntervencion']);
+            }
+            if(isset($data['corresponsable']) && !empty($data['corresponsable'])){
+                $this->db->join('evaluacioncorresponsable as ec', 'ec.iIdEvaluacion = e.iIdEvaluacion', 'INNER');
+                $this->db->where('ec.iIdOrganismo', $data['corresponsable']);
             }
         }
         $query = $this->db->get();
@@ -104,14 +111,6 @@ class M_evaluacion extends CI_Model{
     public function update($data, $key){
         $this->db->where($this->table_id, $key);
         $this->db->update($this->table, $data);
-        return $this->db->affected_rows();
-    }
-
-    public function nuevo_corresponsable($data){
-        $db_debug = $this->db->db_debug; //save setting
-        $this->db->db_debug = FALSE;
-        $this->db->insert('evaluacioncorresponsable', $data);
-        //return $this->db->insert_id();
         return $this->db->affected_rows();
     }
 

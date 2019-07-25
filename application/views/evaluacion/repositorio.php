@@ -1,6 +1,6 @@
 			<style>
                 .custom-file-label::after{
-                    content: "Subir";
+                    content: "Examinar";
                 }
 			</style>
 			<!-- begin breadcrumb -->
@@ -21,14 +21,14 @@
 						<div class="row">
 							<?=($_SESSION[PREFIJO.'_idrol'] == 1) ? '<div class="col-md-6"><label for="" style="padding-top:8px"> Plantilla base del cuestionario&nbsp; &nbsp; </label><button class="btn btn-info" onclick="descargarPlantilla('.$eva->iIdPlantilla.')"> Descargar </button></div>' : '' ?>
 							<div class="col-md-6">
-								<label for="" style="padding-top:8px"> Última versión del cuestionario: <?=$eva->dFechaSubida?>&nbsp; &nbsp; </label>
+								<label for="" style="padding-top:8px"> Última versión del cuestionario: <?=($eva->dFechaSubida == '1900-01-01 00:00:00') ? '' : $eva->dFechaSubida ?>&nbsp; &nbsp; </label>
 								<?php
 									if($_SESSION[PREFIJO.'_idrol'] == 2 && $eva->iEstatusArchivo == 0 || $eva->iEstatusArchivo == 3 || $eva->iEstatusArchivo == 4){
 										if(!empty($eva->vRutaArchivo)){
 											echo '<button class="btn btn-info" onclick="window.location.href=\''.base_url().'files/cuestionarios/'.$eva->vRutaArchivo.'\'">Descargar</button>';
 										}
 									}else{
-										if ($_SESSION[PREFIJO.'_idrol'] == 2 ){
+										if ($_SESSION[PREFIJO.'_idrol'] == 2 && $eva->iEstatusArchivo != 2){
 											echo "<script>$('#btn').prop('disabled', true); $('#save').prop('disabled', true)</script>";
 										}
 									}
@@ -97,11 +97,11 @@
 			$("#estatus").val(<?=($eva->iEstatusArchivo != 2) ? $eva->iEstatusArchivo : ''?>);
 
 			function upload(){
-				var estatus = '';
+				var estatus = 0;
 				if ($("#estatus").length) {
   					estatus = $("#estatus").val();
 				}else{
-					estatus = 2;
+					estatus = <?=($_SESSION[PREFIJO.'_idrol'] == 1) ? 0 : 2?>;
 				}
 				var formData = new FormData();
 				var inputFile = document.getElementById("file");

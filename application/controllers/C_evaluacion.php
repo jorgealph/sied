@@ -114,18 +114,12 @@ class C_evaluacion extends CI_Controller{
                 if (isset($this->me->buscar_corresponsables($key, $org)[0])){
                     echo $this->me->actualizar_corresponsable($data, $key, $org);
                 }else{
-                    $data['iIdEvaluacion'] = $key;
-                    $data['iIdOrganismo'] = $org;
-                    echo $this->me->nuevo_corresponsable($data);
+                    echo 0;
                 }
             } else{
                 echo $this->me->update($data, $key);
             }
         }
-    }
-
-    public function obtener_documento(){
-
     }
 
     public function eliminar_documento(){
@@ -134,12 +128,18 @@ class C_evaluacion extends CI_Controller{
         if($_SESSION[PREFIJO.'_idrol'] == 3){
             $organismo = $this->me->buscar_organismo($_SESSION[PREFIJO.'_idusuario']);
             $org = $organismo[0]->iIdOrganismo;
-            $eva = $this->me->buscar_corresponsables($key, $org)[0];
-            echo $this->me->borrar_corresponsable($key, $org);
+            $data['vRutaArchivo'] = '';
+            $data['iEstatusArchivo'] = 0;
+            $data['dFechaSubida'] = '1900-01-01 00:00:00';
+            echo $this->me->actualizar_corresponsable($data, $key, $org);
+            /*$eva = $this->me->buscar_corresponsables($key, $org)[0];
+            echo $this->me->borrar_corresponsable($key, $org);*/
         }else{
             $eva = $this->me->findEvaluacion($key)[0];
             $data['vRutaArchivo'] = '';
-            $this->me->update($data, $key);
+            $data['iEstatusArchivo'] = 0;
+            $data['dFechaSubida'] = '1900-01-01 00:00:00';
+            echo $this->me->update($data, $key);
         }
         unlink('./files/cuestionarios/'.$eva->vRutaArchivo);
     }
@@ -242,8 +242,17 @@ class C_evaluacion extends CI_Controller{
                     <td>'.$r->vNombreTitular.'</td>
                     <td>'.$r->vCorreoContacto.'</td>
                     <td>'.$r->vTelefonoContacto.'</td>
-                    <td>'.$r->dFechaSubida.'</td>
-                    <td><a href="'.base_url().'files/cuestionarios/'.$r->vRutaArchivo.'" download="'.$r->vRutaArchivo.'">Descargar</a></td>
+                    <td>';
+                    if ($r->dFechaSubida != '1900-01-01 00:00:00'){
+                        $tb .= $r->dFechaSubida;
+                    }
+                    $tb .= '
+                    </td>
+                    <td>';
+                    if(!empty($r->vRutaArchivo)){
+                        $tb .=  '<a href="'.base_url().'files/cuestionarios/'.$r->vRutaArchivo.'" download="'.$r->vRutaArchivo.'">Descargar</a>';
+                    }
+                   $tb .= '</td>
             </tr>';
         }   
 
@@ -517,12 +526,31 @@ class C_evaluacion extends CI_Controller{
 
     public function drawTable(){
         $this->load->model('M_evaluacion', 'me');
+        $data = array();
+
+        if ($_SESSION[PREFIJO.'_idrol'] == 2){
+            $data['iIdUsuario'] = $_SESSION[PREFIJO.'_idusuario'];
+        }
+
+        if ($_SESSION[PREFIJO.'_idrol'] == 3){
+            $org = $this->me->buscar_organismo($_SESSION[PREFIJO.'_idusuario']);
+        }
 
         if(isset($_POST) && !empty($_POST)){
             $data = $this->validatePostData($_POST);
+            if ($_SESSION[PREFIJO.'_idrol'] == 2){
+                $data['iIdUsuario'] = $_SESSION[PREFIJO.'_idusuario'];
+            }
+
+            if ($_SESSION[PREFIJO.'_idrol'] == 3){
+                $data['corresponsable'] = $org[0]->iIdOrganismo;
+            }
             $tb = $this->generateTable($this->me->displayjoin($data));
         }else{
-            $tb = $this->generateTable($this->me->displayjoin());
+            if ($_SESSION[PREFIJO.'_idrol'] == 3){
+                $data['corresponsable'] = $org[0]->iIdOrganismo;
+            }
+            $tb = $this->generateTable($this->me->displayjoin($data));
         }
         echo $tb; 
     }
