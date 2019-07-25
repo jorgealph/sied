@@ -479,9 +479,29 @@
         			type: 'POST',
         			data: formData,
         			async: false,
-                    //dataType: 'json',
-        			success: function (data) {
-            			console.log(JSON.stringify(data));
+                    dataType: 'json',
+        			success: function (json) {
+            			console.log(json);
+                        var error = json['error'];
+                        var log = "";
+                        if(json['falla'] > 0){
+                            notificacion("Hay un error en el documento", "error");
+                        }
+                        if(json['msg'] > 0){
+                            notificacion("Se han agregado " + json['msg'] + " preguntas", "success");
+                        }
+                        $.each(error,function(index, value){
+                            log += "Fila: " + value + "\n";
+                        });
+                        if(log != ''){
+                            swal({
+                                text: log,
+                                title: "Error al capturar las siguientes filas",
+                                icon: "error",
+                                closeOnClickOutside: false,
+                                closeOnEsc: false
+                            });
+                        }
                         cargar('<?=base_url()?>C_plantilla/guardar_cuestionario/<?=$id_plantilla?>/1','#contenido');
         			},
         			cache: false,

@@ -22,6 +22,8 @@ class C_pregunta extends CI_Controller {
 				$apartado = null;
 				$csvData = $this->csvreader->parse_file($_FILES['file']['tmp_name']);
 				$intent = 1;
+				$result['msg'] = 0;
+				$result['falla'] = 0;
 				foreach($csvData as $r){
 					if(isset($r['apartado']) && isset($r['pregunta']) && isset($r['tipo_pregunta'])){
 						if(is_null($apartado) && !isset($apartado->idApartado)){
@@ -33,6 +35,8 @@ class C_pregunta extends CI_Controller {
 								if ($var > 0){
 									$apartado = $this->mp->buscar_apartado($key, $this->cleanText($r['apartado']))[0];
 								}
+							}else{
+								$apartado = $apartado[0];
 							}
 						}else{
 							if($apartado->vApartado != $this->cleanText($r['apartado'])){
@@ -52,13 +56,14 @@ class C_pregunta extends CI_Controller {
 						$tmp = array("iIdApartado" => $apartado->iIdApartado, "vPregunta" => $this->cleanText($r['pregunta']), "iIdTipoPregunta" => $this->GetType($this->cleanText($r['tipo_pregunta'])));
 						$exito = $this->mp->save($tmp);
 						if($exito < 1 || empty($exito)){
-							$row = array('Fila' => $intent);
+							$row = $intent;
 							$result['error'][] = $row;
 						}else{
-							$result['msg'][] = $exito;
+							$result['msg'] += 1;
 						}
 						$intent += 1;
 					}else{
+						$result['falla'] = 1;
 						break;
 					}
 				} 

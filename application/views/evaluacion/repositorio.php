@@ -27,6 +27,9 @@
 										if(!empty($eva->vRutaArchivo)){
 											echo '<button class="btn btn-info" onclick="window.location.href=\''.base_url().'files/cuestionarios/'.$eva->vRutaArchivo.'\'">Descargar</button>';
 										}
+										if ($_SESSION[PREFIJO.'_idrol'] == 2 && $eva->iEstatusArchivo != 2){
+											echo "<script>$('#btn').prop('disabled', true);</script>";
+										}
 									}else{
 										if ($_SESSION[PREFIJO.'_idrol'] == 2 && $eva->iEstatusArchivo != 2){
 											echo "<script>$('#btn').prop('disabled', true); $('#save').prop('disabled', true)</script>";
