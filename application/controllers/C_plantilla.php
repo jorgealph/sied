@@ -48,8 +48,7 @@ class C_plantilla extends CI_Controller {
     public function guardar_cuestionario($iIdPlantilla){
         $vdata['tipoP'] = $this->mp->get_TipoPregunta();
         $vdata['id_plantilla'] = $iIdPlantilla;
-        $this->load->view('plantilla/guardar_cuestionario', $vdata);
-        
+        $this->load->view('plantilla/guardar_cuestionario', $vdata);        
     }
 
     public function guardar_plantilla($plantilla_id = null, $vista = null){
@@ -429,10 +428,10 @@ class C_plantilla extends CI_Controller {
             $apartado .= '<div class="panel panel-inverse" data-sortable-id="form-stuff-1">
             <div class="panel-heading ui-sortable-handle">
                 <div class="panel-heading-btn">
-                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" title="Agregar pregunta"  data-toggle="modal" data-target="#myModal3" onclick="modal3('.$r->iIdApartado.')"><i class="fas fa-question fa-lg"></i></a>
+                    <a href="" class="btn btn-xs btn-icon btn-circle btn-default" title="Agregar pregunta"  data-toggle="modal" data-target="#myModal3" onclick="modal3('.$r->iIdApartado.')"><i class="fas fa-question fa-lg"></i></a>
                     <div id="id'.$r->iIdApartado.'" style="display:none">'.$r->iIdApartado.'</div>
                     <div id="'.$r->iIdApartado.'" style="display:none">'.$r->vApartado.'</div>
-                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success"  title="Editar apartado"><i class="fas fa-pencil-alt fa-fw" data-toggle="modal" data-target="#myModal2" onclick="modal2('.$r->iIdApartado.')" title="Editar"></i></a>
+                    <a href="" class="btn btn-xs btn-icon btn-circle btn-success"  title="Editar apartado"><i class="fas fa-pencil-alt fa-fw" data-toggle="modal" data-target="#myModal2" onclick="modal2('.$r->iIdApartado.')" title="Editar"></i></a>
                     <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"  title="Colapsar"><i class="fa fa-minus"></i></a>
                     <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger"  title="Eliminar apartado" onclick="deleteApartado('.$r->iIdApartado.')"><i class="fas fa-trash-alt fa-fw"></i></a>
                 </div>
@@ -506,6 +505,6 @@ class C_plantilla extends CI_Controller {
         $data["iIdTipoPregunta"] =  $this->input->post("tipoP");
         $aux = $this->mp->updatePregunta($iIdPregunta, $data);
         echo $aux;
-        var_dump($data);
+        //var_dump($data);
     }
 }
