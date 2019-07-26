@@ -245,20 +245,13 @@
 
             <div class="col-md-6">
             <div class="form-group">
-            <?php
-            echo form_label('Rol', 'rol'); echo "<br>";
-            $options = array(
-            '1' => 'Administrador',
-            '2' => 'Evaluador'
-            );
-            echo form_dropdown('rol', 
-            $options, 
-            'Administrador', 
-            'class="form-control"'
-            ); ?>
+                <label for="">Rol: </label>
+                <select class="form-control" id="rol" name="rol" data-parsley-required="true">
+                    <?=$options_roles;?>
+                </select>
             </div></div></div>
             <center>
-            <button type="submit" class='btn btn-primary'>Enviar</button>
+            <button type="submit" class='btn btn-primary'>Guardar</button>
             
             </center>
             </form>

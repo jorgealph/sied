@@ -31,7 +31,7 @@ class Class_seguridad {
                     if($submenu != false && $submenu->num_rows() > 0)
                     {
                         $submenu = $submenu->result();
-                        $str .=  '<li class="has-sub">
+                        $str .=  '<li class="has-sub" style="cursor:pointer;">
                                     <a href="javascript:;">
                                         <b class="caret"></b>
                                         <i class="'.$padre->icono.'"></i>

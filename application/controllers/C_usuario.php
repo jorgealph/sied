@@ -13,6 +13,7 @@ class C_usuario extends CI_Controller {
         $this->load->helper('form');
         $this->load->database();
         $this->load->library('form_validation');
+        $this->load->library('Class_options');
     }
 
     public function listado(){
@@ -119,9 +120,12 @@ class C_usuario extends CI_Controller {
             } else{
                 echo 'NO';
             }
-        }
+        }else $vdata["rol2"] = 0;
         
         if($vista>0){
+            $options = new Class_options();
+            $vdata['options_roles'] = $options->options_tabla('roles', $vdata["rol2"]);
+
             if($persona_id > 0){
                 $vdata['organismo'] = $this->mu->get_dependencia();
                 $this->load->view('usuarios/editar_usuario', $vdata); 

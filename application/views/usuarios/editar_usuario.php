@@ -51,8 +51,7 @@
             <div class="form-group">
             <label for="">Rol: </label>
             <select class="form-control" id="rol" name="rol" data-parsley-required="true">
-                <option <?php if(isset($iIdRol) && $iIdRol == 1) echo 'selected'; ?> value="1">Administrador</option>
-                <option <?php if(isset($iIdRol) && $iIdRol == 2) echo 'selected'; ?> value="2">Evaluador</option>
+                <?=$options_roles;?>
             </select>
             </div></div></div>
 
@@ -210,7 +209,7 @@
 
 
             <center>
-            <button type="submit" class='btn btn-primary'>Enviar</button>
+            <button type="submit" class='btn btn-primary'>Guardar</button>
 
             </center>
             </form>

@@ -18,5 +18,16 @@ class M_catalogo extends CI_Model {
 
 		return $this->db->get();
 	}
+
+	public function roles($where='')
+	{
+		$this->db->select('iIdRol AS id, vRol AS valor');
+		$this->db->from('Rol');
+		$this->db->where('iActivo',1);
+
+		if($where != '') $this->db->where($where);
+
+		return $this->db->get();
+	}
 }
 ?>
