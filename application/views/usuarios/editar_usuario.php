@@ -50,7 +50,8 @@
             <div class="col-md-4">
             <div class="form-group">
             <label for="">Rol: </label>
-            <select class="form-control" id="rol" name="rol" data-parsley-required="true">
+            <select class="form-control" id="rol" name="rol" data-parsley-required="true" min="1">
+                <option value="0">Seleccione un opción</option>
                 <?=$options_roles;?>
             </select>
             </div></div></div>
@@ -210,7 +211,6 @@
 
             <center>
             <button type="submit" class='btn btn-primary'>Guardar</button>
-
             </center>
             </form>
     </div> <br>

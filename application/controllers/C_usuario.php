@@ -120,11 +120,12 @@ class C_usuario extends CI_Controller {
             } else{
                 echo 'NO';
             }
-        }else $vdata["rol2"] = 0;
+        }
         
         if($vista>0){
+            $idrol = (isset($vdata["rol2"])) ? $vdata["rol2"]:0;
             $options = new Class_options();
-            $vdata['options_roles'] = $options->options_tabla('roles', $vdata["rol2"]);
+            $vdata['options_roles'] = $options->options_tabla('roles', $idrol);
 
             if($persona_id > 0){
                 $vdata['organismo'] = $this->mu->get_dependencia();
