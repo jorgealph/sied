@@ -1,4 +1,3 @@
-
             <table id="listado" class="table table-striped table-bordered">
                 <thead>
                     <tr>

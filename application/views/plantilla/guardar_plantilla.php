@@ -142,7 +142,6 @@
         	}
             
             function de(){
-        
                 $.ajax({
                     type: "POST",
                     url: '<?=base_url()?>C_plantilla/insertar_plantilla',
