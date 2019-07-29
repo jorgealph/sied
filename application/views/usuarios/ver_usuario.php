@@ -5,261 +5,287 @@
 </head>
 
 <body>
-    <div class="card bg-light" name="capturar" id="capturar">
-    <div class="container">
-    <div class="col-md-12"> <br>
+    <a onclick="regresar();" class="btn btn-default pull-right">
+        <li class="fas fa-lg fa-fw m-r-10 fa-arrow-left"></li><span>Regresar</span>
+    </a>
 
-    <?php echo form_open_multipart('');?>
+    <h3 class="page-header">Actualizar contraseña</h3>
+    <div class="panel panel-inverse">
+        <div class="panel-heading">
+            <h4 class="panel-title">Captura de datos</h4>
+        </div>
 
-    <div class="row">
-            <div class="col-md-4">
-            <div class="form-group">
-           
-        <?php
-        echo form_label('Usuario', 'usuario');
+        <div class="card bg-light" name="capturar" id="capturar">
+            <div class="container">
+                <div class="col-md-12"> <br>
 
-        $input = array(
-            'name' => 'usuario',
-            'value' => $usuario,
-            'readonly' => 'readonly',
-            'class' => 'form-control form-control-sm'
-        );
+                <?php echo form_open_multipart('');?>
 
-        echo form_input($input);
-        ?>
-    </div></div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <?php
+                            echo form_label('Usuario', 'usuario');
 
-    <div class="col-md-4">
-        <div class="form-group">
-        <?php
-        echo form_label('Titulo', 'titulo');
+                            $input = array(
+                                'name' => 'usuario',
+                                'value' => $usuario,
+                                'readonly' => 'readonly',
+                                'class' => 'form-control form-control-sm'
+                            );
 
-        $input = array(
-            'name' => 'titulo',
-            'value' => $titulo,
-            'readonly' => 'readonly',
-            'class' => 'form-control form-control-sm'
-        );
+                            echo form_input($input);
+                            ?>
+                        </div>
+                    </div>
 
-        echo form_input($input);
-        ?>
-    </div></div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                        <?php
+                        echo form_label('Titulo', 'titulo');
 
-            <div class="col-md-4">
-            <div class="form-group">
-        <?php
-        echo form_label('Nombre', 'nombre');
+                        $input = array(
+                            'name' => 'titulo',
+                            'value' => $titulo,
+                            'readonly' => 'readonly',
+                            'class' => 'form-control form-control-sm'
+                        );
 
-        $input = array(
-            'name' => 'nombre',
-            'value' => $nombre,
-            'readonly' => 'readonly',
-            'class' => 'form-control form-control-sm'
-        );
+                        echo form_input($input);
+                        ?>
+                        </div>
+                    </div>
 
-        echo form_input($input);
-        ?>
-    </div></div></div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                        <?php
+                        echo form_label('Nombre', 'nombre');
 
-    <div class="row">
-        <div class="col-md-4">
-        <div class="form-group">
-        <?php
-        echo form_label('Paterno', 'paterno');
+                        $input = array(
+                            'name' => 'nombre',
+                            'value' => $nombre,
+                            'readonly' => 'readonly',
+                            'class' => 'form-control form-control-sm'
+                        );
 
-        $input = array(
-            'name' => 'paterno',
-            'value' => $paterno,
-            'readonly' => 'readonly',
-            'class' => 'form-control form-control-sm'
-        );
+                        echo form_input($input);
+                        ?>
+                        </div>
+                    </div>
+                </div>
 
-        echo form_input($input);
-        ?>
-    </div></div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                        <?php
+                        echo form_label('Paterno', 'paterno');
 
-        <div class="col-md-4">
-        <div class="form-group">
-        <?php
-        echo form_label('Materno', 'materno');
+                        $input = array(
+                            'name' => 'paterno',
+                            'value' => $paterno,
+                            'readonly' => 'readonly',
+                            'class' => 'form-control form-control-sm'
+                        );
 
-        $input = array(
-            'name' => 'materno',
-            'value' => $materno,
-            'readonly' => 'readonly',
-            'class' => 'form-control form-control-sm'
-        );
+                        echo form_input($input);
+                        ?>
+                        </div>
+                    </div>
 
-        echo form_input($input);
-        ?>
-    </div></div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                        <?php
+                        echo form_label('Materno', 'materno');
 
-        <div class="col-md-4">
-        <div class="form-group">
-        <?php
-        echo form_label('Correo1', 'correo1');
+                        $input = array(
+                            'name' => 'materno',
+                            'value' => $materno,
+                            'readonly' => 'readonly',
+                            'class' => 'form-control form-control-sm'
+                        );
 
-        $input = array(
-            'name' => 'correo1',
-            'value' => $correo1,
-            'readonly' => 'readonly',
-            'class' => 'form-control form-control-sm'
-        );
+                        echo form_input($input);
+                        ?>
+                        </div>
+                    </div>
 
-        echo form_input($input);
-        ?>
-    </div></div></div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                        <?php
+                        echo form_label('Correo1', 'correo1');
 
-    <div class="row">
-        <div class="col-md-4">
-        <div class="form-group">
-        <?php
-        echo form_label('Correo2', 'correo2');
+                        $input = array(
+                            'name' => 'correo1',
+                            'value' => $correo1,
+                            'readonly' => 'readonly',
+                            'class' => 'form-control form-control-sm'
+                        );
 
-        $input = array(
-            'name' => 'correo2',
-            'value' => $correo2,
-            'readonly' => 'readonly',
-            'class' => 'form-control form-control-sm'
-        );
+                        echo form_input($input);
+                        ?>
+                        </div>
+                    </div>
+                </div>
 
-        echo form_input($input);
-        ?>
-    </div></div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                        <?php
+                        echo form_label('Correo2', 'correo2');
 
-        <div class="col-md-4">
-        <div class="form-group">
-        <?php
-        echo form_label('Telefono', 'telefono');
+                        $input = array(
+                            'name' => 'correo2',
+                            'value' => $correo2,
+                            'readonly' => 'readonly',
+                            'class' => 'form-control form-control-sm'
+                        );
 
-        $input = array(
-            'name' => 'telefono',
-            'value' => $telefono,
-            'readonly' => 'readonly',
-            'class' => 'form-control form-control-sm'
-        );
+                        echo form_input($input);
+                        ?>
+                        </div>
+                    </div>
 
-        echo form_input($input);
-        ?>
-    </div></div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                        <?php
+                        echo form_label('Telefono', 'telefono');
 
-        <div class="col-md-4">
-        <div class="form-group">
-        <?php
-        echo form_label('Cargo', 'cargo');
+                        $input = array(
+                            'name' => 'telefono',
+                            'value' => $telefono,
+                            'readonly' => 'readonly',
+                            'class' => 'form-control form-control-sm'
+                        );
 
-        $input = array(
-            'name' => 'cargo',
-            'value' => $cargo,
-            'readonly' => 'readonly',
-            'class' => 'form-control form-control-sm'
-        );
+                        echo form_input($input);
+                        ?>
+                        </div>
+                    </div>
 
-        echo form_input($input);
-        ?>
-    </div></div></div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                        <?php
+                        echo form_label('Cargo', 'cargo');
 
-    <div class="row">
-        <div class="col-md-4">
-        <div class="form-group">
-        <?php
-        echo form_label('Celular', 'celular');
+                        $input = array(
+                            'name' => 'cargo',
+                            'value' => $cargo,
+                            'readonly' => 'readonly',
+                            'class' => 'form-control form-control-sm'
+                        );
 
-        $input = array(
-            'name' => 'celular',
-            'value' => $celular,
-            'readonly' => 'readonly',
-            'class' => 'form-control form-control-sm'
-        );
+                        echo form_input($input);
+                        ?>
+                        </div>
+                    </div>
+                </div>
 
-        echo form_input($input);
-        ?>
-    </div></div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                        <?php
+                        echo form_label('Celular', 'celular');
 
-        <div class="col-md-4">
-        <div class="form-group">
-        <?php
-        echo form_label('Organismo', 'organismo');
+                        $input = array(
+                            'name' => 'celular',
+                            'value' => $celular,
+                            'readonly' => 'readonly',
+                            'class' => 'form-control form-control-sm'
+                        );
 
-        $input = array(
-            'name' => 'celular',
-            'value' => $organismo,
-            'readonly' => 'readonly',
-            'class' => 'form-control form-control-sm'
-        );
+                        echo form_input($input);
+                        ?>
+                        </div>
+                    </div>
 
-        echo form_input($input);
-        ?>
-    </div></div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                        <?php
+                        echo form_label('Organismo', 'organismo');
 
-        <div class="col-md-4">
-        <div class="form-group">
-        <?php
-        echo form_label('Rol', 'rol');
+                        $input = array(
+                            'name' => 'celular',
+                            'value' => $organismo,
+                            'readonly' => 'readonly',
+                            'class' => 'form-control form-control-sm'
+                        );
 
-        $input = array(
-            'name' => 'celular',
-            'value' => $rol,
-            'readonly' => 'readonly',
-            'class' => 'form-control form-control-sm'
-        );
+                        echo form_input($input);
+                        ?>
+                        </div>
+                    </div>
 
-        echo form_input($input);
-        ?>
-    </div></div></div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                        <?php
+                        echo form_label('Rol', 'rol');
 
-    <script>
-        $("#rol").val(<?php if(isset($rol2)){echo $rol2;}?>);
-        $("#organismo").val(<?php if(isset($organismo2)){echo $organismo2;}?>);
-    </script>
-    <?php echo form_close();?>
+                        $input = array(
+                            'name' => 'celular',
+                            'value' => $rol,
+                            'readonly' => 'readonly',
+                            'class' => 'form-control form-control-sm'
+                        );
 
-    <form class="form" onsubmit="guardar(this,event);" id="form-captura" name="form-captura">
-    <div class="row">
-    <input type="hidden" name="id_usuario" value="<?=$id_usuario?>">
+                        echo form_input($input);
+                        ?>
+                        </div>
+                    </div>
+                </div>
 
-            <div class="col-md-6">
-            <div class="form-group">
-                <?php
-                echo form_label('Contraseña (8 caracteres mínimo)', 'contrasenia');
+                <script>
+                    $("#rol").val(<?php if(isset($rol2)){echo $rol2;}?>);
+                    $("#organismo").val(<?php if(isset($organismo2)){echo $organismo2;}?>);
+                </script>
+                <?php echo form_close();?>
 
-                $input = array(
-                    'id' => 'contrasenia',
-                    'name' => 'contrasenia',
-                    'value' => '',
-                    'class' => 'form-control form-control-sm',
-                    'data-parsley-required' => 'true'
-                );
+                <form class="form" onsubmit="guardar(this,event);" id="form-captura" name="form-captura">
+                <div class="row">
+                <input type="hidden" name="id_usuario" value="<?=$id_usuario?>">
 
-                echo form_password($input);
-                ?>
-            </div></div>
+                        <div class="col-md-6">
+                        <div class="form-group">
+                            <?php
+                            echo form_label('Contraseña (8 caracteres mínimo)', 'contrasenia');
 
-            <div class="col-md-6">
-        <div class="form-group">
-                <?php
-                echo form_label('Confirmar contraseña', 'confirmar');
+                            $input = array(
+                                'id' => 'contrasenia',
+                                'name' => 'contrasenia',
+                                'value' => '',
+                                'class' => 'form-control form-control-sm',
+                                'data-parsley-required' => 'true'
+                            );
 
-                $input = array(
-                    'name' => 'confirmar',
-                    'value' => '',
-                    'class' => 'form-control form-control-sm',
-                    'data-parsley-required' => 'true'
-                );
+                            echo form_password($input);
+                            ?>
+                        </div></div>
 
-                echo form_password($input);
-                ?>
-            </div></div></div>
+                        <div class="col-md-6">
+                    <div class="form-group">
+                            <?php
+                            echo form_label('Confirmar contraseña', 'confirmar');
 
-            <center>
-            <button type="submit" class='btn btn-primary'>Enviar</button>
-            <button type="button" class="btn btn-white" onclick="regresar();">Cancelar</button>
-            </center>
-            </form>
-    
+                            $input = array(
+                                'name' => 'confirmar',
+                                'value' => '',
+                                'class' => 'form-control form-control-sm',
+                                'data-parsley-required' => 'true'
+                            );
 
-    </div>
-    </div><br>
+                            echo form_password($input);
+                            ?>
+                        </div></div></div>
+
+                        <center>
+                        <button type="submit" class='btn btn-primary'>Actualizar</button>
+                        <button type="button" class="btn btn-white" onclick="regresar();">Cancelar</button>
+                        </center>
+                        </form>
+                
+
+                </div>
+            </div><br>
+        </div>
     </div>
 </body>
 <script>

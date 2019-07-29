@@ -29,5 +29,16 @@ class M_catalogo extends CI_Model {
 
 		return $this->db->get();
 	}
+	
+	public function organismos($where='')
+	{
+		$this->db->select('iIdOrganismo AS id, vOrganismo AS valor');
+		$this->db->from('Organismo');
+		$this->db->where('iActivo',1);
+
+		if($where != '') $this->db->where($where);
+
+		return $this->db->get();
+	}
 }
 ?>

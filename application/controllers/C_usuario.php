@@ -178,6 +178,9 @@ class C_usuario extends CI_Controller {
                 }
             }
         } */
+        $options = new Class_options();
+        $vdata['organismo'] = $this->mu->nombre_organismo($vdata['organismo']);
+        $vdata['rol'] = $this->mu->nombre_organismo($vdata['rol']);
         $this->load->view('usuarios/ver_usuario', $vdata);
     }
 

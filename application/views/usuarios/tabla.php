@@ -34,7 +34,7 @@
                              <td>
                                 <button type="button" class="btn btn-grey btn-icon btn-sm" onclick="cargar('<?=base_url(); ?>C_usuario/guardar/<?=$p->iIdUsuario?>/1','#contenido');" title="Editar"><i class="fas fa-pencil-alt fa-fw"></i></button>
                                 
-                                <button type="button" class="btn btn-primary btn-icon btn-sm" onclick="cargar('<?=base_url(); ?>C_usuario/ver/<?=$p->iIdUsuario?>/1','#contenido');" title="Ver"><i class="fas fa-user fa-fw"></i></i></button>
+                                <button type="button" class="btn btn-primary btn-icon btn-sm" onclick="cargar('<?=base_url(); ?>C_usuario/ver/<?=$p->iIdUsuario?>/1','#contenido');" title="Actualizar contraseña"><i class="fas fa-key fa-fw"></i></i></button>
                                 
                                 <button type="button" class="btn btn-danger btn-icon btn-sm" onclick="deleteRow(<?php echo $p->iIdUsuario ?>)" title="Eliminar"><i class="fas fa-trash-alt fa-fw"></i></button>
                             </td> 
