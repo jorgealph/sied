@@ -609,7 +609,7 @@ class C_evaluacion extends CI_Controller{
                     <th>Dependencia responsable</th>
                     <th>Origen de la evaluación</th>
                     <th>Tipo de evaluación</th>
-                    <th width="150px">Acciones</th>
+                    <th width="165px">Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -724,6 +724,7 @@ class C_evaluacion extends CI_Controller{
                 $tb .= '<td>';
                     $tb .= '<button onclick="cargar(\'ver/evaluacion/'.$r->iIdEvaluacion.'\', \'#contenido\')" class="btn btn-default btn-icon btn-sm" data-toggle="tooltip" data-placement="top" title="Seguimiento de la evaluación"><i class="fas fa-edit fa-fw"></i></button>&nbsp;';
                     $tb .= '<button onclick="cargar(\'ver/repositorio/'.$r->iIdEvaluacion.'\', \'#contenido\')" class="btn btn-default btn-icon btn-sm" data-toggle="tooltip" data-placement="top" title="Repositorio de documentos"><i class="fas fa-file-word fa-fw"></i></button>&nbsp;';
+                    $tb .= '<button onclick="cargar(\'C_conclusion/capturar_conclusiones/'.$r->iIdEvaluacion.'\', \'#contenido\')" class="btn btn-default btn-icon btn-sm" data-toggle="tooltip" data-placement="top" title="Capturar conclusiones"><i class="fas fa-sticky-note fa-fw"></i></button>&nbsp;';
                     $tb .= '<button onclick="" class="btn btn-default btn-icon btn-sm" data-toggle="tooltip" data-placement="top" title="Documento de evaluación"><i class="fas fa-file fa-fw"></i></button>&nbsp;';
                     $tb .= '<button onclick="" class="btn btn-primary btn-icon btn-sm" data-toggle="tooltip" data-placement="top" title="Documento de opinión"><i class="fas fa-comments fa-fw"></i></button>&nbsp;';
                     $tb .= '<button onclick="" class="btn btn-primary btn-icon btn-sm" data-toggle="tooltip" data-placement="top" title="Descargar el documento de opinión"><i class="fas fa-copy fa-fw"></i></button>&nbsp;';

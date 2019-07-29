@@ -71,7 +71,7 @@
                             <div class="col-md-4">
                                 <label for="frecepcion">Fecha de recepción del oficio</label>
                                 <div class="input-group date" id="datetimepicker3">
-									<input type="text" class="form-control" id='frecepcion' value="<?=date('d/m/Y', strtotime($eva->dFechaRecepcionOficio));?>">
+									<input type="text" class="form-control" id='frecepcion' value="<?=date('d/m/Y', strtotime($eva->dRecepcionOficio));?>">
 									<div class="input-group-addon">
 									    <i class="fa fa-calendar"></i>
 									</div>

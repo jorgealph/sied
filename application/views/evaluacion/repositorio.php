@@ -138,26 +138,37 @@
 			}
 
 			function borrar(){
-				var formData = new FormData();
-				formData.append('key', <?=$key?>);
-				$.ajax({
-        			url: '<?=base_url()?>C_evaluacion/eliminar_documento',
-        			type: 'POST',
-        			data: formData,
-        			async: false,
-                   // dataType: 'json',
-        			success: function (data){
-						if (data == 1){
-							notificacion('El documento ha sido eliminado','success');
-						}else{
-							notificacion('Ha ocurrido un error','error');
-						}
-						cargar('ver/repositorio/<?=$key?>', '#contenido')
-					},
-        			cache: false,
-        			contentType: false,
-        			processData: false
-				})
+				swal({
+					title: "¿Estás seguro que deseas continuar?",
+                    text: "Una vez eliminado el documento, no lo podras recuperar",
+                    icon: "warning",
+                    buttons: ["Cancelar", "Eliminar"],
+					dangerMode: true,
+					})
+					.then((willDelete) => {
+					if (willDelete) {
+						var formData = new FormData();
+						formData.append('key', <?=$key?>);
+						$.ajax({
+							url: '<?=base_url()?>C_evaluacion/eliminar_documento',
+							type: 'POST',
+							data: formData,
+							async: false,
+						// dataType: 'json',
+							success: function (data){
+								if (data == 1){
+									notificacion('El documento ha sido eliminado','success');
+								}else{
+									notificacion('Ha ocurrido un error','error');
+								}
+								cargar('ver/repositorio/<?=$key?>', '#contenido')
+							},
+							cache: false,
+							contentType: false,
+							processData: false
+						})
+					}
+				});
 			}
 
 		</script>

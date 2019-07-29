@@ -116,7 +116,6 @@ class C_pregunta extends CI_Controller {
 		$aux = $ms->pintar_menu($idusuario);
 		$datos['menu'] = $aux['menu'];
 		$datos['modulo_inicial'] = $aux['modulo_inicial'];
-
 		return $datos;
 	}
 
@@ -125,10 +124,9 @@ class C_pregunta extends CI_Controller {
 		$this->load->model('M_pregunta','mp');
 
 		$header = $this->mp->findApartado($key);
-
 		// Creating the new document...
 		$phpWord = new \PhpOffice\PhpWord\PhpWord();
-
+		
 		/* Note: any element you append to a document must reside inside of a Section. */
 
 		// Adding an empty Section to the document...

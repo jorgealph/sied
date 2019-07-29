@@ -484,9 +484,7 @@
             			console.log(json);
                         var error = json['error'];
                         var log = "";
-                        if(json['falla'] > 0){
-                            notificacion("Hay un error en el documento", "error");
-                        }
+                        
                         if(json['msg'] > 0){
                             notificacion("Se han agregado " + json['msg'] + " preguntas", "success");
                         }
@@ -502,7 +500,11 @@
                                 closeOnEsc: false
                             });
                         }
-                        cargar('<?=base_url()?>C_plantilla/guardar_cuestionario/<?=$id_plantilla?>/1','#contenido');
+                        if(json['falla'] > 0){
+                            notificacion("Hay un error en el documento", "error");
+                        }else{
+                            cargar('<?=base_url()?>C_plantilla/guardar_cuestionario/<?=$id_plantilla?>/1','#contenido');
+                        }
         			},
         			cache: false,
         			contentType: false,
