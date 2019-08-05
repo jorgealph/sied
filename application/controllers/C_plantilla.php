@@ -202,7 +202,9 @@ class C_plantilla extends CI_Controller {
         
         if($intervencion != null){
             foreach($intervencion as $r){
-                
+                $data = $this->mp->findOrganismoCarritoB( $r['iIdIntervencion']);
+                //print_r($data);
+                //print_r($vdata);
                 if($r['iTipo'] == 1) {
                     $local = "Programa Presupuestario";
                 } else if($r['iTipo'] == 2){
@@ -218,10 +220,7 @@ class C_plantilla extends CI_Controller {
                     $tcontent .=  '<td>'.$r['vClave'].'</td>';
                     $tcontent .=  '<td>'.$r['iAnio'].'</td>';
                     $tcontent .=  '<td>'.$local.'</td>';
-                    $tcontent .=  '<td>'.' <select id="select'.$r['iIdIntervencion'].'" class="multiple-select2 form-control col-md-6" multiple="multiple" onchange="guardarCorresponsable('.$r['iIdIntervencion'].')">
-                    <option value="0">Seleccionar</option>'.
-                                $this->Select($vdata, $ids) .'
-                </select>'.'</td>';
+                    $tcontent .=  '<td>'.$this->Select($data, $ids).'</td>';
                     $tcontent .=  '<td>'.'<button type="button" class="btn btn-danger btn-icon btn-sm" onclick="deleteRowIntervencion('.$r['iIdIntervencion'].')" title="Eliminar"><i class="fas fa-trash-alt fa-fw"></i></button>'; 
                     $tcontent .= '</tr>';
                 }
@@ -270,8 +269,10 @@ class C_plantilla extends CI_Controller {
 
                         $corresponsables = explode(",",$r{'dependencia'});
 
-                        for ($i=0; $i < count($corresponsables) ; $i++) {
-                            $datos = array('iIdEvaluacion' => $iIdEvaluacion, 'iIdOrganismo' => $corresponsables[$i],'vRutaArchivo' => '');
+                        $var = $this->mp->findOrganismoCarritoB($r['iIdIntervencion']);
+                        
+                        foreach ($var as $r) {
+                            $datos = array('iIdEvaluacion' => $iIdEvaluacion, 'iIdOrganismo' => $r->iIdOrganismo,'vRutaArchivo' => '');
                             $this->mp->insertCorresponsables($datos);
                         }
                         echo $iIdEvaluacion;
