@@ -185,9 +185,16 @@
     				// código a ejecutar si la petición es satisfactoria;
     				// la respuesta es pasada como argumento a la función
     				success : function(data) {
-        				alert(data);
+        				//alert(data);
                         if(data>0){
-                            $("#id_plantilla").val(data);
+                           // $("#id_plantilla").val(data);
+                           swal({
+                                        icon: 'success',
+                                        title: 'Exito',
+                                        text: 'El registro se ha guardado exitosamente',
+                                        button: false,
+                                        timer: 1500
+                                    })
                         }
     				},
 					

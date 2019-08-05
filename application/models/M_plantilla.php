@@ -240,6 +240,7 @@ class M_plantilla extends CI_Model {
     }
 
     function get_tipo(){
+        $this->db->order_by("iOrden", "asc");
         $this->db->select('*');
         $this->db->where('iActivo', 1); 
         $this->db->from('tipoevaluacion');
@@ -279,22 +280,22 @@ class M_plantilla extends CI_Model {
         return $query->result();
     }
 
-    public function findOrganismoCarritoB($iIdOrganismo, $iIdIntervencion){
-/*         $this->db->distinct();
+    public function findOrganismoCarritoB( $iIdIntervencion){
+         $this->db->distinct();
         $this->db->select('i.iIdOrganismo, o.vOrganismo');
         $this->db->from("intervencioncorresponsable i");
-        $this->db->join('organismo o','o.iIdOrganismo=.iIdOrganismo','INNER');
+        $this->db->join('organismo o','o.iIdOrganismo=i.iIdOrganismo','INNER');
         $this->db->join('intervencion iv','iv.iIdIntervencion=i.iIdIntervencion','INNER');
-        $this->db->where('i.iIdOrganismo ', $iIdOrganismo);
+        //$this->db->where('i.iIdOrganismo ', $iIdOrganismo);
         $this->db->where('i.iIdIntervencion ', $iIdIntervencion);
-        $this->db->where('iActivo', 1); */
-        $sql = "select i.iIdOrganismo, o.vOrganismo from intervencioncorresponsable i
-        inner join organismo o on o.iIdOrganismo=o.iIdOrganismo
+        //$this->db->where('i.iActivo', 1); 
+        /*$sql = "SELECT i.iIdOrganismo, o.vOrganismo from intervencioncorresponsable i
+        inner join organismo o on o.iIdOrganismo=i.iIdOrganismo
         inner join intervencion iv on iv.iIdIntervencion=i.iIdIntervencion 
         where i.iIdOrganismo = $iIdOrganismo and i.iIdIntervencion=$iIdIntervencion";
-        return $this->db->query($sql);
- /*        $query = $this->db->get();
-        return $query->result(); */
+        //return $this->db->query($sql);*/
+        $query = $this->db->get();
+        return $query->result(); 
     }
 
     public function organismoCorresponsables($idEvaluacion){
