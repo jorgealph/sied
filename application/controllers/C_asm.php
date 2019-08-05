@@ -110,8 +110,8 @@ class C_asm extends CI_Controller{
             $data['programa'] = $this->ma->get_programa();
             $data['programa2'] = $asm->iIdEvaluacion;
             $data['iIdASM'] = $asm->iIdASM;
-            $this->load->view('asm/guardar_asm', $data);
-            var_dump($data['programa2']);
+            $this->load->view('asm/editar_asm', $data);
+            //var_dump($data['programa2']);
         }
     }
 

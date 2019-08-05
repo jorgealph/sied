@@ -181,7 +181,7 @@ class C_plantilla extends CI_Controller {
                 <th scope="col">Clave</th>
                 <th scope="col">Año</th>
                 <th scope="col">Tipo</th>
-                <th scope="col">Intervención Propuesta</th>
+                <th scope="col">Corresponsables</th>
                 <th scope="col">Eliminar</th>
             </tr>
         </thead>';
@@ -202,6 +202,14 @@ class C_plantilla extends CI_Controller {
         
         if($intervencion != null){
             foreach($intervencion as $r){
+                
+                if($r['iTipo'] == 1) {
+                    $local = "Programa Presupuestario";
+                } else if($r['iTipo'] == 2){
+                    $local = "Fondo";
+                } else {
+                    $local = "Programa de bienes o servicios";
+                }
                 if($r['activo'] == 1){
                     $ids = explode(",", $r['dependencia']);
                     $tcontent .= '<tr>';
@@ -209,7 +217,7 @@ class C_plantilla extends CI_Controller {
                     $tcontent .=  '<td>'.$r['vIntervencion'].'</td>';
                     $tcontent .=  '<td>'.$r['vClave'].'</td>';
                     $tcontent .=  '<td>'.$r['iAnio'].'</td>';
-                    $tcontent .=  '<td>'.$r['iTipo'].'</td>';
+                    $tcontent .=  '<td>'.$local.'</td>';
                     $tcontent .=  '<td>'.' <select id="select'.$r['iIdIntervencion'].'" class="multiple-select2 form-control col-md-6" multiple="multiple" onchange="guardarCorresponsable('.$r['iIdIntervencion'].')">
                     <option value="0">Seleccionar</option>'.
                                 $this->Select($vdata, $ids) .'
