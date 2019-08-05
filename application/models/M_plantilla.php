@@ -279,6 +279,24 @@ class M_plantilla extends CI_Model {
         return $query->result();
     }
 
+    public function findOrganismoCarritoB($iIdOrganismo, $iIdIntervencion){
+/*         $this->db->distinct();
+        $this->db->select('i.iIdOrganismo, o.vOrganismo');
+        $this->db->from("intervencioncorresponsable i");
+        $this->db->join('organismo o','o.iIdOrganismo=.iIdOrganismo','INNER');
+        $this->db->join('intervencion iv','iv.iIdIntervencion=i.iIdIntervencion','INNER');
+        $this->db->where('i.iIdOrganismo ', $iIdOrganismo);
+        $this->db->where('i.iIdIntervencion ', $iIdIntervencion);
+        $this->db->where('iActivo', 1); */
+        $sql = "select i.iIdOrganismo, o.vOrganismo from intervencioncorresponsable i
+        inner join organismo o on o.iIdOrganismo=o.iIdOrganismo
+        inner join intervencion iv on iv.iIdIntervencion=i.iIdIntervencion 
+        where i.iIdOrganismo = $iIdOrganismo and i.iIdIntervencion=$iIdIntervencion";
+        return $this->db->query($sql);
+ /*        $query = $this->db->get();
+        return $query->result(); */
+    }
+
     public function organismoCorresponsables($idEvaluacion){
         $sql = "SELECT ec.iIdOrganismo 
                 FROM evaluacion e

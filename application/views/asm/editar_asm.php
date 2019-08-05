@@ -14,6 +14,15 @@
                     <div class="col-md-6">
                         <label>Nombre del ASM: </label>
                     </div>
+                </div>.                <div class="row">
+                    <div class="col-md-6">
+                        <label>Nombre del ASM: </label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label>Nombre del ASM: </label>
+                    </div>
                 </div>
                 </div> 
                     <div class="row">
@@ -144,7 +153,7 @@
                     data: $("#form-captura").serialize(),
                     success: function(response){
                         if(response > 0){
-                            $("#contenido").load('<?=base_url()?>C_asm/editar_asm');
+                            $("#contenido").load('<?=base_url()?>C_asm/guardar_asm');
                             swal({
                                 icon: 'success',
                                 title: 'Exito',
