@@ -24,6 +24,7 @@ class M_evaluacion extends CI_Model{
         $this->db->join('plantilla as p', 'p.iIdPlantilla = e.iIdPlantilla', 'INNER');
         $this->db->join('tipoevaluacion as tp', 'p.iIdTipoEvaluacion = tp.iIdTipoEvaluacion', 'INNER');
         $this->db->join('organismo as o', 'i.iIdOrganismo = o.iIdOrganismo', 'INNER');
+        $this->db->where('e.iActivo', 1);
         if(!is_null($data)){
             if(isset($data['iAnioEvaluacion']) && !empty($data['iAnioEvaluacion'])){
                 $this->db->where('p.iAnioEvaluacion', $data['iAnioEvaluacion']);
@@ -110,8 +111,8 @@ class M_evaluacion extends CI_Model{
 
     public function update($data, $key){
         $this->db->where($this->table_id, $key);
-        $this->db->update($this->table, $data);
-        return $this->db->affected_rows();
+        return $this->db->update($this->table, $data);
+        //return $this->db->affected_rows();
     }
 
     public function buscar_organismo($key){

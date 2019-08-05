@@ -381,7 +381,12 @@ class C_evaluacion extends CI_Controller{
             $data['vObjetivo'] = $_POST['objetivo'];
             $data['vObjetivoEspecifico'] = $_POST['especifico'];
             $data['vTecnicasModelos'] = $_POST['descripcion'];
-            $result['descripcion'] = $this->me->update($data, $key);
+            
+            if ($this->me->update($data, $key) == true){
+                $result['descripcion'] = 1;
+            }else{
+                $result['descripcion'] = 0;
+            }
             $data = [];
             if (!is_null($_SESSION['instrumento'])){
                 $vdata = $_SESSION['instrumento'];
