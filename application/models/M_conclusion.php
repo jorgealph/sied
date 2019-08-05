@@ -66,7 +66,6 @@ class M_conclusion extends CI_Model{
 
     public function updateRecord($data, $key){
         $this->db->where($this->table_id, $key);
-        $this->db->update($this->table, $data);
-        return $this->db->affected_rows();
+        return $this->db->update($this->table, $data);
     }
 }

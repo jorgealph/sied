@@ -142,7 +142,11 @@ class C_conclusion extends CI_Controller{
             $this->load->model('M_conclusion', 'mc');
             $data['iASM'] = $_POST['iASM'];
             $key = $_POST['key'];
-            echo $this->mc->updateRecord($data, $key);
+            if($this->mc->updateRecord($data, $key) == true){
+                echo 1;
+            }else{
+                echo 0;
+            }
         }else{
             echo 0;
         }
@@ -156,7 +160,11 @@ class C_conclusion extends CI_Controller{
             $data['vConclusion'] = $_POST['vConclusion'];
             $data['vRecomendacion'] = $_POST['vRecomendacion'];
             $data['iTipoConclusion'] = $_POST['iIdTipoConclusion'];
-            echo $this->mc->updateRecord($data, $key);
+            if($this->mc->updateRecord($data, $key) == true){
+                echo 1;
+            }else{
+                echo 0;
+            }
         }else{
             echo 0;
         }
@@ -167,7 +175,11 @@ class C_conclusion extends CI_Controller{
             $this->load->model('M_conclusion', 'mc');
             $data['iActivo'] = 0;
             $key = $_POST['key'];
-            echo $this->mc->updateRecord($data, $key);
+            if($this->mc->updateRecord($data, $key) == true){
+                echo 1;
+            }else{
+                echo 0;
+            }
         }else{
             echo 0;
         }

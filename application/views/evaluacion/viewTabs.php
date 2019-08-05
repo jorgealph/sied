@@ -877,7 +877,6 @@
                             }else{
                                 notificacion('No se han podido actualizar los datos','error');
                             }
-
                             var msg = data['msg'];
                             $.each(msg,function(key, row) {
                                 notificacion('No se ha podido agregar a ' + row.usuario + 'como colaborador','error');

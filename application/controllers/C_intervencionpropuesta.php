@@ -122,12 +122,144 @@ class C_IntervencionPropuesta extends CI_Controller {
 		{
 			$datos = $this->menu();
 			$this->load->model('M_IntervencionPropuesta');
+			$_SESSION['intervencion_corresponsables'] = array();
 			$datos['eje'] = $this->M_IntervencionPropuesta->ejeQuery();
 			$datos['tipoPP'] = $this->M_IntervencionPropuesta->tipoPPQuery();
+			$datos['tipoFondo'] = $this->M_IntervencionPropuesta->tipoFondoQuery();
 			$datos['tipoEvaluacion'] = $this->M_IntervencionPropuesta->tipoEvaluacionQuery();
 			$datos['organismo'] = $this->M_IntervencionPropuesta->GetOrganismo()[0];
-			$this->load->view('IntervencionPropuesta/crud',$datos);
+			$datos['dependencias'] = $this->cargar_select($this->M_IntervencionPropuesta->cargar_dependencias());
+			$this->load->view('IntervencionPropuesta/edit',$datos);
 		}else $this->index();
+	}
+
+	
+
+	public function edit($key){
+		if(isset($_SESSION[PREFIJO.'_idrol']) && !empty($_SESSION[PREFIJO.'_idrol']))
+		{
+			$datos = $this->menu();
+			$this->load->model('M_IntervencionPropuesta');
+			$_SESSION['intervencion_corresponsables'] = array();
+			$datos['record'] = $this->M_IntervencionPropuesta->findRecord($key);
+			$datos['eje'] = $this->M_IntervencionPropuesta->ejeQuery();
+			$datos['tipoPP'] = $this->M_IntervencionPropuesta->tipoPPQuery();
+			$datos['tipoFondo'] = $this->M_IntervencionPropuesta->tipoFondoQuery();
+			$datos['tipoEvaluacion'] = $this->M_IntervencionPropuesta->tipoEvaluacionQuery();
+			$datos['organismo'] = $this->M_IntervencionPropuesta->GetOrganismoEdit($datos['record']->iIdOrganismo)[0];
+			$datos['select'] = $this->M_IntervencionPropuesta->GetEje($datos['record']->iIdObjetivo);
+			$datos['dependencias'] = $this->cargar_select($this->M_IntervencionPropuesta->cargar_dependencias());
+			$this->load_corresponsables($this->M_IntervencionPropuesta->cargarCorresponsable($key));
+			$this->load->view('IntervencionPropuesta/edit', $datos);
+		}else $this->index();
+	}
+
+	private function load_corresponsables($vdata){
+		$data = $_SESSION['intervencion_corresponsables'];
+		$this->load->model('M_IntervencionPropuesta', 'mi');
+		foreach ($vdata as $r){
+			$tmp = $this->mi->GetOrganismoEdit($r->iIdOrganismo);
+			if (isset($tmp[0])){
+				$tmp = $tmp[0];
+				$tmp->iActivo = 1;
+				$data[] = $tmp;
+			}
+		}
+		$_SESSION['intervencion_corresponsables'] = $data;
+	}
+
+	public function addCorresponsable(){
+		$result = 0;
+		if (isset($_POST['iIdOrganismo'])){
+			$data = $_SESSION['intervencion_corresponsables'];
+			$existe = false;
+			$key = $_POST['iIdOrganismo'];
+			foreach ($data as $r){
+				if ($r->iIdOrganismo == $key){
+					$existe = true;
+					if ($r->iActivo == 0){
+						$r->iActivo = 1;
+						$result = 1;
+					}
+					break;
+				}
+			}
+			$this->load->model('M_IntervencionPropuesta', 'mi');
+			if($existe == false){
+				$tmp = $this->mi->GetOrganismoEdit($key);
+				if (isset($tmp[0])){
+					$tmp = $tmp[0];
+					$tmp->iActivo = 1;
+					$data[] = $tmp;
+				}
+				$result = 1;
+			}
+			$_SESSION['intervencion_corresponsables'] = $data;
+		}
+		echo $result;
+	}
+
+	public function removeCorresponsable(){
+		$result = 0;
+		if (isset($_POST['iIdOrganismo'])){
+			$data = $_SESSION['intervencion_corresponsables'];
+			$key = $_POST['iIdOrganismo'];
+			foreach ($data as $r){
+				if($r->iIdOrganismo == $key){
+					$r->iActivo = 0;
+					$result = 1;
+				}
+			}
+		}
+		echo $result;
+	}
+
+	public function tabla_corresponsables(){
+		$tb = '';
+        $tb = '<table id="data-table-default" class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th>Nombre de la dependencia</th>
+                    <th width="120px">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                '.$this->contenido_corresponsables().'
+            </tbody>
+        </table>';
+        echo $tb;
+	}
+
+	private function contenido_corresponsables(){
+		$tb = '';
+		$data = array();
+		$empty = true;
+        if (isset($_SESSION['intervencion_corresponsables']) && !empty($_SESSION['intervencion_corresponsables'])){
+            $data = $_SESSION['intervencion_corresponsables'];
+            foreach ($data as $r){
+                if($r->iActivo == 1){
+					$tb .= '<tr>';
+						$tb .= '<td>'.$r->vOrganismo.'</td>';
+						$tb .= '<td>';
+							$tb .= '<button onclick="removeCorresponsable('.$r->iIdOrganismo.')" class="btn btn-danger btn-icon btn-sm" type="button"><i class="fas fa-trash fa-fw"></i></button>';
+						$tb .= '</td>';
+					$tb .= '</tr>';
+					$empty = false;
+				}
+            }
+		}
+		if ($empty == true){
+			$tb .= "<tr><td valign='top' colspan='6' class='dataTables_empty'>No se encontron registros</td></tr>";
+		}
+        return $tb;
+	}
+
+	private function cargar_select($data){
+		$option = '<option value="">-Seleccione una opción-</option>';
+		foreach($data as $r){
+			$option .= '<option value="'.$r->id.'">'.$r->value.'</option>';
+		}
+		return $option;
 	}
 	
 	private function menu(){
@@ -188,23 +320,7 @@ class C_IntervencionPropuesta extends CI_Controller {
 		}
 		echo $option;
 	}
-
-
-	public function edit($id){
-		if(isset($_SESSION[PREFIJO.'_idrol']) && !empty($_SESSION[PREFIJO.'_idrol']))
-		{
-			$datos = $this->menu();
-			$this->load->model('M_IntervencionPropuesta');
-			$datos['record'] = $this->M_IntervencionPropuesta->findRecord($id);
-			$datos['eje'] = $this->M_IntervencionPropuesta->ejeQuery();
-			$datos['tipoPP'] = $this->M_IntervencionPropuesta->tipoPPQuery();
-			$datos['tipoEvaluacion'] = $this->M_IntervencionPropuesta->tipoEvaluacionQuery();
-			$datos['organismo'] = $this->M_IntervencionPropuesta->GetOrganismoEdit($datos['record']->iIdOrganismo)[0];
-			$datos['select'] = $this->M_IntervencionPropuesta->GetEje($datos['record']->iIdObjetivo);
-			$this->load->view('IntervencionPropuesta/edit', $datos);
-		}else $this->index();
-		
-	}
+	
 
 	public function dataEntry(){	
 		
@@ -212,14 +328,16 @@ class C_IntervencionPropuesta extends CI_Controller {
 		$data['iAnioCreacion'] = $this->input->post("iAnioCreacion");
 		$data['iAnioEvaluacion'] = $this->input->post("iAnioEvaluacion");
 		$data['iTipo'] = $this->input->post("iTipo");
-		$data['iIdTipoPP'] = $this->input->post("iIdTipoPP");
 		$data['iEntregaBienServicio'] = $this->input->post("iEntregaBienServicio");
 		$data['iIdOrganismo'] = $this->input->post("iIdOrganismo");
 		$data['vAreaResponsable'] = $this->input->post("vAreaResponsable");
 		$data['vObjetivo'] = $this->input->post("vObjetivo");
 		$data['vPoblacionObjetivo'] = $this->input->post("vPoblacionObjetivo");
 		$data['iIdObjetivo'] = $this->input->post("iIdObjetivo");
-		//$data['iIdObjetivoPMP'] = $this->input->post("iIdObjetivoPMP");
+		//Captura de PMP
+		$data['vPMP'] = $this->input->post("vPMP");
+		$data['vObjetivoPMP'] = $this->input->post("vObjetivoPMP");
+		//
 		$data['iIdObjetivoPMP'] = -1;
 		$data['nPresupuestoEjercido'] = $this->input->post("nPresupuestoEjercido");
 		$data['nPresupuestoEjercidoAnterior'] = $this->input->post("nPresupuestoEjercidoAnterior");
@@ -244,26 +362,61 @@ class C_IntervencionPropuesta extends CI_Controller {
 		$data['iPadronBeneficiarios'] = (isset($_POST["iPadronBeneficiarios"])) ? 1 : 0;
 		//fin de checks
 
+		if(isset($_POST['iIdTipoEvaluacion'])){
+			$data['iIdTipoEvaluacion'] = $this->input->post("iIdTipoEvaluacion");
+		}else{
+			$data['iIdTipoEvaluacion'] = 0;
+		}
+
+
+		if(isset($_POST['iIdTipoPP'])){
+			$data['iIdTipoPP'] = $this->input->post("iIdTipoPP");
+		}else{
+			$data['iIdTipoPP'] = 0;
+		}
+		
+		if(isset($_POST['iIdTipoFondo'])){
+			$data['iIdTipoFondo'] = $this->input->post("iIdTipoFondo");
+		}else{
+			$data['iIdTipoFondo'] = 0;
+		}
+
 		$data['iPreviamenteEvaluado'] = $this->input->post("iPreviamenteEvaluado");
-		$data['iIdTipoEvaluacion'] = $this->input->post("iIdTipoEvaluacion");
 		$data['vComentario'] = $this->input->post("vComentario");
 		$data['iIdUsuario'] = (int)$_SESSION[PREFIJO.'_idusuario'];
-		$data['dFechaCaptura'] = date('Y-m-d H:i:s');
-		$data['iActivo'] = 1;
 		
 		$this->load->model('M_IntervencionPropuesta');
 
 		if(isset($_POST['iIdIntervencionPropuesta'])){
 			$data['iIdIntervencionPropuesta'] = $_POST['iIdIntervencionPropuesta'];
-			$insert = $this->M_IntervencionPropuesta->update($data);
+			if($this->M_IntervencionPropuesta->update($data) == true){
+				$insert = 1;
+			}else{
+				$insert = 0;
+			}
+			$this->guardarCorresponsables($_POST['iIdIntervencionPropuesta']);
 		}else{
+			$data['dFechaCaptura'] = date('Y-m-d H:i:s');
 			$insert = $this->M_IntervencionPropuesta->save($data);
+			$this->guardarCorresponsables($insert);
 		}
-		
-		
 		//Falta mensaje de confirmación
 		echo $insert;
+	}
 
+	private function guardarCorresponsables($key){
+		$this->load->model('M_IntervencionPropuesta', 'mi');
+		$data = $_SESSION['intervencion_corresponsables'];
+		foreach($data as $r){
+			$tmp = array();
+			if($r->iActivo == 1){
+				$tmp['iIdIntervencionPropuesta'] = $key;
+				$tmp['iIdOrganismo'] = $r->iIdOrganismo;
+				$this->mi->guardarCorresponsables($tmp);
+			}else{
+				$this->mi->deleteCorresponsable($key, $r->iIdOrganismo);
+			}
+		}
 	}
 
 	public function delete(){
@@ -287,9 +440,15 @@ class C_IntervencionPropuesta extends CI_Controller {
 		$data['iIdOrganismo'] = $r->iIdOrganismo;
 		$this->load->model('M_Intervencion');
 		$result = $this->M_Intervencion->save($data);
-
 		if($result > 0){
 			$delete = $this->M_IntervencionPropuesta->delete($_POST['id']);
+			$vdata = $this->M_IntervencionPropuesta->cargarCorresponsable($r->iIdIntervencionPropuesta);
+			foreach($vdata as $r){
+				$tmp = array();
+				$tmp['iIdIntervencion'] = $result;
+				$tmp['iIdOrganismo'] = $r->iIdOrganismo;
+				$this->M_IntervencionPropuesta->guardarIntervencionCorresponsable($tmp);
+			}
 		}
 		echo $result;
 	}

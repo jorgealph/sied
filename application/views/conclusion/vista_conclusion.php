@@ -66,7 +66,7 @@
                                 </div>
 
                                 <div class="col-md-2">
-                                    <button class="btn btn-success form-control" style="margin-top:25px;" type="reset">
+                                    <button class="btn btn-danger form-control" style="margin-top:25px;" type="reset">
                                         <li class="fa fa-lg fa-fw m-r-10 fa-window-close"></li>
                                         <span>Cancelar</span>
                                     </button>
@@ -105,7 +105,7 @@
                         success: function(response){
                             if(response > 0){
                                 if(key != null && key != ''){
-                                    notificacion('Se ha actualizado la conclusión exitosamente','success');
+                                    notificacion('Actualización exitosa','success');
                                     $("#key").val(null);
                                 }else{
                                     notificacion('Se ha agregado la conclusión exitosamente','success');

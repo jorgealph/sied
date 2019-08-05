@@ -66,8 +66,8 @@
 								<!-- Inicia parte 1 -->
 					<div class="row" style="padding-bottom: 10px">
                         <div class="col-md-6">
-                            <label for="" class="col-form-label text-md-left">Año del PAE</label>
-                            <input type="text" name="dFechaCaptura" id="dFechaCaptura" class="date-time form-control" value="<?php echo date("Y-m-d",  time()) ?>" disabled>
+                            <label for="dFechaCaptura" class="col-form-label text-md-left">Año del PAE</label>
+                            <input type="text" name="dFechaCaptura" id="dFechaCaptura" maxlength="4" class="form-control" data-parsley-type="number" minlength="4" data-parsley-required="true" data-parsley-group="step-1">
                         </div>
                     </div>
                     <div class="row" style="padding-bottom: 10px">
@@ -158,7 +158,7 @@
                     </div>
                     <div class="row" style="padding-bottom: 10px">
                         <div class="col-md-2">
-                            <label for="vObjetivo" class="col-form-label text-md-left">Próposito / objetivo de la intervención pública</label>
+                            <label for="vObjetivo" class="col-form-label text-md-left">Propósito / objetivo de la intervención pública</label>
                         </div>
                         <div class="col-md-10">
                             <input type="text" name="vObjetivo" id="vObjetivo" class="form-control" required data-parsley-group="step-1" data-parsley-required="true" data-parsley-maxlength="200"maxlength="200">

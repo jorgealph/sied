@@ -42,6 +42,14 @@ class M_IntervencionPropuesta extends CI_Model{
         $query = $this->db->get();
         return $query->result();
     }
+
+    public function tipoFondoQuery(){
+        $this->db->select('iIdTipoFondo, vTipoFondo');
+        $this->db->from('tipofondo');
+        $this->db->where('iActivo', 1);
+        $query = $this->db->get();
+        return $query->result();
+    }
     
 
     public function tipoEvaluacionQuery(){
@@ -88,15 +96,53 @@ class M_IntervencionPropuesta extends CI_Model{
         return $query->result();
     }
 
+    public function cargar_dependencias(){
+        $this->db->select('o.iIdOrganismo as id, o.vOrganismo as value');
+        $this->db->from('Organismo o');
+        $this->db->where("o.iActivo", 1);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function cargarCorresponsable($key){
+        $this->db->select('iIdOrganismo');
+        $this->db->from('intervencionpropuestacorresponsable');
+        $this->db->where('iIdIntervencionPropuesta', $key);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
     public function save($data){
         $this->db->insert($this->table, $data);
         return $this->db->insert_id();
     }
 
+    public function guardarCorresponsables($data){
+        $db_debug = $this->db->db_debug; //save setting
+        $this->db->db_debug = FALSE;
+        $this->db->insert('intervencionpropuestacorresponsable', $data);
+        //return $this->db->insert_id();
+        return $this->db->affected_rows();
+    }
+
+    public function guardarIntervencionCorresponsable($data){
+        $db_debug = $this->db->db_debug; //save setting
+        $this->db->db_debug = FALSE;
+        $this->db->insert('intervencioncorresponsable', $data);
+        //return $this->db->insert_id();
+        return $this->db->affected_rows();
+    }
+
+    public function deleteCorresponsable($int, $org){
+        $this->db->where('iIdIntervencionPropuesta', $int);
+        $this->db->where('iIdOrganismo', $org);
+        return $this->db->delete('intervencionpropuestacorresponsable');
+    }
+
     public function update($data){
         $this->db->where($this->table_id, $data['iIdIntervencionPropuesta']);
-        $this->db->update($this->table, $data);
-        return $this->db->affected_rows();
+        return $this->db->update($this->table, $data);
+        //return $this->db->affected_rows();
     }
 
     public function delete($id){
