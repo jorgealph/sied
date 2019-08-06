@@ -65,7 +65,7 @@
 			<div id="panel-contenido">
 				<?=$table?>
 			</div>
-			
+			<input type="hidden" id="currentPage">
 		</div>
         <!-- end #content -->
 		<script>
@@ -162,7 +162,6 @@
 			//	$("#table").load('<?=base_url()?>C_IntervencionPropuesta/drawTable');
 
 			function filter(){
-				$(".panel-busqueda").show();
 				$.ajax({
     				// la URL para la petición
     				url : '<?=base_url()?>C_IntervencionPropuesta/drawTable',
@@ -179,7 +178,8 @@
     				// código a ejecutar si la petición es satisfactoria;
     				// la respuesta es pasada como argumento a la función
     				success : function(json) {
-        				$("#panel-contenido").html(json);
+						$("#panel-contenido").html(json);
+						stateSave();
     				},
 					
 					/* código a ejecutar si la petición falla;
@@ -199,6 +199,17 @@
 					}*/
 				});
 			}
+
+			function stateSave(){
+				$( document ).ready(function() {
+					if(!$('.panel-busqueda').is(":visible")){
+						var currentPage = parseInt($("#currentPage").val());
+						table.page(currentPage).draw('page');
+						$(".panel-busqueda").show();
+					}
+				});
+			}
+
 			function pulsar(e) {
   				// averiguamos el código de la tecla pulsada (keyCode para IE y which para Firefox)
   				tecla = (document.all) ? e.keyCode :e.which;
@@ -211,12 +222,14 @@
         	}
 			
 			function editar(key){
+				$("#currentPage").val(table.page());
 				var url = '<?=base_url()?>C_IntervencionPropuesta/edit/'+key;
 				$(".panel-busqueda").hide();
 				$("#panel-contenido").load(url);
 			}
 
 			function agregar(){
+				$("#currentPage").val(table.page());
 				var url = '<?=base_url()?>C_IntervencionPropuesta/mostrar_crud';
 				$(".panel-busqueda").hide();
 				$("#panel-contenido").load(url);

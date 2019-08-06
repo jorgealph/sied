@@ -85,6 +85,7 @@
 			<div id="panel-contenido">
 
 			</div>
+			<input type="hidden" id="currentPage">
 		</div>
         <!-- end #content -->
 		<script>
@@ -106,7 +107,6 @@
 			$("#panel-contenido").load('<?=base_url()?>C_evaluacion/drawTable');
 
 			function filter(){
-				$(".panel-busqueda").show();
 				$.ajax({
     				// la URL para la petición
     				url : '<?=base_url()?>C_evaluacion/drawTable',
@@ -121,7 +121,8 @@
     				// código a ejecutar si la petición es satisfactoria;
     				// la respuesta es pasada como argumento a la función
     				success : function(json) {
-        				$("#panel-contenido").html(json);
+						$("#panel-contenido").html(json);
+						stateSave();
     				},
 					/* código a ejecutar si la petición falla;
     				son pasados como argumentos a la función
@@ -139,6 +140,17 @@
 					}*/
 				});
 			}
+
+			function stateSave(){
+				$( document ).ready(function() {
+					if(!$('.panel-busqueda').is(":visible")){
+						var currentPage = parseInt($("#currentPage").val());
+						table.page(currentPage).draw('page');
+						$(".panel-busqueda").show();
+					}
+				});
+			}
+
 			function pulsar(e) {
   				// averiguamos el código de la tecla pulsada (keyCode para IE y which para Firefox)
   				tecla = (document.all) ? e.keyCode :e.which;
@@ -151,18 +163,21 @@
         	}
 			
 			function editar(key){
+				$("#currentPage").val(table.page());
 				var url = '<?=base_url()?>ver/evaluacion/' + key;
 				$(".panel-busqueda").hide();
 				$("#panel-contenido").load(url);
 			}
 
 			function repositorio(key){
+				$("#currentPage").val(table.page());
 				var url = '<?=base_url()?>ver/repositorio/' + key;
 				$(".panel-busqueda").hide();
 				$("#panel-contenido").load(url);
 			}
 
 			function conclusion(key){
+				$("#currentPage").val(table.page());
 				var url = '<?=base_url()?>C_conclusion/capturar_conclusiones/' + key;
 				$(".panel-busqueda").hide();
 				$("#panel-contenido").load(url);

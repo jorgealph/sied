@@ -1,12 +1,13 @@
 
+var table = '';
 
 var handleDataTableDefault = function() {
 	"use strict";
     
     if ($('#data-table').length !== 0) {
-        $('#data-table').DataTable(
+        table = $('#data-table').DataTable(
             {
-                stateSave: true,
+                //stateSave: true,
                 responsive:!0,  
                 "bFilter": false, 
                 "pageLength": 5, 
