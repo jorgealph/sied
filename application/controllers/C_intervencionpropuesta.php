@@ -33,10 +33,19 @@ class C_IntervencionPropuesta extends CI_Controller {
 		if(empty($_POST['iTipo']) && empty($_POST['iIdEje']) && empty($_POST['vIntervencion']) && empty($_POST['iIdOrganismo'])){
 			$data = $this->M_IntervencionPropuesta->findAll();
 		}else{
-			$nombre = $_POST['vIntervencion'];
-			$eje = $_POST['iIdEje'];
-			$dependencia = $_POST['iIdOrganismo'];
-			$tipo = $_POST['iTipo'];
+			
+			if(isset($_POST['vIntervencion'])){
+				$nombre = $_POST['vIntervencion'];
+			}
+			if(isset($_POST['iIdEje'])){
+				$eje = $_POST['iIdEje'];
+			}
+			if(isset($_POST['iIdOrganismo'])){
+				$dependencia = $_POST['iIdOrganismo'];
+			}
+			if(isset($_POST['iTipo'])){
+				$tipo = $_POST['iTipo'];
+			}
 			$data = $this->M_IntervencionPropuesta->filterIntervencion($nombre, $eje, $dependencia, $tipo);
 		}
 		
@@ -46,7 +55,17 @@ class C_IntervencionPropuesta extends CI_Controller {
 	private function generateTable($data){
 		$table = '<p>No se encontraron registros para mostrar.</p>';
 		if($data->num_rows() > 0){
-			$table = '<table id="data-table-default" class="table table-hover table-bordered">
+			$table = '<!-- begin panel -->
+			<div class="panel panel-inverse">
+				<div class="panel-heading">
+					<div class="panel-heading-btn">
+						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+					</div>
+					<h4 class="panel-title">Resultados de la búsqueda</h4>
+				</div>
+				<div class="panel-body">
+					<div class="table-responsive" id="table">';
+			$table .= '<table id="data-table" class="table table-hover table-bordered">
                         <thead>
                             <tr>
 								<th>Intervención pública</th>
@@ -62,7 +81,7 @@ class C_IntervencionPropuesta extends CI_Controller {
 							
 			foreach ($data->result() as $registro) {
 				$acciones = '';				
-				$acciones .= '<button onclick="cargar(\''.base_url().'C_IntervencionPropuesta/edit/'.$registro->iIdIntervencionPropuesta.'\', \'#contenido\');" class="btn btn-grey btn-icon btn-sm"><i class="fas fa-pencil-alt fa-fw"></i></button>&nbsp;';
+				$acciones .= '<button onclick="editar('.$registro->iIdIntervencionPropuesta.');" class="btn btn-grey btn-icon btn-sm"><i class="fas fa-pencil-alt fa-fw"></i></button>&nbsp;';
 		
 			    $acciones .= '<button onclick="Aprobar('.$registro->iIdIntervencionPropuesta.')" class="btn btn-success btn-icon btn-sm"><i class="fas fa-lg fa-fw fa-check-circle"></i></button>&nbsp;';
 			
@@ -78,7 +97,12 @@ class C_IntervencionPropuesta extends CI_Controller {
 							</tr>";
 						} 
 				$table .= '</tbody>
-						</table>';
+						</table>
+						</div>
+					</div>
+					
+				</div>
+				<!-- end panel -->';
 				$table .= '<script>
 				$(document).ready(function() {
 					TableManageDefault.init();
@@ -216,7 +240,7 @@ class C_IntervencionPropuesta extends CI_Controller {
 
 	public function tabla_corresponsables(){
 		$tb = '';
-        $tb = '<table id="data-table-default" class="table table-hover table-bordered">
+        $tb = '<table id="data-table" class="table table-hover table-bordered">
             <thead>
                 <tr>
                     <th>Nombre de la dependencia</th>

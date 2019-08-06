@@ -224,7 +224,7 @@ class C_evaluacion extends CI_Controller{
     }
 
     private function documentos_corresponsables($data){
-        $tb = '<table id="data-table-default" class="table table-hover table-bordered">
+        $tb = '<table id="data-table" class="table table-hover table-bordered">
             <thead>
                 <tr>
                     <th>Organismo a cargo del programa</th>
@@ -606,7 +606,7 @@ class C_evaluacion extends CI_Controller{
                     </div>
                     <div class="panel-body">
                         <div class="table-responsive">';
-        $tb .= '<table id="data-table-default" class="table table-hover table-bordered">
+        $tb .= '<table id="data-table" class="table table-hover table-bordered">
             <thead>
                 <tr>
                     <th>Tipo de intervención pública</th>
@@ -697,7 +697,7 @@ class C_evaluacion extends CI_Controller{
 
     private function tableInstrumento(){
         $tb = '';
-        $tb = '<table id="data-table-default" class="table table-hover table-bordered">
+        $tb = '<table id="data-table" class="table table-hover table-bordered">
             <thead>
                 <tr>
                     <th>Instrumento</th>
@@ -727,9 +727,9 @@ class C_evaluacion extends CI_Controller{
                 $tb .= '<td>'.$this->getOrigen($r->iOrigenEvaluacion).'</td>';
                 $tb .= '<td>'.$r->vTipoEvaluacion.'</td>';
                 $tb .= '<td>';
-                    $tb .= '<button onclick="cargar(\'ver/evaluacion/'.$r->iIdEvaluacion.'\', \'#contenido\')" class="btn btn-default btn-icon btn-sm" data-toggle="tooltip" data-placement="top" title="Seguimiento de la evaluación"><i class="fas fa-edit fa-fw"></i></button>&nbsp;';
-                    $tb .= '<button onclick="cargar(\'ver/repositorio/'.$r->iIdEvaluacion.'\', \'#contenido\')" class="btn btn-default btn-icon btn-sm" data-toggle="tooltip" data-placement="top" title="Repositorio de documentos"><i class="fas fa-file-word fa-fw"></i></button>&nbsp;';
-                    $tb .= '<button onclick="cargar(\'C_conclusion/capturar_conclusiones/'.$r->iIdEvaluacion.'\', \'#contenido\')" class="btn btn-default btn-icon btn-sm" data-toggle="tooltip" data-placement="top" title="Capturar conclusiones"><i class="fas fa-sticky-note fa-fw"></i></button>&nbsp;';
+                    $tb .= '<button onclick="editar('.$r->iIdEvaluacion.')" class="btn btn-default btn-icon btn-sm" data-toggle="tooltip" data-placement="top" title="Seguimiento de la evaluación"><i class="fas fa-edit fa-fw"></i></button>&nbsp;';
+                    $tb .= '<button onclick="repositorio('.$r->iIdEvaluacion.')" class="btn btn-default btn-icon btn-sm" data-toggle="tooltip" data-placement="top" title="Repositorio de documentos"><i class="fas fa-file-word fa-fw"></i></button>&nbsp;';
+                    $tb .= '<button onclick="conclusion('.$r->iIdEvaluacion.')" class="btn btn-default btn-icon btn-sm" data-toggle="tooltip" data-placement="top" title="Capturar conclusiones"><i class="fas fa-sticky-note fa-fw"></i></button>&nbsp;';
                     $tb .= '<button onclick="" class="btn btn-default btn-icon btn-sm" data-toggle="tooltip" data-placement="top" title="Documento de evaluación"><i class="fas fa-file fa-fw"></i></button>&nbsp;';
                     $tb .= '<button onclick="" class="btn btn-primary btn-icon btn-sm" data-toggle="tooltip" data-placement="top" title="Documento de opinión"><i class="fas fa-comments fa-fw"></i></button>&nbsp;';
                     $tb .= '<button onclick="" class="btn btn-primary btn-icon btn-sm" data-toggle="tooltip" data-placement="top" title="Descargar el documento de opinión"><i class="fas fa-copy fa-fw"></i></button>&nbsp;';
@@ -771,7 +771,7 @@ class C_evaluacion extends CI_Controller{
 
     private function tableColaborador(){
         $tb = '';
-        $tb = '<table id="data-table-default" class="table table-hover table-bordered">
+        $tb = '<table id="data-table" class="table table-hover table-bordered">
             <thead>
                 <tr>
                     <th>Nombre completo</th>

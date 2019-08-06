@@ -1,8 +1,8 @@
 			<!-- begin page-header -->
-			<h1 class="page-header">Evaluaciones <!--<small>header small text goes here...</small>--></h1>
+			<h1 class="page-header panel-busqueda">Evaluaciones <!--<small>header small text goes here...</small>--></h1>
 			<!-- end page-header -->
 			<!-- begin panel -->
-			<div class="panel panel-inverse">
+			<div class="panel panel-inverse panel-busqueda">
 				<div class="panel-heading">
 					<h4 class="panel-title">Filtro de búsqueda</h4>
 				</div>
@@ -82,7 +82,7 @@
 					</form>
 				</div>
 			</div>
-			<div id="panel">
+			<div id="panel-contenido">
 
 			</div>
 		</div>
@@ -93,20 +93,20 @@
         $.post("<?=base_url();?>C_intervencionpropuesta/delete",{id:id},function(resultado,status){
         	if(resultado == "1"){                		
         	 	notificacion('El registro ha sido eliminado','success');
-        	 	$("#panel").load('<?=base_url()?>C_IntervencionPropuesta/drawTable');
+        	 	$("#panel-contenido").load('<?=base_url()?>C_IntervencionPropuesta/drawTable');
         	}
     		else notificacion('El registro no pudo ser eliminado','error');					
     	});
 	}
 		</script>
 		
-		<script src="<?=base_url()?>admin/assets/js/demo/table-manage-default.demo.min.js"></script>
+		<script src="<?=base_url()?>admin/assets/js/datatable.js"></script>
 		
 		<script>
-			
-			$("#panel").load('<?=base_url()?>C_evaluacion/drawTable');
+			$("#panel-contenido").load('<?=base_url()?>C_evaluacion/drawTable');
 
 			function filter(){
+				$(".panel-busqueda").show();
 				$.ajax({
     				// la URL para la petición
     				url : '<?=base_url()?>C_evaluacion/drawTable',
@@ -121,7 +121,7 @@
     				// código a ejecutar si la petición es satisfactoria;
     				// la respuesta es pasada como argumento a la función
     				success : function(json) {
-        				$("#panel").html(json);
+        				$("#panel-contenido").html(json);
     				},
 					/* código a ejecutar si la petición falla;
     				son pasados como argumentos a la función
@@ -150,5 +150,22 @@
             	$("#iIdOrganismo").load('C_intervencionpropuesta/dependenciaQuery/'+value);
         	}
 			
+			function editar(key){
+				var url = '<?=base_url()?>ver/evaluacion/' + key;
+				$(".panel-busqueda").hide();
+				$("#panel-contenido").load(url);
+			}
+
+			function repositorio(key){
+				var url = '<?=base_url()?>ver/repositorio/' + key;
+				$(".panel-busqueda").hide();
+				$("#panel-contenido").load(url);
+			}
+
+			function conclusion(key){
+				var url = '<?=base_url()?>C_conclusion/capturar_conclusiones/' + key;
+				$(".panel-busqueda").hide();
+				$("#panel-contenido").load(url);
+			}
 
 		</script>

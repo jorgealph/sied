@@ -171,26 +171,26 @@ class M_IntervencionPropuesta extends CI_Model{
         return $query->result()[0];
     }
 
-    public function filterIntervencion($nombre, $eje, $dependencia, $tipo){
+    public function filterIntervencion($nombre = null, $eje = null, $dependencia = null, $tipo = null){
         $this->db->select('ip.iIdIntervencionPropuesta, ip.vIntervencion, ip.iAnioCreacion, ip.iAnioEvaluacion, o.vOrganismo, o.iIdOrganismo, e.iIdEje, e.vEje, ip.iTipo');
         $this->db->from("$this->table as ip");
         $this->db->join('Organismo o', 'ip.iIdOrganismo = o.iIdOrganismo', 'INNER');
         $this->db->join('Eje e', 'e.iIdEje = o.iIdEje', 'INNER');
         $this->db->where('ip.iActivo', 1);
         
-        if(!empty($nombre) && $nombre != null){
+        if(!empty($nombre) && !is_null($nombre)){
             $this->db->like('ip.vIntervencion', $nombre);
         }
         
-        if(!empty($eje) && $eje != null){
+        if(!empty($eje) && !is_null($eje)){
             $this->db->where('e.iIdEje', $eje);
         }
         
-        if(!empty($dependencia) && $dependencia != null){
+        if(!empty($dependencia) && !is_null($dependencia)){
             $this->db->where('o.iIdOrganismo', $dependencia);
         }
         
-        if(!empty($tipo) && $tipo != null){
+        if(!empty($tipo) && !is_null($tipo)){
             $this->db->where('ip.iTipo', $tipo);
         }
         

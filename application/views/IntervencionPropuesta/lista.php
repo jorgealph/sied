@@ -1,11 +1,9 @@
 			<!-- begin page-header -->
-			<h1 class="page-header">Propuestas de intervenciones <!--<small>header small text goes here...</small>--></h1>
+			<h1 class="page-header panel-busqueda">Propuestas de intervenciones <!--<small>header small text goes here...</small>--></h1>
 			<!-- end page-header -->
 			
-			
-			
 			<!-- begin panel -->
-			<div class="panel panel-inverse">
+			<div class="panel panel-inverse panel-busqueda">
 				<div class="panel-heading">
 					<h4 class="panel-title">Filtro de búsqueda</h4>
 				</div>
@@ -57,30 +55,17 @@
 							
 						</div>
 						<div class="col-md-2">
-                			<button class="btn btn-success" type="button" onclick="cargar('<?=base_url();?>C_intervencionpropuesta/mostrar_crud','#contenido');" style="margin-top:25px;"><i class="fas fa-lg fa-fw m-r-10 fa-plus-circle"></i>Nueva intervención</button>
+                			<button class="btn btn-success" type="button" onclick="agregar();" style="margin-top:25px;"><i class="fas fa-lg fa-fw m-r-10 fa-plus-circle"></i>Nueva intervención</button>
 						</div>
 					</div>
 					</form>
 				</div>
 				
 			</div>
-
-			<!-- begin panel -->
-			<div class="panel panel-inverse">
-				<div class="panel-heading">
-					<div class="panel-heading-btn">
-						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-					</div>
-					<h4 class="panel-title">Resultados de la búsqueda</h4>
-				</div>
-				<div class="panel-body">
-					<div class="table-responsive" id="table">
-							<?=$table?>
-					</div>
-				</div>
-				
+			<div id="panel-contenido">
+				<?=$table?>
 			</div>
-			<!-- end panel -->
+			
 		</div>
         <!-- end #content -->
 		<script>
@@ -89,14 +74,14 @@
         $.post("<?=base_url();?>C_intervencionpropuesta/delete",{id:id},function(resultado,status){
         	if(resultado == "1"){                		
         	 	notificacion('El registro ha sido eliminado','success');
-        	 	$("#table").load('<?=base_url()?>C_IntervencionPropuesta/drawTable');
+        	 	$("#panel-contenido").load('<?=base_url()?>C_IntervencionPropuesta/drawTable');
         	}
     		else notificacion('El registro no pudo ser eliminado','error');					
     	});
 	}
 		</script>
 		
-		<script src="<?=base_url()?>admin/assets/js/demo/table-manage-default.demo.min.js"></script>
+		<script src="<?=base_url()?>admin/assets/js/datatable.js"></script>
 		
 		<script>
 			function Aprobar(id){
@@ -177,6 +162,7 @@
 			//	$("#table").load('<?=base_url()?>C_IntervencionPropuesta/drawTable');
 
 			function filter(){
+				$(".panel-busqueda").show();
 				$.ajax({
     				// la URL para la petición
     				url : '<?=base_url()?>C_IntervencionPropuesta/drawTable',
@@ -193,7 +179,7 @@
     				// código a ejecutar si la petición es satisfactoria;
     				// la respuesta es pasada como argumento a la función
     				success : function(json) {
-        				$("#table").html(json);
+        				$("#panel-contenido").html(json);
     				},
 					
 					/* código a ejecutar si la petición falla;
@@ -224,5 +210,16 @@
             	$("#iIdOrganismo").load('C_intervencionpropuesta/dependenciaQuery/'+value);
         	}
 			
+			function editar(key){
+				var url = '<?=base_url()?>C_IntervencionPropuesta/edit/'+key;
+				$(".panel-busqueda").hide();
+				$("#panel-contenido").load(url);
+			}
+
+			function agregar(){
+				var url = '<?=base_url()?>C_IntervencionPropuesta/mostrar_crud';
+				$(".panel-busqueda").hide();
+				$("#panel-contenido").load(url);
+			}
 
 		</script>

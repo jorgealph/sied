@@ -1,6 +1,6 @@
 
 			<!-- begin breadcrumb -->
-			<a onclick="cargar('<?=base_url();?>C_IntervencionPropuesta/mostrar_vista', '#contenido');" class="btn btn-default pull-right">
+			<a onclick="filter()" class="btn btn-default pull-right">
                 <li class="fas fa-lg fa-fw m-r-10 fa-arrow-left"></li><span>Regresar</span>
             </a>
 			<!-- end breadcrumb -->

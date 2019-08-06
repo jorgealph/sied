@@ -1,5 +1,14 @@
-
-<table id="data-table-default" class="table table-hover table-bordered">
+<!-- begin panel -->
+<div class="panel panel-inverse">
+				<div class="panel-heading">
+					<div class="panel-heading-btn">
+						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+					</div>
+					<h4 class="panel-title">Resultados de la búsqueda</h4>
+				</div>
+				<div class="panel-body">
+					<div class="table-responsive" id="table">
+<table id="data-table" class="table table-hover table-bordered">
     <thead>
 	    <tr>
 		    <th>Intervención pública</th>
@@ -28,7 +37,7 @@
 			} ?>
 			</td>
 			<td>
-			    <button onclick="cargar('<?=base_url();?>C_IntervencionPropuesta/edit/<?php echo $r->iIdIntervencionPropuesta; ?>', '#contenido');" class="btn btn-grey btn-icon btn-sm"><i class="fas fa-pencil-alt fa-fw"></i></button>
+			    <button onclick="editar(<?=$r->iIdIntervencionPropuesta?>);" class="btn btn-grey btn-icon btn-sm"><i class="fas fa-pencil-alt fa-fw"></i></button>
 		
 			    <button onclick="Aprobar(<?php echo $r->iIdIntervencionPropuesta; ?>)" class="btn btn-success btn-icon btn-sm"><i class="fas fa-lg fa-fw fa-check-circle"></i></button>
 			
@@ -38,6 +47,11 @@
 		<?php } ?>
 	</tbody>
 </table>
+</div>
+					</div>
+					
+				</div>
+				<!-- end panel -->'
 <script>
     $(document).ready(function() {
 	    TableManageDefault.init();
