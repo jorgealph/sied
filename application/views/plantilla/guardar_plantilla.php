@@ -1,16 +1,16 @@
 <link href="<?=base_url()?>admin/assets/plugins/select2/dist/css/select2.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="<?=base_url()?>admin/assets/plugins/select2/dist/select2-bootstrap4.css">
 
-        <a onclick="regresar();" class="btn btn-default pull-right">
+        <a onclick="filter();" class="btn btn-default pull-right">
                 <li class="fas fa-lg fa-fw m-r-10 fa-arrow-left"></li><span>Regresar</span>
             </a>
-        <h3 class="page-header">Información general</h3>
-    <div class="panel panel-inverse">
-        <div class="panel-heading">
+        <h3 class="page-header panel-contenido">Información general</h3>
+    <div class="panel panel-inverse panel-contenido">
+        <div class="panel-heading panel-contenido">
             <h4 class="panel-title">Captura de datos</h4>
             </div>
             <div class="panel-body">
-            <form class="form" id="form-captura" name="form-captura" onkeypress="return pulsar(event)">
+            <form class="form panel-contenido" id="form-captura" name="form-captura" onkeypress="return pulsar(event)">
                 <div class="col-md-12">
                 <input type="hidden" name="id_plantilla" value="<?php if(isset($iIdPlantilla)) echo $iIdPlantilla;?>">
                 <div class="row">

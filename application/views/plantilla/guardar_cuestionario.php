@@ -3,7 +3,7 @@
                     content: "Seleccionar";
                 }
 			</style>
-            <a onclick="regresar();" class="btn btn-default pull-right">
+            <a onclick="filter();" class="btn btn-default pull-right">
                 <li class="fas fa-lg fa-fw m-r-10 fa-arrow-left"></li><span>Regresar</span>
             </a>
             <h3 class="page-header">Información general</h3>
