@@ -42,7 +42,7 @@
                 <div class="col md-4"> 
                     <label>Palabra clave: </label>
                     <div class="input-group mb-12">
-                        <input type="text" class="form-control" name="filtro-texto_busqueda" id="filtro-texto_busqueda" placeholder="" aria-label="" aria-describedby="basic-addon1">
+                        <input type="text" class="form-control" name="filtro-texto_busqueda" id="filtro-texto_busqueda" placeholder="" aria-label="" aria-describedby="basic-addon1" onkeypress="event.preventDefault()">
                             <div class="input-group-append">
                                 <button class="btn btn-info" type="button" onclick="filter()"><i class="ti-search"></i>&nbsp;Buscar</button>
                             </div>
