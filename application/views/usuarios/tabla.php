@@ -1,11 +1,13 @@
 <div class="panel panel-inverse">
         <div class="panel-heading">
             <div class="panel-heading-btn">
-                <a href="javascript:;" class="table table-hover table-bordered dataTable no-footer dtr-inline" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
             </div>
             <h4 class="panel-title">Resultados de la búsqueda</h4>
-        </div> <br>
-            <table id="listado" class="table table-striped table-bordered">
+        </div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                <table id="data-table" class="table table-striped table-bordered">
                 <thead>
                     <tr>
                         <th scope="col">ID</th>
@@ -48,6 +50,8 @@
                     <?php endforeach; ?>       
                 </tbody>
             </table>
+                </div>
+            </div>
             </div>
 
          <script>

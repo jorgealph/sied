@@ -14,7 +14,7 @@
             <div class="row">
                 <div class="col-md-2">
                 <label>Eje: </label>
-                <select class="form-control" id="eje" name="eje">
+                <select class="form-control" id="filtro-eje" name="filtro-eje">
                     <option value="">Seleccionar</option>
                 <?php foreach ($eje as $row) {?>
                     <option value="<?=$row->iIdEje;?>"><?=$row->vEje;?></option>
@@ -23,7 +23,7 @@
                 </div>
             <div class="col-md-3">
             <label>Dependecia: </label>
-            <select class="form-control" id="organismo" name="organismo">
+            <select class="form-control" id="filtro-organismo" name="filtro-organismo">
             <option value="">Seleccionar</option>
             <?php foreach ($organismo as $row) {?>
                 <option value="<?=$row->iIdOrganismo;?>"><?=$row->vOrganismo;?></option>
@@ -33,7 +33,7 @@
             <div class="col md-5"> 
                 <label>Palabra clave: </label>
                 <div class="input-group mb-12">
-                    <input type="text" class="form-control" name="texto_busqueda" id="texto_busqueda" placeholder="" aria-label="" aria-describedby="basic-addon1">
+                    <input type="text" class="form-control" name="filtro-texto_busqueda" id="filtro-texto_busqueda" placeholder="" aria-label="" aria-describedby="basic-addon1">
                         <div class="input-group-append">
                             <button class="btn btn-info" type="button" onclick="filter()"><i class="ti-search"></i>&nbsp;Buscar</button>
                         </div>
@@ -98,7 +98,7 @@
         <script src="<?=base_url()?>admin/assets/plugins/DataTables/media/js/jquery.dataTables.js"></script>
 		<script src="<?=base_url()?>admin/assets/plugins/DataTables/media/js/dataTables.bootstrap.min.js"></script>
 		<script src="<?=base_url()?>admin/assets/plugins/DataTables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
-		<script src="<?=base_url()?>admin//assets/js/datatable.js"></script>
+		<script src="<?=base_url()?>admin/assets/js/datatable.js"></script>
 		<script>
 		$(document).ready(function() {
 			TableManageDefault.init();
@@ -145,18 +145,21 @@
 			}
 
             function editar(key){
+				$("#currentPage").val(table.page());
 				var url = '<?=base_url()?>C_usuario/guardar/'+key;
 				$(".panel-busqueda").hide();
 				$("#panel-contenido").load(url);
 			}
 
 			function agregar(){
+				$("#currentPage").val(table.page());
 				var url = '<?=base_url()?>C_usuario/guardar/0/1';
 				$(".panel-busqueda").hide();
 				$("#panel-contenido").load(url);
 			}
 
             function agregarC(key){
+				$("#currentPage").val(table.page());
 				var url = '<?=base_url()?>C_usuario/ver/'+key;
 				$(".panel-busqueda").hide();
 				$("#panel-contenido").load(url);

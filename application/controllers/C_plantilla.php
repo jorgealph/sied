@@ -33,13 +33,13 @@ class C_plantilla extends CI_Controller {
     }
 
     public function tabla(){
-         if(empty($_REQUEST['anio']) && empty($_REQUEST['origen']) && empty($_REQUEST['tipo']) && empty($_REQUEST['texto_busqueda'])){
+         if(empty($_REQUEST['filtro-anio']) && empty($_REQUEST['filtro-origen']) && empty($_REQUEST['filtro-tipo']) && empty($_REQUEST['filtro-texto_busqueda'])){
             $vdata["plantilla"] = $this->mp->findAll();
         }else{
-            $anio = $_REQUEST['anio'];
-            $origen = $_REQUEST['origen'];
-            $tipo = $_REQUEST['tipo'];
-            $nombre = $_REQUEST['texto_busqueda'];
+            $anio = $_REQUEST['filtro-anio'];
+            $origen = $_REQUEST['filtro-origen'];
+            $tipo = $_REQUEST['filtro-tipo'];
+            $nombre = $_REQUEST['filtro-texto_busqueda'];
             $vdata["plantilla"] = $this->mp->filtro($anio, $origen, $tipo, $nombre);
         } 
         $this->load->view('plantilla/tabla', $vdata);

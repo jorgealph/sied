@@ -125,7 +125,6 @@
         <button type="button" onclick="<?php echo (isset($iIdPlantilla)) ? 'update()': 'dataEntry()'; ?>" class='btn btn-primary'>Enviar</button>
     </center>
     
-        <script src="<?=base_url()?>admin/assets/js/demo/table-manage-default.demo.min.js"></script>
         <script src="<?=base_url()?>admin/assets/plugins/select2/dist/js/select2.min.js"></script>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>

@@ -18,12 +18,12 @@ class C_usuario extends CI_Controller {
 
     public function listado(){
 
-        if(empty($_REQUEST['eje']) && empty($_REQUEST['organismo']) && empty($_REQUEST['texto_busqueda'])){
+        if(empty($_REQUEST['filtro-eje']) && empty($_REQUEST['filtro-organismo']) && empty($_REQUEST['filtro-texto_busqueda'])){
             $vdata["personas"] = $this->mu->findAll();
         }else{
-            $eje = $_REQUEST['eje'];
-            $organismo = $_REQUEST['organismo'];
-            $siglas = $_REQUEST['texto_busqueda'];
+            $eje = $_REQUEST['filtro-eje'];
+            $organismo = $_REQUEST['filtro-organismo'];
+            $siglas = $_REQUEST['filtro-texto_busqueda'];
             $vdata["personas"] = $this->mu->filtro($organismo, $eje, $siglas);
         }
         

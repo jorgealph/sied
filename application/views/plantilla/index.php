@@ -14,16 +14,16 @@
                 <div class="row">
                     <div class="col-md-2">
                     <label>Año: </label>
-                    <select class="form-control" id="anio" name="anio">
+                    <select class="form-control" id="filtro-anio" name="filtro-anio">
                         <option value="">Seleccionar</option>
-                    <?php foreach ($anio as $row) {?>
-                        <option value="<?=$row->iAnioEvaluacion;?>"><?=$row->iAnioEvaluacion;?></option>
-                    <?php } ?>
+						<?php foreach ($anio as $row) {?>
+							<option value="<?=$row->iAnioEvaluacion;?>"><?=$row->iAnioEvaluacion;?></option>
+						<?php } ?>
                     </select>
                     </div>
                 <div class="col-md-2">
                 <label>Origen: </label>
-                <select class="form-control" id="origen" name="origen">
+                <select class="form-control" id="filtro-origen" name="filtro-origen">
                     <option value="">Seleccionar</option>
                     <?php foreach ($origen as $row) {?>
                         <option value="<?=$row->iOrigenEvaluacion;?>"><?=$row->iOrigenEvaluacion == 1 ? "Interna" : "Externa"?></option>
@@ -32,7 +32,7 @@
                 </div>
                 <div class="col-md-2">
                 <label>Tipo: </label>
-                <select class="form-control" id="tipo" name="tipo">
+                <select class="form-control" id="filtro-tipo" name="filtro-tipo">
                     <option value="">Seleccionar</option>
                     <?php foreach ($tipo as $row) {?>
                         <option value="<?=$row->iIdTipoEvaluacion;?>"><?=$row->vTipoEvaluacion;?></option>
@@ -42,7 +42,7 @@
                 <div class="col md-4"> 
                     <label>Palabra clave: </label>
                     <div class="input-group mb-12">
-                        <input type="text" class="form-control" name="texto_busqueda" id="texto_busqueda" placeholder="" aria-label="" aria-describedby="basic-addon1">
+                        <input type="text" class="form-control" name="filtro-texto_busqueda" id="filtro-texto_busqueda" placeholder="" aria-label="" aria-describedby="basic-addon1">
                             <div class="input-group-append">
                                 <button class="btn btn-info" type="button" onclick="filter()"><i class="ti-search"></i>&nbsp;Buscar</button>
                             </div>
@@ -147,18 +147,21 @@
 			}
 
             function editar(key){
+				$("#currentPage").val(table.page());
 				var url = '<?=base_url()?>C_plantilla/modificar_plantilla/'+key;
 				$(".panel-busqueda").hide();
 				$("#panel-contenido").load(url);
 			}
 
 			function agregar(){
+				$("#currentPage").val(table.page());
 				var url = '<?=base_url()?>C_plantilla/guardar_plantilla';
 				$(".panel-busqueda").hide();
 				$("#panel-contenido").load(url);
 			}
 
             function agregarC(key){
+				$("#currentPage").val(table.page());
 				var url = '<?=base_url()?>C_plantilla/guardar_cuestionario/'+key;
 				$(".panel-busqueda").hide();
 				$("#panel-contenido").load(url);
