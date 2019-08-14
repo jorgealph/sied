@@ -26,7 +26,7 @@ class C_organismo extends CI_Controller {
     function buscar(){
         if(isset($_POST['texto_busqueda']))
         {
-            $where = '';
+            $where = array();
             $like = $this->input->post('texto_busqueda');
             if($this->input->post('iIdEje') > 0) $where['o.iIdEje'] = $this->input->post('iIdEje');
             $pag = $this->input->post('pag');
@@ -35,7 +35,7 @@ class C_organismo extends CI_Controller {
         }
     }
 
-    function listar_organismos($where='',$like='',$pag=1)
+    function listar_organismos($where=array(),$like='',$pag=1)
     {
         $query = $this->mo->buscar_organismo($where,$like);
                 
@@ -74,11 +74,24 @@ class C_organismo extends CI_Controller {
                     </table>
                 </div>';
 
+            $tabla .= '<script>
+                page = '.$pag.';
+                $(document).ready(function(){
+                    table = $(\'#tabla_registros\').DataTable({
+                        responsive: true,
+                        searching: false,
+                        lengthChange: false
+                    });
+
+                    table.page(page).draw(\'page\');
+                });            
+                </script>';
+
             return $tabla;
         }
         else
         {
-            return 'No se encontraron registros que coincidan con los criterios de búsqueda';
+            return 'Sin resultados para mostrar.';
         }
     }
 
@@ -125,6 +138,8 @@ class C_organismo extends CI_Controller {
             $this->load->library('Class_options');
             $cls_opts = new Class_options();
             $datos['options_eje'] = $cls_opts->options_tabla('ejes',$datos['iIdEje']);
+            $datos['options_poder'] = $cls_opts->options_tabla('poderes',$datos['iIdPoder']);
+            $datos['options_ambito'] = $cls_opts->options_tabla('ambitos',$datos['iIdAmbito']);
             
             $this->load->view('organismo/capturar',$datos);
         }
