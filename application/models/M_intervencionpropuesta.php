@@ -12,8 +12,8 @@ class M_IntervencionPropuesta extends CI_Model{
     public function findAll(){
         $this->db->select('ip.iIdIntervencionPropuesta, ip.vIntervencion, ip.iAnioCreacion, ip.iAnioEvaluacion, o.vOrganismo, o.iIdOrganismo, e.iIdEje, e.vEje, ip.iTipo');
         $this->db->from("$this->table as ip");
-        $this->db->join('Organismo o', 'ip.iIdOrganismo = o.iIdOrganismo', 'INNER');
-        $this->db->join('Eje e', 'e.iIdEje = o.iIdEje', 'INNER');
+        $this->db->join('organismo o', 'ip.iIdOrganismo = o.iIdOrganismo', 'INNER');
+        $this->db->join('eje e', 'e.iIdEje = o.iIdEje', 'INNER');
         $this->db->where('ip.iActivo', 1);
         return $query = $this->db->get();
         //return $query->result();
@@ -81,16 +81,16 @@ class M_IntervencionPropuesta extends CI_Model{
     public function GetOrganismo(){
         $this->db->select('u.iIdOrganismo, o.vOrganismo, e.vEje');
         $this->db->from('usuario as u');
-        $this->db->join('Organismo o', 'u.iIdOrganismo = o.iIdOrganismo', 'INNER');
-        $this->db->join('Eje e', 'e.iIdEje = o.iIdEje', 'INNER');
+        $this->db->join('organismo o', 'u.iIdOrganismo = o.iIdOrganismo', 'INNER');
+        $this->db->join('eje e', 'e.iIdEje = o.iIdEje', 'INNER');
         $query = $this->db->get();
         return $query->result();
     }
 
     public function GetOrganismoEdit($id){
         $this->db->select('o.iIdOrganismo, o.vOrganismo, e.vEje');
-        $this->db->from('Organismo o');
-        $this->db->join('Eje e', 'e.iIdEje = o.iIdEje', 'INNER');
+        $this->db->from('organismo o');
+        $this->db->join('eje e', 'e.iIdEje = o.iIdEje', 'INNER');
         $this->db->where("o.iIdOrganismo = $id");
         $query = $this->db->get();
         return $query->result();
@@ -98,7 +98,7 @@ class M_IntervencionPropuesta extends CI_Model{
 
     public function cargar_dependencias(){
         $this->db->select('o.iIdOrganismo as id, o.vOrganismo as value');
-        $this->db->from('Organismo o');
+        $this->db->from('organismo o');
         $this->db->where("o.iActivo", 1);
         $query = $this->db->get();
         return $query->result();
@@ -154,9 +154,9 @@ class M_IntervencionPropuesta extends CI_Model{
 
     public function GetEje($id){
         $this->db->select('e.iIdEje, pp.iIdPoliticaPublica');
-        $this->db->from('Objetivo o');
+        $this->db->from('objetivo o');
         $this->db->join('politicapublica pp', 'pp.iIdPoliticaPublica = o.iIdPoliticaPublica', 'INNER');
-        $this->db->join('Eje e', 'e.iIdEje = pp.iIdEje', 'INNER');
+        $this->db->join('eje e', 'e.iIdEje = pp.iIdEje', 'INNER');
         $this->db->where("o.iIdObjetivo = $id");
         $query = $this->db->get();
 
@@ -174,8 +174,8 @@ class M_IntervencionPropuesta extends CI_Model{
     public function filterIntervencion($nombre = null, $eje = null, $dependencia = null, $tipo = null){
         $this->db->select('ip.iIdIntervencionPropuesta, ip.vIntervencion, ip.iAnioCreacion, ip.iAnioEvaluacion, o.vOrganismo, o.iIdOrganismo, e.iIdEje, e.vEje, ip.iTipo');
         $this->db->from("$this->table as ip");
-        $this->db->join('Organismo o', 'ip.iIdOrganismo = o.iIdOrganismo', 'INNER');
-        $this->db->join('Eje e', 'e.iIdEje = o.iIdEje', 'INNER');
+        $this->db->join('organismo o', 'ip.iIdOrganismo = o.iIdOrganismo', 'INNER');
+        $this->db->join('eje e', 'e.iIdEje = o.iIdEje', 'INNER');
         $this->db->where('ip.iActivo', 1);
         
         if(!empty($nombre) && !is_null($nombre)){
@@ -202,7 +202,7 @@ class M_IntervencionPropuesta extends CI_Model{
         $this->db->distinct();
         $this->db->select('o.vOrganismo, o.iIdOrganismo');
         $this->db->from("organismo as o");
-        $this->db->join('Eje e', 'e.iIdEje = o.iIdEje', 'INNER');
+        $this->db->join('eje e', 'e.iIdEje = o.iIdEje', 'INNER');
         $this->db->where('o.iActivo', 1);
         
         if($id != null && !empty($id)){

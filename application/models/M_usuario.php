@@ -126,7 +126,7 @@ class M_usuario extends CI_Model {
 
     function nombre_organismo($id){
         $this->db->select('vOrganismo');
-        $this->db->from('Organismo');
+        $this->db->from('organismo');
         $this->db->where('iIdOrganismo', $id);
 
         return $this->db->get()->row()->vOrganismo;
@@ -134,7 +134,7 @@ class M_usuario extends CI_Model {
 
     function nombre_rol($id){
         $this->db->select('vRol');
-        $this->db->from('Roles');
+        $this->db->from('roles');
         $this->db->where('iIdRoles', $id);
 
         return $this->db->get()->row()->vOrganismo;

@@ -9,8 +9,8 @@ class M_organismo extends CI_Model {
     function buscar_organismo($where,$like)
     {
     	$this->db->select('o.iIdOrganismo, o.vOrganismo, o.vSiglas, o.vNombreTitular, e.vEje');		
-		$this->db->from('Organismo o');
-		$this->db->join('Eje e','e.iIdEje = o.iIdEje AND e.iActivo = 1','INNER');
+		$this->db->from('organismo o');
+		$this->db->join('eje e','e.iIdEje = o.iIdEje AND e.iActivo = 1','INNER');
 		$this->db->where('o.iActivo',1);
 
 		if(!empty($where)) $this->db->where($where);
@@ -24,8 +24,8 @@ class M_organismo extends CI_Model {
 
     function datos_captura($id)
     {
-    	$this->db->select('o.iIdOrganismo, o.vOrganismo, o.vSiglas, o.vNombreTitular, o.vNombreEnlace, o.vCorreoContacto, o.iIdEje');
-		$this->db->from('Organismo o');
+    	$this->db->select('o.iIdOrganismo, o.vOrganismo, o.vSiglas, o.vNombreTitular, o.vNombreEnlace, o.vCorreoContacto, o.iIdEje, o.iIdPoder, o.iIdAmbito, o.vTelefonoContacto');
+		$this->db->from('organismo o');
 		$this->db->where('o.iActivo',1);
 		$this->db->where('iIdOrganismo',$id);
 
@@ -34,7 +34,7 @@ class M_organismo extends CI_Model {
 
     function campos_tabla()
 	{
-		$sql = "SHOW COLUMNS FROM Organismo FROM {$this->db->database};";
+		$sql = "SHOW COLUMNS FROM organismo FROM {$this->db->database};";
 		return $this->db->query($sql); 
 	}
 }
