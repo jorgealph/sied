@@ -52,66 +52,64 @@ class C_IntervencionPropuesta extends CI_Controller {
 		echo $this->generateTable($data);
 	}
 
-	private function generateTable($data){
+	public function generateTable($data){
 		$table = '<p>No se encontraron registros para mostrar.</p>';
-		if($data->num_rows() > 0){
-			$table = '<!-- begin panel -->
-			<div class="panel panel-inverse">
-				<div class="panel-heading">
-					<div class="panel-heading-btn">
-						<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-					</div>
-					<h4 class="panel-title">Resultados de la búsqueda</h4>
-				</div>
-				<div class="panel-body">
-					<div class="table-responsive" id="table">';
-			$table .= '<table id="data-table" class="table table-hover table-bordered">
-                        <thead>
-                            <tr>
-								<th>Intervención pública</th>
-								<th>Año de creación</th>
-								<th>Año de evaluación</th>
-								<th>Eje</th>
-								<th>Dependencia</th>
-								<th>Tipo de intervención</th>
-								<th width="100px">Acciones</th>
-                            </tr>
-                        </thead>
-						<tbody>';
-							
-			foreach ($data->result() as $registro) {
-				$acciones = '';				
-				$acciones .= '<button onclick="editar('.$registro->iIdIntervencionPropuesta.');" class="btn btn-grey btn-icon btn-sm"><i class="fas fa-pencil-alt fa-fw"></i></button>&nbsp;';
 		
-			    $acciones .= '<button onclick="Aprobar('.$registro->iIdIntervencionPropuesta.')" class="btn btn-success btn-icon btn-sm"><i class="fas fa-lg fa-fw fa-check-circle"></i></button>&nbsp;';
-			
-			    $acciones .= '<button onclick="confirmar(\'¿Desea eliminar este registro?\', eliminar ,'.$registro->iIdIntervencionPropuesta.');" class="btn btn-danger btn-icon btn-sm"><i class="fas fa-trash-alt fa-fw"></i></button>';
-				$table .= " <tr>
-								<td>{$registro->vIntervencion}</td>
-								<td>{$registro->iAnioCreacion}</td>
-								<td>{$registro->iAnioEvaluacion}</td>
-								<td>{$registro->vEje}</td>
-								<td>{$registro->vOrganismo}</td>
-								<td>{$this->GetType($registro->iTipo)}</td>                        
-								<td>$acciones</td>
-							</tr>";
-						} 
-				$table .= '</tbody>
-						</table>
-						</div>
-					</div>
-					
+		$table = '<!-- 
+		<div class="panel panel-inverse">
+			<div class="panel-heading">
+				<div class="panel-heading-btn">
+					<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
 				</div>
-				<!-- end panel -->';
-				$table .= '<script>
-				$(document).ready(function() {
-					TableManageDefault.init();
-				});
-			</script>';
-			return $table;
-		}else{
-			return 'No se encontraron coincidencias';
-		}
+				<h4 class="panel-title">Resultados de la búsqueda</h4>
+			</div>
+			<div class="panel-body"> -->
+				<div class="table-responsive" id="table">';
+		$table .= '<table id="data-table" class="table table-hover table-bordered">
+                    <thead>
+                        <tr>
+							<th>Intervención pública</th>
+							<th>Año de creación</th>
+							<th>Año de evaluación</th>
+							<th>Eje</th>
+							<th>Dependencia</th>
+							<th>Tipo de intervención</th>
+							<th width="100px">Acciones</th>
+                        </tr>
+                    </thead>
+					<tbody>';
+						
+		foreach ($data->result() as $registro) {
+			$acciones = '';				
+			$acciones .= '<button onclick="editar('.$registro->iIdIntervencionPropuesta.');" class="btn btn-grey btn-icon btn-sm"><i class="fas fa-pencil-alt fa-fw"></i></button>&nbsp;';
+	
+		    $acciones .= '<button onclick="Aprobar('.$registro->iIdIntervencionPropuesta.')" class="btn btn-success btn-icon btn-sm"><i class="fas fa-lg fa-fw fa-check-circle"></i></button>&nbsp;';
+		
+		    $acciones .= '<button onclick="confirmar(\'¿Desea eliminar este registro?\', eliminar ,'.$registro->iIdIntervencionPropuesta.');" class="btn btn-danger btn-icon btn-sm"><i class="fas fa-trash-alt fa-fw"></i></button>';
+			$table .= " <tr>
+							<td>{$registro->vIntervencion}</td>
+							<td>{$registro->iAnioCreacion}</td>
+							<td>{$registro->iAnioEvaluacion}</td>
+							<td>{$registro->vEje}</td>
+							<td>{$registro->vOrganismo}</td>
+							<td>{$this->GetType($registro->iTipo)}</td>                        
+							<td>$acciones</td>
+						</tr>";
+					} 
+			$table .= '</tbody>
+					</table>					
+					</div>
+					<!--
+				</div>
+				
+			</div>
+			-->';
+			$table .= '<script>
+			$(document).ready(function() {
+				TableManageDefault.init();
+			});
+		</script>';
+		return $table;
 	}
 
 	private function GetType($iTipo){
@@ -344,7 +342,6 @@ class C_IntervencionPropuesta extends CI_Controller {
 		}
 		echo $option;
 	}
-	
 
 	public function dataEntry(){	
 		
