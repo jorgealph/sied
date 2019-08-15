@@ -103,7 +103,7 @@ class C_organismo extends CI_Controller {
             $m_seg = new M_seguridad();
             $where['iIdOrganismo'] = $this->input->post('id');
 
-            if($m_seg->desactivar_registro('Organismo',$where)) echo '0';
+            if($m_seg->desactivar_registro('organismo',$where)) echo '0';
             else echo 'El registro no pudo ser eliminado';
         }else echo '<p>Acceso denegado</p>';
     }
@@ -163,12 +163,12 @@ class C_organismo extends CI_Controller {
             if($iIdOrganismo > 0)
             {
                 $where['iIdOrganismo'] = $iIdOrganismo;
-                $iIdOrganismo = $mseg->actualizar_registro('Organismo',$where,$datos);
+                $iIdOrganismo = $mseg->actualizar_registro('organismo',$where,$datos);
                 echo "0";
             }
             else
             {
-                $iIdOrganismo = $mseg->insertar_registro('Organismo',$datos);
+                $iIdOrganismo = $mseg->insertar_registro('organismo',$datos);
                 echo "0";
             }
         }
