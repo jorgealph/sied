@@ -108,7 +108,7 @@
         <div class="row">
             <div class="col-md-12 text-center">
                 <div class="form-group">
-                    <button type="submit" class="btn btn-success" >Guardar</button>&nbsp;
+                    <button type="submit" class="btn btn-primary" >Guardar</button>&nbsp;
                     <button type="button" class="btn btn-white" onclick="regresar();">Cancelar</button>
                 </div>
             </div>

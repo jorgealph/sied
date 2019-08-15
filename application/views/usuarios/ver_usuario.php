@@ -9,16 +9,13 @@
         <li class="fas fa-lg fa-fw m-r-10 fa-arrow-left"></li><span>Regresar</span>
     </a>
 
-    <h3 class="page-header">Actualizar contraseña</h3>
+    <h3 class="page-header">Directorio</h3>
     <div class="panel panel-inverse">
         <div class="panel-heading">
             <h4 class="panel-title">Captura de datos</h4>
         </div>
 
-        <div class="card bg-light" name="capturar" id="capturar">
-            <div class="container">
-                <div class="col-md-12"> <br>
-
+        <div class="panel-body">
                 <?php echo form_open_multipart('');?>
 
                 <div class="row">
@@ -238,53 +235,56 @@
                     $("#organismo").val(<?php if(isset($organismo2)){echo $organismo2;}?>);
                 </script>
                 <?php echo form_close();?>
-
-                <form class="form" onsubmit="guardar(this,event);" id="form-captura" name="form-captura">
+            <legend>Actualizar contraseña</legend>
+            <form class="form" onsubmit="guardar(this,event);" id="form-captura" name="form-captura">
                 <div class="row">
-                <input type="hidden" name="id_usuario" value="<?=$id_usuario?>">
+                    <input type="hidden" name="id_usuario" value="<?=$id_usuario?>">
 
-                        <div class="col-md-6">
-                        <div class="form-group">
-                            <?php
-                            echo form_label('Contraseña (8 caracteres mínimo)', 'contrasenia');
-
-                            $input = array(
-                                'id' => 'contrasenia',
-                                'name' => 'contrasenia',
-                                'value' => '',
-                                'class' => 'form-control form-control-sm',
-                                'data-parsley-required' => 'true'
-                            );
-
-                            echo form_password($input);
-                            ?>
-                        </div></div>
-
-                        <div class="col-md-6">
+                    <div class="col-md-6">
                     <div class="form-group">
-                            <?php
-                            echo form_label('Confirmar contraseña', 'confirmar');
+                        <?php
+                        echo form_label('Contraseña (8 caracteres mínimo)<b class="text-danger">*</b>', 'contrasenia');
 
-                            $input = array(
-                                'name' => 'confirmar',
-                                'value' => '',
-                                'class' => 'form-control form-control-sm',
-                                'data-parsley-required' => 'true'
-                            );
+                        $input = array(
+                            'id' => 'contrasenia',
+                            'name' => 'contrasenia',
+                            'value' => '',
+                            'class' => 'form-control form-control-sm',
+                            'data-parsley-required' => 'true'
+                        );
 
-                            echo form_password($input);
-                            ?>
-                        </div></div></div>
+                        echo form_password($input);
+                        ?>
+                    </div>
+                    </div>
 
-                        <center>
-                        <button type="submit" class='btn btn-primary'>Actualizar</button>
-                        <button type="button" class="btn btn-white" onclick="regresar();">Cancelar</button>
-                        </center>
-                        </form>
+                    <div class="col-md-6">
+                    <div class="form-group">
+                        <?php
+                        echo form_label('Confirmar contraseña<b class="text-danger">*</b>', 'confirmar');
+
+                        $input = array(
+                            'name' => 'confirmar',
+                            'value' => '',
+                            'class' => 'form-control form-control-sm',
+                            'data-parsley-required' => 'true'
+                        );
+
+                        echo form_password($input);
+                        ?>
+                        </div>
+                    </div>
+                </div>
+
+                    <center>
+                    <button type="submit" class='btn btn-primary'>Actualizar</button>
+                    <button type="button" class="btn btn-white" onclick="regresar();">Cancelar</button>
+                    </center>
+            </form>
                 
 
-                </div>
-            </div><br>
+                
+            
         </div>
     </div>
 </body>

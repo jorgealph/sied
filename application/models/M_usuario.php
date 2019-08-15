@@ -60,6 +60,7 @@ class M_usuario extends CI_Model {
         $this->db->select('*');
         $this->db->where('iActivo', 1); 
         $this->db->from('organismo');
+        $this->db->order_by('vOrganismo');
         $query = $this->db->get();
         return $query->result();
     }
@@ -80,7 +81,7 @@ class M_usuario extends CI_Model {
 		return $this->db->get();
     }
 
-    public function filtro($organismo, $eje, $siglas){
+    public function filtro($organismo, $eje, $texto){
         $this->db->select('u.iIdUsuario, u.vUsuario, u.vNombres, u.vApellidoPaterno, u.vApellidoMaterno, u.vCorreo1, u.vCargo, u.vCelular, o.vOrganismo, o.vOrganismo, e.vEje, u.vTitulo');	
 		$this->db->from('usuario u');
         $this->db->join('organismo o','u.iIdOrganismo = o.iIdOrganismo AND o.iActivo = 1','INNER');
@@ -93,8 +94,9 @@ class M_usuario extends CI_Model {
         if(!empty($eje) && $eje != null){
             $this->db->where('e.iIdEje', $eje);
         }
-        if(!empty($siglas) && $siglas != null){
-            $this->db->like('o.vSiglas', $siglas);
+        if(!empty($texto) && $texto != null){
+            $like = "(u.vUsuario LIKE '%$texto%' OR (CONCAT(u.vNombres,\" \",u.vApellidoPaterno, \" \",u.vApellidoMaterno) LIKE '%$texto%'))";
+            $this->db->where($like);
         }
         
         $query = $this->db->get();
@@ -119,7 +121,7 @@ class M_usuario extends CI_Model {
     function get_organismo(){
         $this->db->select('iIdOrganismo');
         $this->db->from($this->table);
-        $this->db->where('iActivo', 1); 
+        $this->db->where('iActivo', 1);
         $query = $this->db->get();
         return $query->result();
     }

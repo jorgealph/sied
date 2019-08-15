@@ -44,7 +44,7 @@
                             		<div class="input-group mb-12">
                                         <input type="text" class="form-control" name="fTitulo" id="fTitulo" placeholder="" aria-label="" aria-describedby="basic-addon1">
                                         <div class="input-group-append">
-                                            <button class="btn btn-info" type="submit" onclick="Buscar(0,event);"><i class="ti-search"></i>&nbsp;Buscar</button>
+                                            <button class="btn btn-info" type="submit" onclick="Buscar(0,event);"><i class="fas fa-lg fa-fw fa-search"></i>&nbsp;Buscar</button>
                                         </div>
                                     </div>
                             	</div>

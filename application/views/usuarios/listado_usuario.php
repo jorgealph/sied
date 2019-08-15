@@ -14,20 +14,17 @@
             <div class="row">
                 <div class="col-md-2">
                 <label>Eje: </label>
-                <select class="form-control" id="filtro-eje" name="filtro-eje">
-                    <option value="">Seleccionar</option>
-                <?php foreach ($eje as $row) {?>
-                    <option value="<?=$row->iIdEje;?>"><?=$row->vEje;?></option>
-                <?php } ?>
+                <select class="form-control" id="filtro-eje" name="filtro-eje" onchange="cargarOptions('organismos',this);">
+                    <option value="">Todos</option>
+                    <?php foreach ($eje as $row) {?>
+                        <option value="<?=$row->iIdEje;?>"><?=$row->vEje;?></option>
+                    <?php } ?>
                 </select>
                 </div>
             <div class="col-md-3">
-            <label>Dependecia: </label>
+            <label>Organismo: </label>
             <select class="form-control" id="filtro-organismo" name="filtro-organismo">
-            <option value="">Seleccionar</option>
-            <?php foreach ($organismo as $row) {?>
-                <option value="<?=$row->iIdOrganismo;?>"><?=$row->vOrganismo;?></option>
-            <?php } ?>
+                <option value="">Todos</option>
             </select>
             </div>
             <div class="col md-5"> 
@@ -35,7 +32,7 @@
                 <div class="input-group mb-12">
                     <input type="text" class="form-control" name="filtro-texto_busqueda" id="filtro-texto_busqueda" placeholder="" aria-label="" aria-describedby="basic-addon1">
                         <div class="input-group-append">
-                            <button class="btn btn-info" type="button" onclick="filter()"><i class="ti-search"></i>&nbsp;Buscar</button>
+                            <button class="btn btn-info" type="button" onclick="filter()"><i class="fas fa-lg fa-fw fa-search"></i>&nbsp;Buscar</button>
                         </div>
                 </div>
             </div>
@@ -71,7 +68,8 @@
 						$.get("<?=base_url()?>C_usuario/borrar_ajax/"+id, 
 						function(data) {
 							if(data == 1){
-								$("#contenido").load('<?=base_url()?>C_usuario/listado');
+								//$("#contenido").load('<?=base_url()?>C_usuario/listado');
+                                filter();
 								swal("El registro ha sido eliminado correctamente", {
 									title: 'Exito',
       								icon: "success",
@@ -174,6 +172,18 @@
 					}
 				});
 			}
+
+            function cargarOptions(listado,elemento){
+                var valor = $("#"+elemento.id).val();
+
+                $.post("<?=base_url();?>C_listado/cargar_options/",{listado:listado,valor:valor},function(resultado,status){
+                
+                    if(listado == 'organismos'){                
+                        $('#filtro-organismo option[value!=""]').remove();
+                        $('#filtro-organismo').append(resultado);
+                    }
+                });
+            }
             </script>
     </body>
 </html>

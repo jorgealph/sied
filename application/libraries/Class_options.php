@@ -10,16 +10,15 @@ class Class_options {
         $CI->load->model('M_catalogo'); 
     }
 
-    function options_tabla($tabla, $seleccionado="")
+    function options_tabla($tabla, $seleccionado="",$where='')
     { 
         $model = new M_catalogo();
         $select = '';
 
-        $query = $model->{$tabla}();
+        $query = $model->{$tabla}($where);
 
         if($query != false)
-        {            
-                       
+        {
             $result = $query->result();
             foreach ($result as $row)
             {

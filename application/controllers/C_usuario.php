@@ -18,30 +18,23 @@ class C_usuario extends CI_Controller {
 
     public function listado(){
 
-        if(empty($_REQUEST['filtro-eje']) && empty($_REQUEST['filtro-organismo']) && empty($_REQUEST['filtro-texto_busqueda'])){
-            $vdata["personas"] = $this->mu->findAll();
-        }else{
-            $eje = $_REQUEST['filtro-eje'];
-            $organismo = $_REQUEST['filtro-organismo'];
-            $siglas = $_REQUEST['filtro-texto_busqueda'];
-            $vdata["personas"] = $this->mu->filtro($organismo, $eje, $siglas);
-        }
+      
+        $eje = (isset($_POST['filtro-eje'])) ? $this->input->post('filtro-eje'):'';
+        $organismo = (isset($_POST['filtro-organismo'])) ? $this->input->post('filtro-organismo'):'';
+        $siglas = (isset($_POST['filtro-texto_busqueda'])) ? $this->input->post('filtro-texto_busqueda'):'';
+        $vdata["personas"] = $this->mu->filtro($organismo, $eje, $siglas);
         
         $vdata['eje'] = $this->mu->get_eje();
-        $vdata['organismo'] = $this->mu->get_dependencia();
         $this->load->view('usuarios/listado_usuario', $vdata);
     }
 
     public function tabla(){
-        if(empty($_REQUEST['eje']) && empty($_REQUEST['organismo']) && empty($_REQUEST['texto_busqueda'])){
-            $vdata["personas"] = $this->mu->findAll();
-        }else{
-            $eje = $_REQUEST['eje'];
-            $organismo = $_REQUEST['organismo'];
-            $siglas = $_REQUEST['texto_busqueda'];
-            $vdata["personas"] = $this->mu->filtro($organismo, $eje, $siglas);
-        }
+        $eje = (isset($_POST['filtro-eje'])) ? $this->input->post('filtro-eje'):'';
+        $organismo = (isset($_POST['filtro-organismo'])) ? $this->input->post('filtro-organismo'):'';
+        $siglas = (isset($_POST['filtro-texto_busqueda'])) ? trim($this->input->post('filtro-texto_busqueda')):'';
         
+        $vdata["personas"] = $this->mu->filtro($organismo, $eje, $siglas);
+
         $this->load->view('usuarios/tabla', $vdata);
     }
 
@@ -126,14 +119,13 @@ class C_usuario extends CI_Controller {
             $idrol = (isset($vdata["rol2"])) ? $vdata["rol2"]:0;
             $options = new Class_options();
             $vdata['options_roles'] = $options->options_tabla('roles', $idrol);
-
+            $vdata['organismo'] = $this->mu->get_dependencia();
             if($persona_id > 0){
-                $vdata['organismo'] = $this->mu->get_dependencia();
+                
                 $this->load->view('usuarios/editar_usuario', $vdata); 
             }else {
                 $vdata["error"] = $error;
                 $vdata['eje'] = $this->mu->get_eje();
-                $vdata['organismo'] = $this->mu->get_dependencia();
                 $this->load->view('usuarios/capturar_usuario', $vdata);
             }
         }
@@ -212,5 +204,4 @@ class C_usuario extends CI_Controller {
         //$this->load->view('usuarios/ver_usuario', $vdata);
 
     }
- 
 }
