@@ -25,7 +25,7 @@
                             <th scope="row"><?php echo $p->vPlantilla ?></th>
                             <td><?php echo $p->iAnioEvaluacion ?></td>
                             <td><?php echo $p->vTipoEvaluacion ?></td>
-                            <td><?php $p->iOrigenEvaluacion == 1 ? print_r("Interna") : print_r("Externa") ?></td>
+                            <td><?php $p->iOrigenEvaluacion == 1 ? print_r("Externa") : print_r("Interna") ?></td>
                              <td>
                                 <button type="button" class="btn btn-grey btn-icon btn-sm" onclick="editar('<?=$p->iIdPlantilla?>/1');" title="Editar"><i class="fas fa-pencil-alt fa-fw"></i></button>
 

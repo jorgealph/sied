@@ -14,7 +14,7 @@ class C_evaluacion extends CI_Controller{
     public function display(){
         $this->load->model('M_evaluacion', 'me');
         $this->load->model('M_plantilla', 'mp');
-        $this->load->model('M_intervencionpropuesta', 'mi');
+        $this->load->model('M_IntervencionPropuesta', 'mi');
         $data['anio'] = $this->mp->get_anio();
         $data['tipo'] = $this->mp->get_tipo();
         $data['eje'] = $this->mi->ejeQuery(); 

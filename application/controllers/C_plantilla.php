@@ -26,7 +26,7 @@ class C_plantilla extends CI_Controller {
         }
         
         $vdata['anio'] = $this->mp->get_anio();
-        $vdata['origen'] = $this->mp->get_origen();
+        //$vdata['origen'] = $this->mp->get_origen();
         $vdata['tipo'] = $this->mp->get_tipo();
         $vdata["plantilla"] = $this->mp->findAll();
         $this->load->view('plantilla/index', $vdata); 
@@ -36,7 +36,7 @@ class C_plantilla extends CI_Controller {
          if(empty($_REQUEST['filtro-anio']) && empty($_REQUEST['filtro-origen']) && empty($_REQUEST['filtro-tipo']) && empty($_REQUEST['filtro-texto_busqueda'])){
             $vdata["plantilla"] = $this->mp->findAll();
         }else{
-            $anio = $_REQUEST['filtro-anio'];
+            $anio = trim($_REQUEST['filtro-anio']);
             $origen = $_REQUEST['filtro-origen'];
             $tipo = $_REQUEST['filtro-tipo'];
             $nombre = $_REQUEST['filtro-texto_busqueda'];
@@ -244,40 +244,40 @@ class C_plantilla extends CI_Controller {
     }
 
     public function insertar_plantilla(){
-         if(isset($_POST['iIdPlantilla']) && !empty($_POST['iIdPlantilla']))
+        if(isset($_POST['iIdPlantilla']) && !empty($_POST['iIdPlantilla']))
             $data['iIdPlantilla'] = $_POST['iIdPlantilla'];  
-        $data["iIdPlantilla"] = 0;
-        $iIdPlantilla = $this->input->post("id_plantilla");
-        $data['vPlantilla'] = $this->input->post("nombre");
-        $data['iAnioEvaluacion'] = $this->input->post("anio");
-        $data['iOrigenEvaluacion'] = $this->input->post("origen");
-        $data['iIdTipoEvaluacion'] = $this->input->post("tipo");
-        $intervencion = $_SESSION['intervencion'];
-                $iIdPlantilla = $this->mp->insert($data);
+            $data["iIdPlantilla"] = 0;
+            $iIdPlantilla = $this->input->post("id_plantilla");
+            $data['vPlantilla'] = $this->input->post("nombre");
+            $data['iAnioEvaluacion'] = $this->input->post("anio");
+            $data['iOrigenEvaluacion'] = $this->input->post("origen");
+            $data['iIdTipoEvaluacion'] = $this->input->post("tipo");
+            $intervencion = $_SESSION['intervencion'];
+            $iIdPlantilla = $this->mp->insert($data);
 
-                if($iIdPlantilla>0){
-                    foreach($intervencion as $r){
-                        $tmp['iIdPlantilla'] = $iIdPlantilla;
-                        $tmp['iIdIntervencion'] = $r['iIdIntervencion'];
-                        $tmp['vNombreEvaluacion'] = '';
-                        $tmp['vObjetivo'] = '';
-                        $tmp['vObjetivoEspecifico'] = ''; 
-                        //$tmp['vEspecificarOtro'] = '';
-                        $tmp['vRutaArchivo'] = '';
-                        $tmp['vComentarioGeneral'] = '';
-                        $iIdEvaluacion = $this->mp->insertIntercencion($tmp);
+            if($iIdPlantilla>0){
+                foreach($intervencion as $r){
+                    $tmp['iIdPlantilla'] = $iIdPlantilla;
+                    $tmp['iIdIntervencion'] = $r['iIdIntervencion'];
+                    $tmp['vNombreEvaluacion'] = '';
+                    $tmp['vObjetivo'] = '';
+                    $tmp['vObjetivoEspecifico'] = ''; 
+                    //$tmp['vEspecificarOtro'] = '';
+                    $tmp['vRutaArchivo'] = '';
+                    $tmp['vComentarioGeneral'] = '';
+                    $iIdEvaluacion = $this->mp->insertIntercencion($tmp);
 
-                        $corresponsables = explode(",",$r{'dependencia'});
+                    $corresponsables = explode(",",$r{'dependencia'});
 
-                        $var = $this->mp->findOrganismoCarritoB($r['iIdIntervencion']);
-                        
-                        foreach ($var as $r) {
-                            $datos = array('iIdEvaluacion' => $iIdEvaluacion, 'iIdOrganismo' => $r->iIdOrganismo,'vRutaArchivo' => '');
-                            $this->mp->insertCorresponsables($datos);
-                        }
-                        echo $iIdEvaluacion;
+                    $var = $this->mp->findOrganismoCarritoB($r['iIdIntervencion']);
+                    
+                    foreach ($var as $r) {
+                        $datos = array('iIdEvaluacion' => $iIdEvaluacion, 'iIdOrganismo' => $r->iIdOrganismo,'vRutaArchivo' => '');
+                        $this->mp->insertCorresponsables($datos);
                     }
+                    echo $iIdEvaluacion;
                 }
+            }
 		}
 
     public function insertar_apartado(){    
@@ -288,7 +288,7 @@ class C_plantilla extends CI_Controller {
     }
 
     public function insertar_pregunta(){
-        $data['iIdApartado'] = $this->input->post("id3");
+        $data['iIdApartado'] = $this->input->post("iIdApartado");
         $data['vPregunta'] = $this->input->post("nombreP");
         $data['iIdTipoPregunta'] = $this->input->post("tipoPR");
         $iIdPlantilla = $this->mp->insertPregunta($data);
@@ -437,14 +437,16 @@ class C_plantilla extends CI_Controller {
             $apartado .= '<div class="panel panel-inverse" data-sortable-id="form-stuff-1">
             <div class="panel-heading ui-sortable-handle">
                 <div class="panel-heading-btn">
-                    <a href="" class="btn btn-xs btn-icon btn-circle btn-default" title="Agregar pregunta"  data-toggle="modal" data-target="#myModal3" onclick="modal3('.$r->iIdApartado.')"><i class="fas fa-question fa-lg"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" title="Agregar pregunta"  data-toggle="modal" data-target="#myModal3" onclick="agregarPregunta('.$r->iIdApartado.')"><i class="fas fa-question fa-lg"></i></a>
                     <div id="id'.$r->iIdApartado.'" style="display:none">'.$r->iIdApartado.'</div>
                     <div id="'.$r->iIdApartado.'" style="display:none">'.$r->vApartado.'</div>
-                    <a href="" class="btn btn-xs btn-icon btn-circle btn-success"  title="Editar apartado"><i class="fas fa-pencil-alt fa-fw" data-toggle="modal" data-target="#myModal2" onclick="modal2('.$r->iIdApartado.')" title="Editar"></i></a>
+
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success"  title="Editar apartado"><i class="fas fa-pencil-alt fa-fw" onclick="editarApartado('.$r->iIdApartado.',event);" title="Editar"></i></a>
+
                     <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"  title="Colapsar"><i class="fa fa-minus"></i></a>
                     <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger"  title="Eliminar apartado" onclick="deleteApartado('.$r->iIdApartado.')"><i class="fas fa-trash-alt fa-fw"></i></a>
                 </div>
-                <h4 class="panel-title">'.$r->vApartado.'</h4>
+                <h4 class="panel-title" id="nombreApartado'.$r->iIdApartado.'">'.$r->vApartado.'</h4>
             </div>
             <div class="panel-body">
                 <div style="background-color:#f7f7f7;">
@@ -489,27 +491,27 @@ class C_plantilla extends CI_Controller {
             foreach($vdata as $r){
                     $tcontent .= '<tr>';
                     $tcontent .=  '<td><div id="iddos'.$r->iIdPregunta.'" style="display:none">'.$r->iIdPregunta.'</div> <div id="Pregunta'.$r->iIdPregunta.'">'.$r->vPregunta.'</div> <div id="tipo'.$r->iIdPregunta.'" style="display:none">'.$r->iIdTipoPregunta.'</div> </td>';
-                    $tcontent .=  '<td>'.'<button type="button" class="btn btn-primary btn-icon btn-sm" data-toggle="modal" data-target="#myModal" onclick="modal('.$r->iIdPregunta.')" title="Editar"><i class="fas fa-pencil-alt fa-fw"></i></button>
+                    $tcontent .=  '<td>'.'<button type="button" class="btn btn-primary btn-icon btn-sm" data-toggle="modal" data-target="#myModal" onclick="editarPregunta('.$r->iIdPregunta.')" title="Editar"><i class="fas fa-pencil-alt fa-fw"></i></button>
                     <button type="button" class="btn btn-danger btn-icon btn-sm" onclick="deletePregunta('.$r->iIdPregunta.')" title="Eliminar"><i class="fas fa-trash-alt fa-fw"></i></button></td>'; 
                     $tcontent .= '</tr>';
                 }
         return $tcontent;
     }
 
-    public function ActualizarApartado($iIdApartado){
+    public function ActualizarApartado(){
         /*$apartado = $this->mp->findApartado($iIdApartado);
         $apartado = $r->iIdApartado;*/
-        $iIdApartado = $this->input->post('id');
+        $iIdApartado = $this->input->post('iIdApartado');
         $data["vApartado"] =  $this->input->post("nombre2");
         $aux = $this->mp->updateApartado($iIdApartado, $data);
         echo $aux;
-        var_dump($data);
+        //var_dump($data);
     }
 
-    public function ActualizarPregunta($iIdPregunta){
+    public function ActualizarPregunta(){
         /*$apartado = $this->mp->findApartado($iIdApartado);
         $apartado = $r->iIdApartado;*/
-        $iIdPregunta = $this->input->post('id2');
+        $iIdPregunta = $this->input->post('iIdPregunta');
         $data["vPregunta"] =  $this->input->post("nombre");
         $data["iIdTipoPregunta"] =  $this->input->post("tipoP");
         $aux = $this->mp->updatePregunta($iIdPregunta, $data);

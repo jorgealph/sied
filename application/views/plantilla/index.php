@@ -14,21 +14,21 @@
                 <div class="row">
                     <div class="col-md-2">
                     <label>Año: </label>
-                    <select class="form-control" id="filtro-anio" name="filtro-anio">
+                    <input type="text" name="filtro-anio" id="filtro-anio" class="form-control" value="" maxlength="4" placeholder="aaaa">
+                    <!--<select class="form-control" id="filtro-anio" name="filtro-anio">
                         <option value="">Seleccionar</option>
 						<?php foreach ($anio as $row) {?>
 							<option value="<?=$row->iAnioEvaluacion;?>"><?=$row->iAnioEvaluacion;?></option>
 						<?php } ?>
-                    </select>
+                    </select>-->
                     </div>
                 <div class="col-md-2">
                 <label>Origen: </label>
                 <select class="form-control" id="filtro-origen" name="filtro-origen">
-                    <option value="">Seleccionar</option>
-                    <?php foreach ($origen as $row) {?>
-                        <option value="<?=$row->iOrigenEvaluacion;?>"><?=$row->iOrigenEvaluacion == 1 ? "Interna" : "Externa"?></option>
-                    <?php } ?>
-                </select>
+                    <option value="">Todos</option>
+                        <option value="1">Externa</option>
+                        <option value="2">Interna</option>
+                    </select>
                 </div>
                 <div class="col-md-2">
                 <label>Tipo: </label>
@@ -42,7 +42,7 @@
                 <div class="col md-4"> 
                     <label>Palabra clave: </label>
                     <div class="input-group mb-12">
-                        <input type="text" class="form-control" name="filtro-texto_busqueda" id="filtro-texto_busqueda" placeholder="" aria-label="" aria-describedby="basic-addon1" onkeypress="event.preventDefault()">
+                        <input type="text" class="form-control" name="filtro-texto_busqueda" id="filtro-texto_busqueda" placeholder="" aria-label="" aria-describedby="basic-addon1">
                             <div class="input-group-append">
                                 <button class="btn btn-info" type="button" onclick="filter()"><i class="ti-search"></i>&nbsp;Buscar</button>
                             </div>
