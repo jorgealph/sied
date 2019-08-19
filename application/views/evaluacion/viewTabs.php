@@ -17,24 +17,24 @@
 					<h4 class="panel-title">Datos de la evaluación</h4>
 				</div>
 				<div class="panel-body">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h2 class="page-header"><?=$eva->vClave?> - <?=$eva->vIntervencion?></h2>
-                            </div>
-                            <div class="col-md-6">
-                                <h2 class="page-header">Organismo responsable: <?=$eva->vSiglas?></h2>
-                            </div>
-                        </div>
-                        <div class="row" style="padding-top:10px">
-                            <div class="col-md-6">
-                                <h2 class="page-header">Ambito: <?=$eva->vAmbito?></h2>
-                            </div>
-                            <div class="col-md-6">
-                                <h2 class="page-header">Poder: <?=$eva->vPoder?></h2>
-                            </div>
+                    
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h2 class="page-header"><b><?=$eva->vClave?> - <?=$eva->vIntervencion?></b></h2>
                         </div>
                     </div>
+                    <div class="row" style="padding-top:10px">
+                        <div class="col-md-4">
+                            <h4>Organismo responsable: <?=$eva->vSiglas?></h4>
+                        </div>
+                        <div class="col-md-4">
+                            <h4>Ambito: <?=$eva->vAmbito?></h4>
+                        </div>
+                        <div class="col-md-4">
+                            <h4>Poder: <?=$eva->vPoder?></h4>
+                        </div>
+                    </div>
+                    
                 </div>
 			</div>
             

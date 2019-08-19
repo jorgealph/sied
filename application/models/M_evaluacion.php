@@ -82,10 +82,10 @@ class M_evaluacion extends CI_Model{
     public function findEvaluacion($key){
         $this->db->select("e.*, IFNULL(o.vSiglas, '') AS vSiglas, IFNULL(a.vAmbito, '') AS vAmbito, IFNULL(p.vPoder, '') AS vPoder, i.`vIntervencion`, i.`vClave`");
         $this->db->from("$this->table as e");
-        $this->db->join('organismo as o', 'e.`iIdResponsableSeguimiento` = o.`iIdOrganismo`', 'LEFT OUTER');
+        $this->db->join('intervencion as i', 'i.`iIdIntervencion` = e.`iIdIntervencion`', 'INNER');
+        $this->db->join('organismo as o', 'o.`iIdOrganismo` = i.`iIdOrganismo`', 'LEFT OUTER');
         $this->db->join('ambito as a', 'o.`iIdAmbito` = a.`iIdAmbito`', 'LEFT OUTER');
         $this->db->join('poder as p', 'o.`iIdPoder` = p.`iIdPoder`', 'LEFT OUTER');
-        $this->db->join('intervencion as i', 'i.`iIdIntervencion` = e.`iIdIntervencion`', 'INNER');
         $this->db->where("$this->table_id", $key);
         $query = $this->db->get();
         return $query->result();
